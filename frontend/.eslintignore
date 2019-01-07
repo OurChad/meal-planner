@@ -1,0 +1,3 @@
+# ESLint always ignores files in /node_modules/*
+# also we need to exclude all the Lerna symlinks
+node_modules

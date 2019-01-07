@@ -1,0 +1,49 @@
+enum Permission {
+  ADMIN
+  USER
+  PERMISSIONUPDATE
+}
+
+enum FoodType {
+  BAKED
+  CHEESE
+  CONDIMENT
+  DAIRY
+  DRINK
+  FRUIT
+  MEAT
+  OTHER
+  TEA
+  VEGETABLE
+}
+
+type User {
+  id: ID! @unique
+  name: String!
+  email: String! @unique
+  password: String!
+  resetToken: String
+  resetTokenExpiry: Float
+  permissions: [Permission]
+}
+
+type Food {
+  id: ID! @unique
+  name: String!
+  subName: String
+  types: [FoodType!]!
+  image: String
+}
+
+type Ingredient {
+  id: ID! @unique
+  food: Food!
+  quantity: Float!
+}
+
+type Recipe {
+  id: ID! @unique
+  name: String!
+  ingredients: [Ingredient!]!
+  instructions: String
+}

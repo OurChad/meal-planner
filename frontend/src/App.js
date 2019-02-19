@@ -10,6 +10,7 @@ import Foods from './components/food/Foods';
 import Theme from './style/Theme';
 import UpdateFood from './components/food/UpdateFood';
 import User from './components/User';
+import CreateRecipe from './components/recipe/CreateRecipe';
 
 const Index = () => <h2>Home</h2>;
 const About = () => <h2>About</h2>;
@@ -55,6 +56,9 @@ class App extends Component {
                   <li>
                     <Link to="/foods/">Foods</Link>
                   </li>
+                  <li>
+                    <Link to="/createRecipe/">Create Recipe</Link>
+                  </li>
                 </ul>
               </nav>
 
@@ -65,7 +69,8 @@ class App extends Component {
               <Route path="/signin/" component={Signin} />
               <AuthenticatedRoute path="/createFood/" component={CreateFood} />
               <AuthenticatedRoute path="/foods/" component={Foods} exact />
-              <AuthenticatedRoute path="/foods/:name" component={UpdateFood} />
+              <AuthenticatedRoute path="/foods/:id" component={UpdateFood} />
+              <AuthenticatedRoute path="/createRecipe/" component={CreateRecipe} />
             </div>
           </Router>
         </Theme>

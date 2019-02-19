@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import FoodForm from './FoodForm';
-import { ALL_FOODS_QUERY } from './Foods';
+import { ALL_FOODS_QUERY } from './queries';
+
 
 export default function CreateFood(props) {
 
@@ -37,7 +38,7 @@ export default function CreateFood(props) {
         (createFood, { error, loading }) => (
           <FoodForm 
             food={food}
-            setFood={setFood}
+            setFoodData={setFood}
             title='Create a New Food'
             submitLabel='Create Food'
             loading={loading}

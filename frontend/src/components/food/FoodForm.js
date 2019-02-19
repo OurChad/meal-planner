@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import Select from 'react-select';
 import Form from '../common/Form';
 
 export default function FoodForm(props) {
@@ -23,10 +24,20 @@ export default function FoodForm(props) {
     image: '',
   };
 
-  const { food, setFood } = props;
+  const [food, setFood] = useState(props.food);
+  const { setFoodData } = props;
 
   const saveToState = e => {
-    setFood({ ...food, [e.target.name]: e.target.value });
+    let updatedFood;
+    if (Array.isArray(e)) {
+      updatedFood = { ...food, types: e.map(foodType => foodType.value) };
+      setFood(updatedFood);
+    } else {
+      updatedFood = { ...food, [e.target.name]: e.target.value };
+      setFood(updatedFood);
+    }
+
+    setFoodData(updatedFood);
   };
 
   const uploadFile = async e => {
@@ -41,10 +52,12 @@ export default function FoodForm(props) {
       body: data,
     });
     const file = await res.json();
-    setFood({
+    const updatedFood = {
       ...food,
       image: file.secure_url,
-    });
+    };
+    setFood(updatedFood);
+    setFoodData(updatedFood);
   };
 
   const onSubmit = (e) => {
@@ -84,15 +97,13 @@ export default function FoodForm(props) {
         </label>
         <label htmlFor="types">
                 Types
-          <select
+          <Select 
             name="types"
-            multiple
-            onBlur={saveToState}
-          >
-            {foodTypes.map(foodType => {
-              return <option key={foodType} value={foodType}>{foodType}</option>
-            })}
-          </select>
+            isMulti
+            options={foodTypes.map(foodType => ({value: foodType, label: foodType, key: foodType}))}
+            value={food.types.map(foodType => ({value: foodType, label: foodType, key: foodType}))}
+            onChange={saveToState}
+          />
         </label>
         <label htmlFor="image">
                 Image

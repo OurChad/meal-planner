@@ -1,22 +1,10 @@
 import React from 'react';
-import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 import { Link } from 'react-router-dom';
 import { foodPerPage } from '../../config';
 import styled from 'styled-components';
 import DeleteFood from './DeleteFood';
-
-const ALL_FOODS_QUERY = gql`
-    query ALL_FOODS_QUERY($skip: Int = 0, $first: Int = ${foodPerPage}) {
-        foods(first: $first, skip: $skip, orderBy: createdAt_DESC) {
-            id
-            name
-            subName
-            types
-            image
-        }
-    }
-`;
+import { ALL_FOODS_QUERY } from './queries';
 
 const FoodsList = styled.div`
   display: grid;
@@ -56,7 +44,7 @@ export default function Foods(props) {
           <FoodsList>{data.foods.map(food => {
             return (
               <Food key={food.id}>
-                <Link to={{ pathname: `/foods/${food.subName + food.name}`, state: { food }}}>
+                <Link to={{ pathname: `/foods/${food.id}`}}>
                   <div id='name'>{food.name}</div>
                   <div id='subName'>{food.subName}</div>
                 </Link>

@@ -14,14 +14,14 @@ type Mutation {
     updateIngredient(id: ID!, foodId: ID!, quantity: Float!): Ingredient    
     deleteIngredient(id: ID!): Ingredient
     createRecipe(name: String!, ingredients: [IngredientCreateInput!]!, instructions: String): Recipe!
-    updateRecipe(id: ID!, name: String!, ingredients: [ID!]!, instructions: String): Recipe!
+    updateRecipe(id: ID!, name: String!, ingredients: IngredientUpdateManyInput!, instructions: String): Recipe!
     deleteRecipe(id: ID!): Recipe
 }
 
 type Query {
     me: User
     users: [User]!
-    food(where: FoodWhereUniqueInput!): Food
+    food(id: ID!): Food
     foods(where: FoodWhereInput, orderBy: FoodOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Food]!
     foodsConnection(where: FoodWhereInput, orderBy: FoodOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): FoodConnection!
     ingredients(where: IngredientWhereInput, orderBy: IngredientOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Ingredient]!
@@ -60,6 +60,24 @@ type Ingredient {
     id: ID!
   food: Food!
   quantity: Float!
+}
+
+input IngredientUpdateManyInput {
+    create: [IngredientCreateInput!],
+    connect: [IngredientWhereUniqueInput!],
+    update: [IngredientUpdateInput!],    
+    delete: [IngredientWhereUniqueInput!],
+}
+
+input IngredientCreateInput {
+    foodId: ID!
+    quantity: Float!
+}
+
+input IngredientUpdateInput {
+    id: ID!
+    foodId: ID!
+    quantity: Float!
 }
 
 type Recipe {

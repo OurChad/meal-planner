@@ -236,20 +236,22 @@ const Mutations = {
     async createRecipe(parent, args, ctx, info){
         isUserLoggedAndAdmin(ctx);
         const { name, ingredients, instructions } = args;
-        // const createIngredients = ingredients.map(({ quantity, food }) => {
-        //     return {
-        //         quantity,
-        //         food: {
-        //             connect: food.map(({ id }) => ({ id }))
-        //         }
-        //     }
-        // });
+        const createIngredients = ingredients.map(({ quantity, foodId }) => {
+            return {
+                quantity,
+                food: {
+                    connect: {
+                        id: foodId
+                    }
+                }
+            }
+        });
         const createdRecipe = await ctx.db.mutation.createRecipe({
             data: {
                 name,
                 instructions,
                 ingredients: {
-                    create: ingredients,
+                    create: createIngredients,
                 },
             }
         }, info);
@@ -259,6 +261,31 @@ const Mutations = {
     async updateRecipe(parent, args, ctx, info){
         isUserLoggedAndAdmin(ctx);
         const { id, name, ingredients, instructions } = args;
+        const createIngredients = ingredients.create && ingredients.create.map(({ quantity, foodId }) => {
+                return {
+                    quantity,
+                    food: {
+                        connect: {                            
+                            id: foodId
+                        }
+                    }
+                }
+            });
+        const updateIngredients = ingredients.update && ingredients.update.map(({ id, quantity, foodId }) => {
+                return {
+                    where: {
+                        id 
+                    },
+                    data: {
+                        quantity,
+                        food: {
+                            connect: {                            
+                                id: foodId
+                            }
+                        }
+                    }
+                }
+            });
         const updatedRecipe = await ctx.db.mutation.updateRecipe({
             where: {
                 id
@@ -267,7 +294,10 @@ const Mutations = {
                 name,
                 instructions,
                 ingredients: {
-                    connect: ingredients.map(id => ({ id }))
+                    create: createIngredients,
+                    connect: ingredients.connect, // ingredients.filter(ingredient => ingredient.connect).map(id => ({ id })),
+                    update: updateIngredients,
+                    delete: ingredients.delete // ingredients.filter(ingredient => ingredient.delete).map(id => ({ id })),
                 },
             }
         }, info);

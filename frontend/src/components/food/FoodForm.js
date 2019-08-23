@@ -1,20 +1,20 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import Select from 'react-select';
 import Form from '../common/Form';
 
-export default function FoodForm(props) {
-
+const FoodForm = ({ loading, food: foodProp, setFoodData, onSubmit, resetFormOnSubmit, title, submitLabel }) => {
   const foodTypes = [
-    "BAKED",
-    "CHEESE",
-    "CONDIMENT",
-    "DAIRY",
-    "DRINK",
-    "FRUIT",
-    "MEAT",
-    "OTHER",
-    "TEA",
-    "VEGETABLE",
+    'BAKED',
+    'CHEESE',
+    'CONDIMENT',
+    'DAIRY',
+    'DRINK',
+    'FRUIT',
+    'MEAT',
+    'OTHER',
+    'TEA',
+    'VEGETABLE',
   ];
 
   const emptyState = {
@@ -24,13 +24,12 @@ export default function FoodForm(props) {
     image: '',
   };
 
-  const [food, setFood] = useState(props.food);
-  const { setFoodData } = props;
+  const [food, setFood] = useState(foodProp);
 
-  const saveToState = e => {
+  const saveToState = (e) => {
     let updatedFood;
     if (Array.isArray(e)) {
-      updatedFood = { ...food, types: e.map(foodType => foodType.value) };
+      updatedFood = { ...food, types: e.map((foodType) => foodType.value) };
       setFood(updatedFood);
     } else {
       updatedFood = { ...food, [e.target.name]: e.target.value };
@@ -40,8 +39,8 @@ export default function FoodForm(props) {
     setFoodData(updatedFood);
   };
 
-  const uploadFile = async e => {
-    const files = e.target.files;
+  const uploadFile = async (e) => {
+    const { files } = e.target;
     const data = new FormData();
     data.append('file', files[0]);
     data.append('upload_preset', 'sickfits');
@@ -60,21 +59,21 @@ export default function FoodForm(props) {
     setFoodData(updatedFood);
   };
 
-  const onSubmit = (e) => {
-    props.onSubmit(e);
+  const handleSubmit = (e) => {
+    onSubmit(e);
 
-    if (props.resetFormOnSubmit) {
+    if (resetFormOnSubmit) {
       setFood(emptyState);
     }
-  }
+  };
 
   return (
     <Form
       method="post"
-      onSubmit={onSubmit}
+      onSubmit={handleSubmit}
     >
-      <fieldset disabled={props.loading} aria-busy={props.loading}>
-        <h2>{props.title}</h2>              
+      <fieldset disabled={loading} aria-busy={loading}>
+        <h2>{title}</h2>
         <label htmlFor="name">
                 Name
           <input
@@ -97,11 +96,11 @@ export default function FoodForm(props) {
         </label>
         <label htmlFor="types">
                 Types
-          <Select 
+          <Select
             name="types"
             isMulti
-            options={foodTypes.map(foodType => ({value: foodType, label: foodType, key: foodType}))}
-            value={food.types.map(foodType => ({value: foodType, label: foodType, key: foodType}))}
+            options={foodTypes.map((foodType) => ({ value: foodType, label: foodType, key: foodType }))}
+            value={food.types.map((foodType) => ({ value: foodType, label: foodType, key: foodType }))}
             onChange={saveToState}
           />
         </label>
@@ -117,8 +116,21 @@ export default function FoodForm(props) {
             <img width="200" src={food.image} alt="Upload Preview" />
           )}
         </label>
-        <button type="submit">{props.submitLabel}</button>
-      </fieldset>         
+        <button type="submit">{submitLabel}</button>
+      </fieldset>
     </Form>
-  )
-}
+  );
+};
+
+FoodForm.propTypes = {
+  loading: PropTypes.bool.isRequired,
+  food: PropTypes.object.isRequired,
+  setFoodData: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  resetFormOnSubmit: PropTypes.bool.isRequired,
+  title: PropTypes.string.isRequired,
+  submitLabel: PropTypes.string.isRequired,
+};
+
+
+export default FoodForm;

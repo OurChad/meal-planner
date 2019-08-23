@@ -14,22 +14,28 @@ const CURRENT_USER_QUERY = gql`
   }
 `;
 
-const AuthenticatedRoute = ({ component: Component, ...rest }) => (  
+const AuthenticatedRoute = ({ component: Component, ...rest }) => (
   <Query query={CURRENT_USER_QUERY}>
     {
       ({ data: { me }, error, loading }) => {
         if (error) return <p>{error}</p>;
         if (loading) return <p>Loading...</p>;
-        return <Route {...rest} render={props => (
-          me ? (
-            <Component {...props}/>
-          ) : (
-            <Redirect to={{
-              pathname: '/signin',
-              state: { from: props.location }
-            }}/>
-          )
-        )}/>
+        return (
+          <Route
+            {...rest}
+            render={(props) => (
+              me ? (
+                <Component {...props} />
+              ) : (
+                <Redirect to={{
+                  pathname: '/signin',
+                  state: { from: props.location }
+                }}
+                />
+              )
+            )}
+          />
+        );
       }
     }
   </Query>

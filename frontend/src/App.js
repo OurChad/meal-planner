@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import { ApolloProvider } from "react-apollo";
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import { ApolloProvider } from 'react-apollo';
 import client from './apollo-client';
 import AuthenticatedRoute from './components/auth/AuthenticatedRoute';
 import Signup from './components/auth/Signup';
@@ -14,17 +14,18 @@ import CreateRecipe from './components/recipe/CreateRecipe';
 
 const Index = () => <h2>Home</h2>;
 const About = () => <h2>About</h2>;
-const Users = () => {
-  return (
-    <User>
-      {
-        ({data: { me }}) => {
-          return <div>USER: ${me ? me.name : 'no name'}</div>;
-        }
-      }
-    </User>
-  )
-};
+const Users = () => (
+  <User>
+    {
+      ({ data: { me } }) => (
+        <div>
+USER: $
+          {me ? me.name : 'no name'}
+        </div>
+      )
+    }
+  </User>
+);
 
 class App extends Component {
   render() {

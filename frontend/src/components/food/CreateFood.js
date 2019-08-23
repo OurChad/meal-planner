@@ -5,8 +5,7 @@ import FoodForm from './FoodForm';
 import { ALL_FOODS_QUERY } from './queries';
 
 
-export default function CreateFood(props) {
-
+export default function CreateFood() {
   const CREATE_FOOD_MUTATION = gql`
     mutation createFood($food: FoodInput!) {
       createFood(food: $food) {
@@ -17,13 +16,13 @@ export default function CreateFood(props) {
         image
       }
     }
-  `
+  `;
   const initialState = {
     name: '',
     subName: '',
     types: [],
     image: '',
-  };  
+  };
   const [food, setFood] = useState(initialState);
 
   const update = (cache, { data: createFood }) => {
@@ -31,26 +30,26 @@ export default function CreateFood(props) {
     data.foods.push(createFood);
     cache.writeQuery({ query: ALL_FOODS_QUERY, data });
   };
-  
+
   return (
-    <Mutation mutation={CREATE_FOOD_MUTATION} variables={{food}} update={update}>
+    <Mutation mutation={CREATE_FOOD_MUTATION} variables={{ food }} update={update}>
       {
         (createFood, { error, loading }) => (
-          <FoodForm 
+          <FoodForm
             food={food}
             setFoodData={setFood}
-            title='Create a New Food'
-            submitLabel='Create Food'
+            title="Create a New Food"
+            submitLabel="Create Food"
             loading={loading}
             error={error}
-            onSubmit={async e => {
+            onSubmit={async (e) => {
               e.preventDefault();
               await createFood();
             }}
             resetFormOnSubmit
           />
         )
-      }      
+      }
     </Mutation>
-  )
+  );
 }

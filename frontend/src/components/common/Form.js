@@ -33,13 +33,13 @@ const Form = styled.form`
     border: 1px solid black;
     &:focus {
       outline: 0;
-      border-color: ${props => props.theme.red};
+      border-color: ${(props) => props.theme.red};
     }
   }
   button,
   input[type='submit'] {
     width: auto;
-    background: ${ props => props.theme.green };
+    background: ${(props) => props.theme.green};
     color: white;
     border: 0;
     font-size: 2rem;

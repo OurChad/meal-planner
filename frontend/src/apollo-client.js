@@ -3,7 +3,7 @@ import { endpoint } from './config';
 
 const client = new ApolloClient({
   uri: process.env.NODE_ENV === 'development' ? endpoint : endpoint,
-  request: operation => {
+  request: (operation) => {
     operation.setContext({
       fetchOptions: {
         credentials: 'include',
@@ -13,8 +13,7 @@ const client = new ApolloClient({
   cache: new InMemoryCache({
     cacheRedirects: {
       Query: {
-        food: (_, args, { getCacheKey }) =>
-          getCacheKey({ __typename: 'Food', id: args.id })
+        food: (_, args, { getCacheKey }) => getCacheKey({ __typename: 'Food', id: args.id })
       },
     },
   }),

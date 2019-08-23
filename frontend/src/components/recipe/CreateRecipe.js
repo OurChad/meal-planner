@@ -7,7 +7,6 @@ import IngredientForm from './IngredientForm';
 
 
 export default function CreateRecipe(props) {
-
   const CREATE_RECIPE_MUTATION = gql`
     mutation createRecipe($name: String!, $ingredients: [IngredientCreateInput!]!, $instructions: String) {
         createRecipe(name: $name, ingredients: $ingredients, instructions: $instructions) {
@@ -25,17 +24,17 @@ export default function CreateRecipe(props) {
             instructions
       }
     }
-  `
+  `;
   const initialState = {
     name: '',
     ingredients: [],
     instructions: ''
-  };  
+  };
 
   const [recipe, setRecipe] = useState(initialState);
   const [toggleIngredientForm, setToggleIngredientForm] = useState({ open: false, ingredient: undefined });
 
-  const saveToState = e => {
+  const saveToState = (e) => {
     setRecipe({ ...recipe, [e.target.name]: e.target.value });
   };
 
@@ -54,31 +53,29 @@ export default function CreateRecipe(props) {
     } else {
       const ingredients = recipe.ingredients.concat(ingredient);
       setRecipe({ ...recipe, ingredients });
-    } 
+    }
 
     setToggleIngredientForm({ open: !toggleIngredientForm.open });
-  }
+  };
 
   const handleSubmit = (createRecipe) => (e) => {
     e.preventDefault();
-    const ingredients = recipe.ingredients.map(ingredient => {
-      return {
-        foodId: ingredient.food.id,
-        quantity: ingredient.quantity
-      }
-    })
+    const ingredients = recipe.ingredients.map((ingredient) => ({
+      foodId: ingredient.food.id,
+      quantity: ingredient.quantity
+    }));
     const newRecipe = { ...recipe, ingredients };
 
-    createRecipe({ variables: {...newRecipe }});
-  }
-  
+    createRecipe({ variables: { ...newRecipe } });
+  };
+
   return (
     <Mutation mutation={CREATE_RECIPE_MUTATION}>
       {
         (createRecipe, { error, loading }) => (
           <Form onSubmit={handleSubmit(createRecipe)}>
             <fieldset disabled={loading} aria-busy={loading}>
-              <h2>{props.title}</h2>              
+              <h2>{props.title}</h2>
               <label htmlFor="name">
                 Name
                 <input
@@ -101,18 +98,25 @@ export default function CreateRecipe(props) {
                 />
               </label>
               <label htmlFor="ingredients">
-                Ingredients <span role="img" aria-label="add_ingredient" onClick={() => setToggleIngredientForm({ open: !toggleIngredientForm.open })}>➕</span>
+                Ingredients
+                {' '}
+                <span role="img" aria-label="add_ingredient" onClick={() => setToggleIngredientForm({ open: !toggleIngredientForm.open })}>➕</span>
                 <ul>
-                  {recipe.ingredients.map(ingredient => (
+                  {recipe.ingredients.map((ingredient) => (
                     <li key={ingredient.id}>
-                      {ingredient.food.name} - {ingredient.quantity} 
-                      <span 
-                        role="img" 
-                        aria-label="edit_ingredient" 
-                        onClick={() => setToggleIngredientForm({ open: !toggleIngredientForm.open, ingredient })}>
+                      {ingredient.food.name}
+                      {' '}
+-
+                      {ingredient.quantity}
+                      <span
+                        role="img"
+                        aria-label="edit_ingredient"
+                        onClick={() => setToggleIngredientForm({ open: !toggleIngredientForm.open, ingredient })}
+                      >
                         🖊
                       </span>
-                    </li>)
+                    </li>
+                  )
                   )}
                 </ul>
                 { toggleIngredientForm.open && <IngredientForm onSubmit={handleIngredientFormSubmit} /> }
@@ -121,8 +125,7 @@ export default function CreateRecipe(props) {
             </fieldset>
           </Form>
         )
-      }      
+      }
     </Mutation>
-  )
+  );
 }
-

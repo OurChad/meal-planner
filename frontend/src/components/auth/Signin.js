@@ -22,7 +22,7 @@ class Signin extends Component {
     email: '',
   };
 
-  saveToState = e => {
+  saveToState = (e) => {
     this.setState({ [e.target.name]: e.target.value });
   };
 
@@ -36,7 +36,7 @@ class Signin extends Component {
         {(signin, { error, loading }) => (
           <Form
             method="post"
-            onSubmit={async e => {
+            onSubmit={async (e) => {
               e.preventDefault();
               await signin();
               this.setState({ name: '', email: '', password: '' });

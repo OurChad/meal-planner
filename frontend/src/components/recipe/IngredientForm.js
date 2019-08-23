@@ -3,7 +3,7 @@ import { ApolloConsumer } from 'react-apollo';
 import gql from 'graphql-tag';
 // import debounce from 'lodash.debounce';
 import debounce from "debounce-promise";
-import AsyncSelect from 'react-select/lib/Async';
+import AsyncSelect from 'react-select/async';
 
 const IngredientForm = (props) => {
 

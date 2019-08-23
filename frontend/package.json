@@ -3,46 +3,30 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "apollo-boost": "^0.1.28",
-    "apollo-client": "^2.4.13",
-    "babel-core": "^7.0.0-bridge.0",
-    "babel-plugin-styled-components": "^1.7.1",
-    "date-fns": "^2.0.0-alpha.27",
-    "debounce-promise": "^3.1.0",
-    "downshift": "^2.2.3",
-    "enzyme": "^3.9.0",
-    "enzyme-adapter-react-16": "^1.9.1",
-    "graphql": "^14.1.1",
+    "apollo-boost": "^0.4.4",
+    "apollo-client": "^2.6.4",
+    "babel-core": "^6.26.3",
+    "babel-plugin-styled-components": "^1.10.6",
+    "date-fns": "^2.0.0",
+    "debounce-promise": "^3.1.2",
+    "downshift": "^3.2.12",
+    "enzyme": "^3.10.0",
+    "enzyme-adapter-react-16": "^1.14.0",
+    "graphql": "^14.5.0",
     "graphql-tag": "^2.10.1",
     "lodash.debounce": "^4.0.8",
     "nprogress": "^0.2.0",
     "prop-types": "^15.7.2",
-    "react": "^16.8.0",
+    "react": "^16.9.0",
     "react-adopt": "^0.6.0",
-    "react-apollo": "^2.4.1",
-    "react-dom": "^16.8.0",
-    "react-router-dom": "^4.3.1",
-    "react-scripts": "2.1.2",
-    "react-select": "^2.4.1",
-    "react-stripe-checkout": "^2.6.3",
-    "react-transition-group": "^2.5.3",
-    "styled-components": "^3.4.9",
-    "waait": "^1.0.4"
-  },
-  "devDependencies": {
-    "babel-eslint": "^9.0.0",
-    "babel-jest": "^23.6.0",
-    "babel-plugin-module-resolver": "^3.1.1",
-    "casual": "^1.5.19",
-    "enzyme-to-json": "^3.3.4",
-    "eslint": "^5.9.0",
-    "eslint-config-airbnb": "^17.1.0",
-    "eslint-plugin-import": "^2.16.0",
-    "eslint-plugin-jsx-a11y": "^6.2.1",
-    "eslint-plugin-react": "^7.12.4",
-    "graphql-tools": "^4.0.0",
-    "jest": "^23.6.0",
-    "jest-transform-graphql": "^2.1.0"
+    "react-apollo": "^3.0.1",
+    "react-dom": "^16.9.0",
+    "react-router-dom": "^5.0.1",
+    "react-scripts": "3.1.1",
+    "react-select": "^3.0.4",
+    "react-transition-group": "^4.2.2",
+    "styled-components": "^4.3.2",
+    "waait": "^1.0.5"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -53,10 +37,23 @@
   "eslintConfig": {
     "extends": "react-app"
   },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ]
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "eslint": "^6.2.1",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-react": "^7.14.3"
+  }
 }

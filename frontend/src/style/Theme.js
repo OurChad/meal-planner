@@ -1,5 +1,5 @@
-import React from 'react'
-import { ThemeProvider, injectGlobal } from 'styled-components';
+import React from 'react';
+import { ThemeProvider, createGlobalStyle } from 'styled-components';
 
 const theme = {
   green: '#10881a',
@@ -14,7 +14,7 @@ const theme = {
   largeFont: '3rem',
 };
 
-injectGlobal`
+const GlobalStyle = createGlobalStyle`
   @font-face {
     font-family: 'quick_regular';
     src: url('./Quicksand-Regular.otf') format('opentype');
@@ -45,7 +45,10 @@ injectGlobal`
 export default function Theme(props) {
   return (
     <ThemeProvider theme={theme}>
-      {props.children}
+      <>
+        <GlobalStyle />
+        {props.children}
+      </>
     </ThemeProvider>
-  )
+  );
 }

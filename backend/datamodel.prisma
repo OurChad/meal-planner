@@ -18,32 +18,45 @@ enum FoodType {
 }
 
 type User {
-  id: ID! @unique
+  id: ID! @id
   name: String!
   email: String! @unique
   password: String!
   resetToken: String
   resetTokenExpiry: Float
-  permissions: [Permission]
+  permissions: [Permission] @scalarList(strategy: RELATION)
 }
 
 type Food {
-  id: ID! @unique
+  id: ID! @id
   name: String!
   subName: String
-  types: [FoodType!]!
+  types: [FoodType!]! @scalarList(strategy: RELATION)
   image: String
 }
 
 type Ingredient {
-  id: ID! @unique
+  id: ID! @id
   food: Food!
   quantity: Float!
 }
 
 type Recipe {
-  id: ID! @unique
+  id: ID! @id
   name: String!
   ingredients: [Ingredient!]!
   instructions: String
+}
+
+type MealDay {
+  id: ID! @id
+  recipe: Recipe!
+  date: DateTime!
+}
+
+type MealPlan {
+  id: ID! @id
+  startDate: DateTime!
+  endDate: DateTime!
+  mealDays: [MealDay!]!
 }

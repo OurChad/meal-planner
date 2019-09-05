@@ -1,11 +1,19 @@
-# source: https://eu1.prisma.sh/ismisechad-d18815/meal-planner-dev/dev
-# timestamp: Sun Jan 06 2019 12:50:51 GMT+0000 (Greenwich Mean Time)
+# source: https://eu1.prisma.sh/ismisechad-d18815/meal-planner/dev
+# timestamp: Thu Sep 05 2019 20:36:16 GMT+0100 (Irish Standard Time)
 
 type AggregateFood {
   count: Int!
 }
 
 type AggregateIngredient {
+  count: Int!
+}
+
+type AggregateMealDay {
+  count: Int!
+}
+
+type AggregateMealPlan {
   count: Int!
 }
 
@@ -21,6 +29,8 @@ type BatchPayload {
   """The number of nodes that have been affected by the Batch operation."""
   count: Long!
 }
+
+scalar DateTime
 
 type Food implements Node {
   id: ID!
@@ -41,6 +51,7 @@ type FoodConnection {
 }
 
 input FoodCreateInput {
+  id: ID
   name: String!
   subName: String
   image: String
@@ -74,10 +85,6 @@ enum FoodOrderByInput {
   subName_DESC
   image_ASC
   image_DESC
-  updatedAt_ASC
-  updatedAt_DESC
-  createdAt_ASC
-  createdAt_DESC
 }
 
 type FoodPreviousValues {
@@ -369,6 +376,7 @@ type IngredientConnection {
 }
 
 input IngredientCreateInput {
+  id: ID
   quantity: Float!
   food: FoodCreateOneInput!
 }
@@ -392,10 +400,6 @@ enum IngredientOrderByInput {
   id_DESC
   quantity_ASC
   quantity_DESC
-  updatedAt_ASC
-  updatedAt_DESC
-  createdAt_ASC
-  createdAt_DESC
 }
 
 type IngredientPreviousValues {
@@ -532,6 +536,7 @@ input IngredientUpdateManyDataInput {
 input IngredientUpdateManyInput {
   create: [IngredientCreateInput!]
   connect: [IngredientWhereUniqueInput!]
+  set: [IngredientWhereUniqueInput!]
   disconnect: [IngredientWhereUniqueInput!]
   delete: [IngredientWhereUniqueInput!]
   update: [IngredientUpdateWithWhereUniqueNestedInput!]
@@ -644,28 +649,524 @@ Long can represent values between -(2^63) and 2^63 - 1.
 """
 scalar Long
 
+type MealDay implements Node {
+  id: ID!
+  recipe: Recipe!
+  date: DateTime!
+}
+
+"""A connection to a list of items."""
+type MealDayConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [MealDayEdge]!
+  aggregate: AggregateMealDay!
+}
+
+input MealDayCreateInput {
+  id: ID
+  date: DateTime!
+  recipe: RecipeCreateOneInput!
+}
+
+input MealDayCreateManyInput {
+  create: [MealDayCreateInput!]
+  connect: [MealDayWhereUniqueInput!]
+}
+
+"""An edge in a connection."""
+type MealDayEdge {
+  """The item at the end of the edge."""
+  node: MealDay!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum MealDayOrderByInput {
+  id_ASC
+  id_DESC
+  date_ASC
+  date_DESC
+}
+
+type MealDayPreviousValues {
+  id: ID!
+  date: DateTime!
+}
+
+input MealDayScalarWhereInput {
+  """Logical AND on all given filters."""
+  AND: [MealDayScalarWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [MealDayScalarWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [MealDayScalarWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  date: DateTime
+
+  """All values that are not equal to given value."""
+  date_not: DateTime
+
+  """All values that are contained in given list."""
+  date_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  date_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  date_lt: DateTime
+
+  """All values less than or equal the given value."""
+  date_lte: DateTime
+
+  """All values greater than the given value."""
+  date_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  date_gte: DateTime
+}
+
+type MealDaySubscriptionPayload {
+  mutation: MutationType!
+  node: MealDay
+  updatedFields: [String!]
+  previousValues: MealDayPreviousValues
+}
+
+input MealDaySubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [MealDaySubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [MealDaySubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [MealDaySubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: MealDayWhereInput
+}
+
+input MealDayUpdateDataInput {
+  date: DateTime
+  recipe: RecipeUpdateOneRequiredInput
+}
+
+input MealDayUpdateInput {
+  date: DateTime
+  recipe: RecipeUpdateOneRequiredInput
+}
+
+input MealDayUpdateManyDataInput {
+  date: DateTime
+}
+
+input MealDayUpdateManyInput {
+  create: [MealDayCreateInput!]
+  connect: [MealDayWhereUniqueInput!]
+  set: [MealDayWhereUniqueInput!]
+  disconnect: [MealDayWhereUniqueInput!]
+  delete: [MealDayWhereUniqueInput!]
+  update: [MealDayUpdateWithWhereUniqueNestedInput!]
+  updateMany: [MealDayUpdateManyWithWhereNestedInput!]
+  deleteMany: [MealDayScalarWhereInput!]
+  upsert: [MealDayUpsertWithWhereUniqueNestedInput!]
+}
+
+input MealDayUpdateManyMutationInput {
+  date: DateTime
+}
+
+input MealDayUpdateManyWithWhereNestedInput {
+  where: MealDayScalarWhereInput!
+  data: MealDayUpdateManyDataInput!
+}
+
+input MealDayUpdateWithWhereUniqueNestedInput {
+  where: MealDayWhereUniqueInput!
+  data: MealDayUpdateDataInput!
+}
+
+input MealDayUpsertWithWhereUniqueNestedInput {
+  where: MealDayWhereUniqueInput!
+  update: MealDayUpdateDataInput!
+  create: MealDayCreateInput!
+}
+
+input MealDayWhereInput {
+  """Logical AND on all given filters."""
+  AND: [MealDayWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [MealDayWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [MealDayWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  date: DateTime
+
+  """All values that are not equal to given value."""
+  date_not: DateTime
+
+  """All values that are contained in given list."""
+  date_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  date_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  date_lt: DateTime
+
+  """All values less than or equal the given value."""
+  date_lte: DateTime
+
+  """All values greater than the given value."""
+  date_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  date_gte: DateTime
+  recipe: RecipeWhereInput
+}
+
+input MealDayWhereUniqueInput {
+  id: ID
+}
+
+type MealPlan implements Node {
+  id: ID!
+  startDate: DateTime!
+  endDate: DateTime!
+  mealDays(where: MealDayWhereInput, orderBy: MealDayOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [MealDay!]
+}
+
+"""A connection to a list of items."""
+type MealPlanConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [MealPlanEdge]!
+  aggregate: AggregateMealPlan!
+}
+
+input MealPlanCreateInput {
+  id: ID
+  startDate: DateTime!
+  endDate: DateTime!
+  mealDays: MealDayCreateManyInput
+}
+
+"""An edge in a connection."""
+type MealPlanEdge {
+  """The item at the end of the edge."""
+  node: MealPlan!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum MealPlanOrderByInput {
+  id_ASC
+  id_DESC
+  startDate_ASC
+  startDate_DESC
+  endDate_ASC
+  endDate_DESC
+}
+
+type MealPlanPreviousValues {
+  id: ID!
+  startDate: DateTime!
+  endDate: DateTime!
+}
+
+type MealPlanSubscriptionPayload {
+  mutation: MutationType!
+  node: MealPlan
+  updatedFields: [String!]
+  previousValues: MealPlanPreviousValues
+}
+
+input MealPlanSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [MealPlanSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [MealPlanSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [MealPlanSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: MealPlanWhereInput
+}
+
+input MealPlanUpdateInput {
+  startDate: DateTime
+  endDate: DateTime
+  mealDays: MealDayUpdateManyInput
+}
+
+input MealPlanUpdateManyMutationInput {
+  startDate: DateTime
+  endDate: DateTime
+}
+
+input MealPlanWhereInput {
+  """Logical AND on all given filters."""
+  AND: [MealPlanWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [MealPlanWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [MealPlanWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  startDate: DateTime
+
+  """All values that are not equal to given value."""
+  startDate_not: DateTime
+
+  """All values that are contained in given list."""
+  startDate_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  startDate_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  startDate_lt: DateTime
+
+  """All values less than or equal the given value."""
+  startDate_lte: DateTime
+
+  """All values greater than the given value."""
+  startDate_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  startDate_gte: DateTime
+  endDate: DateTime
+
+  """All values that are not equal to given value."""
+  endDate_not: DateTime
+
+  """All values that are contained in given list."""
+  endDate_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  endDate_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  endDate_lt: DateTime
+
+  """All values less than or equal the given value."""
+  endDate_lte: DateTime
+
+  """All values greater than the given value."""
+  endDate_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  endDate_gte: DateTime
+  mealDays_every: MealDayWhereInput
+  mealDays_some: MealDayWhereInput
+  mealDays_none: MealDayWhereInput
+}
+
+input MealPlanWhereUniqueInput {
+  id: ID
+}
+
 type Mutation {
   createUser(data: UserCreateInput!): User!
+  createMealPlan(data: MealPlanCreateInput!): MealPlan!
+  createMealDay(data: MealDayCreateInput!): MealDay!
   createRecipe(data: RecipeCreateInput!): Recipe!
   createIngredient(data: IngredientCreateInput!): Ingredient!
   createFood(data: FoodCreateInput!): Food!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
+  updateMealPlan(data: MealPlanUpdateInput!, where: MealPlanWhereUniqueInput!): MealPlan
+  updateMealDay(data: MealDayUpdateInput!, where: MealDayWhereUniqueInput!): MealDay
   updateRecipe(data: RecipeUpdateInput!, where: RecipeWhereUniqueInput!): Recipe
   updateIngredient(data: IngredientUpdateInput!, where: IngredientWhereUniqueInput!): Ingredient
   updateFood(data: FoodUpdateInput!, where: FoodWhereUniqueInput!): Food
   deleteUser(where: UserWhereUniqueInput!): User
+  deleteMealPlan(where: MealPlanWhereUniqueInput!): MealPlan
+  deleteMealDay(where: MealDayWhereUniqueInput!): MealDay
   deleteRecipe(where: RecipeWhereUniqueInput!): Recipe
   deleteIngredient(where: IngredientWhereUniqueInput!): Ingredient
   deleteFood(where: FoodWhereUniqueInput!): Food
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
+  upsertMealPlan(where: MealPlanWhereUniqueInput!, create: MealPlanCreateInput!, update: MealPlanUpdateInput!): MealPlan!
+  upsertMealDay(where: MealDayWhereUniqueInput!, create: MealDayCreateInput!, update: MealDayUpdateInput!): MealDay!
   upsertRecipe(where: RecipeWhereUniqueInput!, create: RecipeCreateInput!, update: RecipeUpdateInput!): Recipe!
   upsertIngredient(where: IngredientWhereUniqueInput!, create: IngredientCreateInput!, update: IngredientUpdateInput!): Ingredient!
   upsertFood(where: FoodWhereUniqueInput!, create: FoodCreateInput!, update: FoodUpdateInput!): Food!
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
+  updateManyMealPlans(data: MealPlanUpdateManyMutationInput!, where: MealPlanWhereInput): BatchPayload!
+  updateManyMealDays(data: MealDayUpdateManyMutationInput!, where: MealDayWhereInput): BatchPayload!
   updateManyRecipes(data: RecipeUpdateManyMutationInput!, where: RecipeWhereInput): BatchPayload!
   updateManyIngredients(data: IngredientUpdateManyMutationInput!, where: IngredientWhereInput): BatchPayload!
   updateManyFoods(data: FoodUpdateManyMutationInput!, where: FoodWhereInput): BatchPayload!
   deleteManyUsers(where: UserWhereInput): BatchPayload!
+  deleteManyMealPlans(where: MealPlanWhereInput): BatchPayload!
+  deleteManyMealDays(where: MealDayWhereInput): BatchPayload!
   deleteManyRecipes(where: RecipeWhereInput): BatchPayload!
   deleteManyIngredients(where: IngredientWhereInput): BatchPayload!
   deleteManyFoods(where: FoodWhereInput): BatchPayload!
@@ -706,14 +1207,20 @@ enum Permission {
 
 type Query {
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
+  mealPlans(where: MealPlanWhereInput, orderBy: MealPlanOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [MealPlan]!
+  mealDays(where: MealDayWhereInput, orderBy: MealDayOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [MealDay]!
   recipes(where: RecipeWhereInput, orderBy: RecipeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Recipe]!
   ingredients(where: IngredientWhereInput, orderBy: IngredientOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Ingredient]!
   foods(where: FoodWhereInput, orderBy: FoodOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Food]!
   user(where: UserWhereUniqueInput!): User
+  mealPlan(where: MealPlanWhereUniqueInput!): MealPlan
+  mealDay(where: MealDayWhereUniqueInput!): MealDay
   recipe(where: RecipeWhereUniqueInput!): Recipe
   ingredient(where: IngredientWhereUniqueInput!): Ingredient
   food(where: FoodWhereUniqueInput!): Food
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
+  mealPlansConnection(where: MealPlanWhereInput, orderBy: MealPlanOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): MealPlanConnection!
+  mealDaysConnection(where: MealDayWhereInput, orderBy: MealDayOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): MealDayConnection!
   recipesConnection(where: RecipeWhereInput, orderBy: RecipeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): RecipeConnection!
   ingredientsConnection(where: IngredientWhereInput, orderBy: IngredientOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): IngredientConnection!
   foodsConnection(where: FoodWhereInput, orderBy: FoodOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): FoodConnection!
@@ -743,9 +1250,15 @@ type RecipeConnection {
 }
 
 input RecipeCreateInput {
+  id: ID
   name: String!
   instructions: String
   ingredients: IngredientCreateManyInput
+}
+
+input RecipeCreateOneInput {
+  create: RecipeCreateInput
+  connect: RecipeWhereUniqueInput
 }
 
 """An edge in a connection."""
@@ -764,10 +1277,6 @@ enum RecipeOrderByInput {
   name_DESC
   instructions_ASC
   instructions_DESC
-  updatedAt_ASC
-  updatedAt_DESC
-  createdAt_ASC
-  createdAt_DESC
 }
 
 type RecipePreviousValues {
@@ -815,6 +1324,12 @@ input RecipeSubscriptionWhereInput {
   node: RecipeWhereInput
 }
 
+input RecipeUpdateDataInput {
+  name: String
+  instructions: String
+  ingredients: IngredientUpdateManyInput
+}
+
 input RecipeUpdateInput {
   name: String
   instructions: String
@@ -824,6 +1339,18 @@ input RecipeUpdateInput {
 input RecipeUpdateManyMutationInput {
   name: String
   instructions: String
+}
+
+input RecipeUpdateOneRequiredInput {
+  create: RecipeCreateInput
+  connect: RecipeWhereUniqueInput
+  update: RecipeUpdateDataInput
+  upsert: RecipeUpsertNestedInput
+}
+
+input RecipeUpsertNestedInput {
+  update: RecipeUpdateDataInput!
+  create: RecipeCreateInput!
 }
 
 input RecipeWhereInput {
@@ -966,6 +1493,8 @@ input RecipeWhereUniqueInput {
 
 type Subscription {
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
+  mealPlan(where: MealPlanSubscriptionWhereInput): MealPlanSubscriptionPayload
+  mealDay(where: MealDaySubscriptionWhereInput): MealDaySubscriptionPayload
   recipe(where: RecipeSubscriptionWhereInput): RecipeSubscriptionPayload
   ingredient(where: IngredientSubscriptionWhereInput): IngredientSubscriptionPayload
   food(where: FoodSubscriptionWhereInput): FoodSubscriptionPayload
@@ -992,6 +1521,7 @@ type UserConnection {
 }
 
 input UserCreateInput {
+  id: ID
   name: String!
   email: String!
   password: String!
@@ -1026,10 +1556,6 @@ enum UserOrderByInput {
   resetToken_DESC
   resetTokenExpiry_ASC
   resetTokenExpiry_DESC
-  updatedAt_ASC
-  updatedAt_DESC
-  createdAt_ASC
-  createdAt_DESC
 }
 
 type UserPreviousValues {

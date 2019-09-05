@@ -129,7 +129,6 @@ const Mutations = {
     hasPermission(ctx.request.user, ['ADMIN', 'PERMISSIONUPDATE']);
 
     const {permissions} = args;
-    console.log(args)
     const updatedUser = await ctx.db.mutation.updateUser({
       where: { id: args.userId },
       data: {
@@ -236,6 +235,7 @@ const Mutations = {
     async createRecipe(parent, args, ctx, info){
         isUserLoggedAndAdmin(ctx);
         const { name, ingredients, instructions } = args;
+
         const createIngredients = ingredients.map(({ quantity, foodId }) => {
             return {
                 quantity,
@@ -246,6 +246,7 @@ const Mutations = {
                 }
             }
         });
+
         const createdRecipe = await ctx.db.mutation.createRecipe({
             data: {
                 name,
@@ -253,6 +254,12 @@ const Mutations = {
                 ingredients: {
                     create: createIngredients,
                 },
+
+                // format for playground mutations
+                // ...args,
+                // ingredients: {
+                //   ...args.ingredients[0]
+                // }
             }
         }, info);
 
@@ -319,6 +326,15 @@ const Mutations = {
         );
         
         return deletedRecipe;
+    },
+    async createMealPlan(parent, args, ctx, info){
+      isUserLoggedAndAdmin(ctx);
+      
+      const createdRecipe = await ctx.db.mutation.createMealPlan(
+          args, info
+      );
+
+      return createdRecipe;
     },
 }
 

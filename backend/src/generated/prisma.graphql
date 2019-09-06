@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/ismisechad-d18815/meal-planner/dev
-# timestamp: Thu Sep 05 2019 20:36:16 GMT+0100 (Irish Standard Time)
+# timestamp: Fri Sep 06 2019 21:54:56 GMT+0100 (Irish Standard Time)
 
 type AggregateFood {
   count: Int!
@@ -651,7 +651,7 @@ scalar Long
 
 type MealDay implements Node {
   id: ID!
-  recipe: Recipe!
+  recipe: Recipe
   date: DateTime!
 }
 
@@ -668,7 +668,7 @@ type MealDayConnection {
 input MealDayCreateInput {
   id: ID
   date: DateTime!
-  recipe: RecipeCreateOneInput!
+  recipe: RecipeCreateOneInput
 }
 
 input MealDayCreateManyInput {
@@ -811,12 +811,12 @@ input MealDaySubscriptionWhereInput {
 
 input MealDayUpdateDataInput {
   date: DateTime
-  recipe: RecipeUpdateOneRequiredInput
+  recipe: RecipeUpdateOneInput
 }
 
 input MealDayUpdateInput {
   date: DateTime
-  recipe: RecipeUpdateOneRequiredInput
+  recipe: RecipeUpdateOneInput
 }
 
 input MealDayUpdateManyDataInput {
@@ -1341,9 +1341,11 @@ input RecipeUpdateManyMutationInput {
   instructions: String
 }
 
-input RecipeUpdateOneRequiredInput {
+input RecipeUpdateOneInput {
   create: RecipeCreateInput
   connect: RecipeWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
   update: RecipeUpdateDataInput
   upsert: RecipeUpsertNestedInput
 }

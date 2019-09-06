@@ -188,10 +188,10 @@ const GlobalStyle = createGlobalStyle`
   input,
   textarea,
   select {
-    width: 95%;
+    width: 100%;
     margin-top: 0.5rem;
     margin-bottom: 1rem;
-    padding: 0.5rem;
+    padding: 0.5rem 0 0.5rem 0;
     font-size: 1rem;
     border: 1px solid ${(props) => props.theme.primaryDark};
     &:focus {
@@ -200,7 +200,7 @@ const GlobalStyle = createGlobalStyle`
     }
   }
   #multiSelect {
-    width: 95%;
+    width: 100%;
     margin-top: 0.5rem;
     margin-bottom: 1rem;
     font-size: 1rem;

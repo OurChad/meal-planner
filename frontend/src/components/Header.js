@@ -38,6 +38,7 @@ const Header = () => (
       <StyledLink to="/createFood/">Create Food</StyledLink>
       <StyledLink to="/foods/">Foods</StyledLink>
       <StyledLink to="/createRecipe/">Create Recipe</StyledLink>
+      <StyledLink to="/createMealPlan/">Create Meal Plan</StyledLink>
     </HeaderContentContainer>
   </StyledHeader>
 );

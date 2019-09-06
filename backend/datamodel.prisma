@@ -50,7 +50,7 @@ type Recipe {
 
 type MealDay {
   id: ID! @id
-  recipe: Recipe!
+  recipe: Recipe
   date: DateTime!
 }
 

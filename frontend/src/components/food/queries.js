@@ -3,7 +3,7 @@ import { foodPerPage } from '../../config';
 
 const ALL_FOODS_QUERY = gql`
     query ALL_FOODS_QUERY($skip: Int = 0, $first: Int = ${foodPerPage}) {
-        foods(first: $first, skip: $skip, orderBy: createdAt_DESC) {
+        foods(first: $first, skip: $skip, orderBy: name_ASC) {
             id
             name
             subName

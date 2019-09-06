@@ -97,6 +97,7 @@ const FoodForm = ({ loading, food: foodProp, setFoodData, onSubmit, resetFormOnS
         <label htmlFor="types">
                 Types
           <Select
+            id="multiSelect"
             name="types"
             isMulti
             options={foodTypes.map((foodType) => ({ value: foodType, label: foodType, key: foodType }))}

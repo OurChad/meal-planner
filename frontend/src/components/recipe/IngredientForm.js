@@ -57,6 +57,7 @@ const IngredientForm = ({ ingredient: ingredientProp, onSubmit }) => {
             <label htmlFor="food">
                               Food
               <AsyncSelect
+                id="multiSelect"
                 required
                 loadOptions={loadOptions(client)}
                 onChange={(food) => setIngredient({ ...ingredient, food: food.value })}

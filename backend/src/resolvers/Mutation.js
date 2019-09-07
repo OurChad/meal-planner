@@ -329,6 +329,36 @@ const Mutations = {
     },
     async createMealPlan(parent, args, ctx, info){
       isUserLoggedAndAdmin(ctx);
+
+      const {startDate, endDate, mealDays} = args;
+      const mappedMealDays = mealDays.reduce((acc, { date, recipe }) => {
+        const recipeConnection = recipe ? { recipe: { connect: { id: recipe.id } } } : {};
+        const mealDayForAPI = {
+          date,
+          ...recipeConnection
+        };
+        const create = [...acc.create, mealDayForAPI];
+        return {
+          create
+        };
+      },{ create: [] });
+
+      const data = {
+        data: {
+          startDate,
+          endDate,
+          mealDays: mappedMealDays
+        }
+      };
+      
+      const createdRecipe = await ctx.db.mutation.createMealPlan(
+          data, info
+      );
+
+      return createdRecipe;
+    },
+    async updateMealPlan(parent, args, ctx, info){
+      isUserLoggedAndAdmin(ctx);
       
       const createdRecipe = await ctx.db.mutation.createMealPlan(
           args, info

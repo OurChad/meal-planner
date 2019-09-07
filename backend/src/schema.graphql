@@ -16,7 +16,8 @@ type Mutation {
     createRecipe(name: String!, ingredients: [IngredientCreateManyInput!]!, instructions: String): Recipe!
     updateRecipe(id: ID!, name: String!, ingredients: IngredientUpdateManyInput!, instructions: String): Recipe!
     deleteRecipe(id: ID!): Recipe
-    createMealPlan(data: MealPlanCreateInput!): MealPlan!
+    createMealPlan(startDate: DateTime!, endDate: DateTime!, mealDays: [MealDayCreateInput]): MealPlan!
+    updateMealPlan(data: MealPlanUpdateInput!, where: MealPlanWhereUniqueInput!): MealPlan
 }
 
 type Query {
@@ -29,6 +30,8 @@ type Query {
     ingredientsConnection(where: IngredientWhereInput, orderBy: IngredientOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): IngredientConnection!
     recipe(where: RecipeWhereUniqueInput!): Recipe
     recipes(where: RecipeWhereInput, orderBy: RecipeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Recipe]!
+    mealPlan(where: MealPlanWhereUniqueInput!): MealPlan
+    mealPlans(where: MealPlanWhereInput, orderBy: MealPlanOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [MealPlan]!
 }
 
 type User{
@@ -86,4 +89,13 @@ type Recipe {
   name: String!
   ingredients: [Ingredient!]!
   instructions: String
+}
+
+input RecipeConnectInput {
+  id: ID!
+}
+
+input MealDayCreateInput {
+  recipe: RecipeConnectInput
+  date: DateTime!
 }

@@ -37,9 +37,32 @@ const Query = {
   foods: forwardTo('db'),
   foodsConnection: forwardTo('db'),
   ingredients: forwardTo('db'),
-    ingredientsConnection: forwardTo('db'),
-    recipe: forwardTo('db'),
-    recipes: forwardTo('db'),
+  ingredientsConnection: forwardTo('db'),
+  recipe: forwardTo('db'),
+  async recipes(parent, args, ctx, info) {
+    // check if there is a current user ID
+    if (!ctx.request.user) {
+      throw new Error('You must be logged in.');
+    }
+    const recipesQuery = forwardTo('db');
+    return await recipesQuery(parent, args, ctx, info);
+  },
+  async mealPlan(parent, args, ctx, info) {
+    // check if there is a current user ID
+    if (!ctx.request.user) {
+      throw new Error('You must be logged in.');
+    }
+    const mealPlanQuery = forwardTo('db');
+    return await mealPlanQuery(parent, args, ctx, info);
+  },
+  async mealPlans(parent, args, ctx, info) {
+    // check if there is a current user ID
+    if (!ctx.request.user) {
+      throw new Error('You must be logged in.');
+    }
+    const mealPlansQuery = forwardTo('db');
+    return await mealPlansQuery(parent, args, ctx, info);
+  },
 };
 
 module.exports = Query;

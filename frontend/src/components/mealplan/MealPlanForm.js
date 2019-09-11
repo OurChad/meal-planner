@@ -24,8 +24,8 @@ const MealPlanForm = ({ title, mutation, onSubmit, mealPlan: exisitingMealPlan }
     dispatch({ type, value: e.target.value });
   };
 
-  const handleSetRecipe = (date) => (newRecipe) => {
-    dispatch({ type: actions.SET_MEALDAY_RECIPE, value: { date, recipe: newRecipe } });
+  const handleSetRecipe = ({ id, date }) => (newRecipe) => {
+    dispatch({ type: actions.SET_MEALDAY_RECIPE, value: { id, date, recipe: newRecipe } });
   };
 
   const handleSubmit = (saveMealPlan) => (e) => {
@@ -64,15 +64,16 @@ const MealPlanForm = ({ title, mutation, onSubmit, mealPlan: exisitingMealPlan }
                 />
               </label>
               {
-                mealPlan.mealDays.map(({ date, recipe }) => (
+                mealPlan.mealDays.map(({ id, date, recipe }) => (
                   <MealDay
+                    key={date}
                     date={date}
                     recipe={recipe}
-                    onSetRecipe={handleSetRecipe(date)}
+                    onSetRecipe={handleSetRecipe({ id, date })}
                   />
                 ))
               }
-              <button type="submit">Create Meal Plan</button>
+              <button type="submit">Save Meal Plan</button>
             </fieldset>
           </Form>
         )

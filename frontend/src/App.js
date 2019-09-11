@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import styled from 'styled-components';
 import { ApolloProvider } from 'react-apollo';
 import client from './apollo-client';
@@ -13,6 +13,8 @@ import UpdateFood from './components/food/UpdateFood';
 import User from './components/User';
 import CreateRecipe from './components/recipe/CreateRecipe';
 import CreateMealPlan from './components/mealplan/CreateMealPlan';
+import MealPlan from './components/mealplan/MealPlan';
+import UpdateMealPlan from './components/mealplan/UpdateMealPlan';
 import Header from './components/Header';
 
 const Index = () => <h2>Home</h2>;
@@ -55,6 +57,8 @@ class App extends Component {
                 <AuthenticatedRoute path="/foods/:id" component={UpdateFood} />
                 <AuthenticatedRoute path="/createRecipe/" component={CreateRecipe} />
                 <AuthenticatedRoute path="/createMealPlan/" component={CreateMealPlan} />
+                <AuthenticatedRoute path="/mealPlan/" component={MealPlan} exact />
+                <AuthenticatedRoute path="/mealPlan/:id" component={UpdateMealPlan} />
               </main>
             </MainContentContainer>
           </Router>

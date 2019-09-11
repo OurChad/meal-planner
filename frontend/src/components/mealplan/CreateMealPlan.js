@@ -4,10 +4,10 @@ import MealPlanForm from './MealPlanForm';
 
 export default function CreateMealPlan() {
   const handleSubmit = (createMealPlan, mealPlan) => {
-    const { mealDays } = mealPlan;
-    const mealDayCreateInputs = mealDays.map(({ date, recipe: { id } }) => ({ date, recipe: { id } }));
+    const { startDate, endDate, mealDays } = mealPlan;
+    const mealDayCreateInputs = mealDays.map(({ date, recipe }) => (recipe ? { date, recipe: { id: recipe.id } } : { date }));
 
-    createMealPlan({ variables: { ...mealPlan, mealDays: mealDayCreateInputs } });
+    createMealPlan({ variables: { startDate, endDate, mealDays: mealDayCreateInputs } });
   };
 
   return (

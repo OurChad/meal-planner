@@ -350,21 +350,68 @@ const Mutations = {
           mealDays: mappedMealDays
         }
       };
-      
-      const createdRecipe = await ctx.db.mutation.createMealPlan(
+
+      const createdMealPlan = await ctx.db.mutation.createMealPlan(
           data, info
       );
 
-      return createdRecipe;
+      return createdMealPlan;
     },
     async updateMealPlan(parent, args, ctx, info){
       isUserLoggedAndAdmin(ctx);
-      
-      const createdRecipe = await ctx.db.mutation.createMealPlan(
-          args, info
+      const { id, startDate, endDate, mealDays, deletedMealDays = []} = args;
+      let mealDaysUpdated = {
+        create: [],
+        update: [],
+        delete: deletedMealDays.map(deletedMealDay => ({ id: deletedMealDay })),
+      };
+      if (mealDays) {
+        const mealDaysCreateUpdateData = mealDays.reduce((acc, {id: mealDayID, date, recipe}) => {
+          const recipeConnection = recipe ? { recipe: { connect: { id: recipe.id } } } : mealDayID ? { recipe: { disconnect: true }} : {};
+          const mealDayData = {
+            date,
+            ...recipeConnection,
+          };
+
+          if(mealDayID) {
+            const updatedMealDay = {
+              where: {
+                id: mealDayID
+              },
+              data: mealDayData
+            }
+
+            return {...acc, update: acc.update.concat(updatedMealDay)}
+          }
+
+          return {
+            ...acc,
+            create: acc.create.concat(mealDayData)
+          }
+        }, mealDaysUpdated);
+
+        mealDaysUpdated = {
+          ...mealDaysUpdated,
+          ...mealDaysCreateUpdateData,
+        }
+      }
+
+      const mealPlanUpdateData = {
+        where: {
+          id
+        },
+        data: {
+          startDate,
+          endDate,
+          mealDays: mealDaysUpdated
+        },
+      };
+
+      const updatedMealPlan = await ctx.db.mutation.updateMealPlan(
+        mealPlanUpdateData, info
       );
 
-      return createdRecipe;
+      return updatedMealPlan;
     },
 }
 

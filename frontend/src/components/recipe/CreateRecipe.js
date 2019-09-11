@@ -62,7 +62,7 @@ export default function CreateRecipe(props) {
     e.preventDefault();
     const ingredients = recipe.ingredients.map((ingredient) => ({
       foodId: ingredient.food.id,
-      quantity: ingredient.quantity
+      quantity: Number.parseFloat(ingredient.quantity)
     }));
     const newRecipe = { ...recipe, ingredients };
 

@@ -15,38 +15,13 @@ const theme = {
   primaryDark: '#333',
   secondaryDark: '#555',
   primaryLight: '#FFF',
-  secondaryLight: '#CCC',
+  secondaryLight: '#DDD',
   primaryGreen: '#20bd67',
   secondaryGreen: '#199450',
   tertiaryGreen: '#11703c',
 };
 
 const GlobalStyle = createGlobalStyle`
-  /* @font-face {
-    font-family: 'quick_regular';
-    src: url('./Quicksand-Regular.otf') format('opentype');
-    font-weight: normal;
-    font-style: normal;
-  }
-  html {
-    box-sizing: border-box;
-    font-size: 10px;
-  }
-  *, *:before, *:after {
-    box-sizing: inherit;
-  }
-  body {
-    padding: 0;
-    margin: 0;
-    font-size: 1.5rem;
-    line-height: 2;
-    font-family: 'quick_regular';
-  }
-  a {
-    text-decoration: none;
-    color: ${theme.black};
-  }
-  button {  font-family: 'Indie Flower', cursive; } */
   html {
     font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;

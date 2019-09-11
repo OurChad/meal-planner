@@ -13,11 +13,11 @@ type Mutation {
     createIngredient(foodId: ID!, quantity: Float!): Ingredient!
     updateIngredient(id: ID!, foodId: ID!, quantity: Float!): Ingredient    
     deleteIngredient(id: ID!): Ingredient
-    createRecipe(name: String!, ingredients: [IngredientCreateManyInput!]!, instructions: String): Recipe!
+    createRecipe(name: String!, ingredients: [IngredientCreateInput!]!, instructions: String): Recipe!
     updateRecipe(id: ID!, name: String!, ingredients: IngredientUpdateManyInput!, instructions: String): Recipe!
     deleteRecipe(id: ID!): Recipe
-    createMealPlan(startDate: DateTime!, endDate: DateTime!, mealDays: [MealDayCreateInput]): MealPlan!
-    updateMealPlan(data: MealPlanUpdateInput!, where: MealPlanWhereUniqueInput!): MealPlan
+    createMealPlan(startDate: DateTime!, endDate: DateTime!, mealDays: [MealDayCreateUpdateInput]): MealPlan!
+    updateMealPlan(id: ID!, startDate: DateTime, endDate: DateTime, mealDays: [MealDayCreateUpdateInput], deletedMealDays: [ID]): MealPlan
 }
 
 type Query {
@@ -61,7 +61,7 @@ input FoodInput {
 }
 
 type Ingredient {
-    id: ID!
+  id: ID!
   food: Food!
   quantity: Float!
 }
@@ -95,7 +95,8 @@ input RecipeConnectInput {
   id: ID!
 }
 
-input MealDayCreateInput {
+input MealDayCreateUpdateInput {
+  id: ID
   recipe: RecipeConnectInput
   date: DateTime!
 }

@@ -27,7 +27,7 @@ const DeleteFood = ({ id, children }) => {
         alert(err.message);
       });
     }
-  }, [id]);
+  }, []);
 
   return (
     <Mutation mutation={DELETE_FOOD_MUTATION} variables={{ id }} update={update}>

@@ -40,6 +40,21 @@ function MealPlan({ history }) {
     );
   }
   const [mealPlan] = data.mealPlans;
+
+  if (!mealPlan) {
+    return (
+      <>
+        <StyledButton
+          primary
+          onClick={() => {
+            history.push('/createmealplan');
+          }}
+        >
+          Create Meal Plan
+        </StyledButton>
+      </>
+    );
+  }
   const { mealDays } = mealPlan;
   const activeMealPlan = {
     ...mealPlan,
@@ -62,7 +77,7 @@ function MealPlan({ history }) {
       <MealDaysContainer>
         {
           mealDays.sort((a, b) => (a.date < b.date ? -1 : 1)).map(({ date, recipe }) => (
-            <MealDay>
+            <MealDay key={date}>
               <div>{formatDisplayDate(date)}</div>
               <Recipe>{recipe ? recipe.name : 'Eating somewhere else'}</Recipe>
             </MealDay>

@@ -39,7 +39,7 @@ const MealDay = function ({ date, recipe = {}, onSetRecipe, readOnly }) {
       {
         readOnly
           ? (
-            <h3>{recipe.name}</h3>
+            <h3>{recipe && recipe.name}</h3>
           )
           : (
             <ApolloConsumer>
@@ -50,10 +50,10 @@ const MealDay = function ({ date, recipe = {}, onSetRecipe, readOnly }) {
                                     Recipe
                       <AsyncSelect
                         id="multiSelect"
-                        required
+                        isClearable
                         loadOptions={loadOptions(client)}
-                        onChange={(newRecipe) => onSetRecipe(newRecipe.value)}
-                        value={{ label: recipe.name, value: recipe }}
+                        onChange={(newRecipe) => onSetRecipe(newRecipe ? newRecipe.value : newRecipe)}
+                        value={{ label: recipe && recipe.name, value: recipe }}
                       />
                     </label>
                   </>

@@ -1,9 +1,10 @@
-import { eachDayOfInterval, format as formatDate } from 'date-fns';
+import { eachDayOfInterval, isAfter, addDays, subDays } from 'date-fns';
 import { SET_START_DATE, SET_END_DATE, SET_MEALDAY_RECIPE } from './mealPlanActions';
+import { formatDate } from '../../util/DateUtil';
 
-function getMealDays(startDate, endDate, currentMealDays = []) {
-  const newMealDays = eachDayOfInterval({ start: new Date(startDate), end: new Date(endDate) }).map((date) => {
-    const existingMealDay = currentMealDays.find((day) => formatDate(new Date(day.date), 'yyyy-MM-dd') === formatDate(date, 'yyyy-MM-dd'));
+function getMealDays(start, end, currentMealDays = []) {
+  const newMealDays = eachDayOfInterval({ start, end }).map((date) => {
+    const existingMealDay = currentMealDays.find((day) => formatDate(day.date) === formatDate(date));
 
     return existingMealDay || { date };
   });
@@ -19,16 +20,26 @@ export default function mealPlanReducer(state, action) {
     case SET_START_DATE: {
       const { value: startDate } = action;
       const { endDate, mealDays } = state;
-      const [newMealDays, deletedMealDays] = getMealDays(startDate, endDate, mealDays);
+      const startDateAsDate = new Date(startDate);
+      let endDateAsDate = new Date(endDate);
+      if (isAfter(startDateAsDate, endDateAsDate)) {
+        endDateAsDate = addDays(startDateAsDate, 1);
+      }
+      const [newMealDays, deletedMealDays] = getMealDays(startDateAsDate, endDateAsDate, mealDays);
 
-      return { ...state, startDate, mealDays: newMealDays, deletedMealDays };
+      return { ...state, endDate: formatDate(endDateAsDate), startDate, mealDays: newMealDays, deletedMealDays };
     }
     case SET_END_DATE: {
       const { value: endDate } = action;
       const { startDate, mealDays } = state;
-      const [newMealDays, deletedMealDays] = getMealDays(startDate, endDate, mealDays);
+      const endDateAsDate = new Date(endDate);
+      let startDateAsDate = new Date(startDate);
+      if (!isAfter(endDateAsDate, startDateAsDate)) {
+        startDateAsDate = subDays(endDateAsDate, 1);
+      }
+      const [newMealDays, deletedMealDays] = getMealDays(startDateAsDate, endDateAsDate, mealDays);
 
-      return { ...state, endDate, mealDays: newMealDays, deletedMealDays };
+      return { ...state, startDate: formatDate(startDateAsDate), endDate, mealDays: newMealDays, deletedMealDays };
     }
     case SET_MEALDAY_RECIPE: {
       const { date } = action.value;

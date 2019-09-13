@@ -360,42 +360,53 @@ const Mutations = {
     async updateMealPlan(parent, args, ctx, info){
       isUserLoggedAndAdmin(ctx);
       const { id, startDate, endDate, mealDays, deletedMealDays = []} = args;
-      let mealDaysUpdated = {
+      const initialMealDaysUpdated = {
         create: [],
         update: [],
         delete: deletedMealDays.map(deletedMealDay => ({ id: deletedMealDay })),
       };
-      if (mealDays) {
-        const mealDaysCreateUpdateData = mealDays.reduce((acc, {id: mealDayID, date, recipe}) => {
-          const recipeConnection = recipe ? { recipe: { connect: { id: recipe.id } } } : mealDayID ? { recipe: { disconnect: true }} : {};
-          const mealDayData = {
-            date,
-            ...recipeConnection,
-          };
+      
+      const mealDaysCreateUpdateData = await mealDays.reduce(async (accPromise, {id: mealDayID, date, recipe}) => {
+        const acc = await accPromise;
+        let recipeConnection = {};
 
-          if(mealDayID) {
-            const updatedMealDay = {
-              where: {
-                id: mealDayID
-              },
-              data: mealDayData
-            }
+        if (!recipe && mealDayID) {
+          const where = { id: mealDayID };
+          const existingMealDay = await ctx.db.query.mealDay({ where }, `{ recipe { id } }`);
+          recipeConnection = existingMealDay.recipe ? { recipe: { disconnect: true }} : {};
+        } else if (recipe) {
+          recipeConnection = { recipe: { connect: { id: recipe.id } } };
+        }
 
-            return {...acc, update: acc.update.concat(updatedMealDay)}
+        const mealDayData = {
+          date,
+          ...recipeConnection,
+        };
+
+        if(mealDayID) {
+          const updatedMealDay = {
+            where: {
+              id: mealDayID
+            },
+            data: mealDayData
           }
 
           return {
-            ...acc,
-            create: acc.create.concat(mealDayData)
-          }
-        }, mealDaysUpdated);
-
-        mealDaysUpdated = {
-          ...mealDaysUpdated,
-          ...mealDaysCreateUpdateData,
+            ...acc, 
+            update: acc.update.concat(updatedMealDay)
+          };
         }
-      }
 
+        return {
+          ...acc,
+          create: acc.create.concat(mealDayData)
+        }
+      }, Promise.resolve(initialMealDaysUpdated));
+
+      const mealDaysUpdated = {
+        ...mealDaysCreateUpdateData,
+      }
+      
       const mealPlanUpdateData = {
         where: {
           id

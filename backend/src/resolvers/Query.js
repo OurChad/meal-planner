@@ -47,6 +47,7 @@ const Query = {
     const recipesQuery = forwardTo('db');
     return await recipesQuery(parent, args, ctx, info);
   },
+  mealDay: forwardTo('db'),
   async mealPlan(parent, args, ctx, info) {
     // check if there is a current user ID
     if (!ctx.request.user) {

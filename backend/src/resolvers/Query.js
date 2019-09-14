@@ -20,7 +20,6 @@ const Query = {
       throw new Error('You must be logged in.');
     }
 
-    console.log(ctx.request.user)
     // checks if the user has the required permission, otherwise throws an error
     hasPermission(ctx.request.user, ['ADMIN', 'PERMISSIONUPDATE']);
 

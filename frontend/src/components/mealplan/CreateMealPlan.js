@@ -1,8 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { CREATE_MEALPLAN_MUTATION } from './mealPlanMutations';
 import MealPlanForm from './MealPlanForm';
 
-export default function CreateMealPlan() {
+function CreateMealPlan({ history }) {
   const handleSubmit = (createMealPlan, mealPlan) => {
     const { startDate, endDate, mealDays } = mealPlan;
     const mealDayCreateInputs = mealDays.map(({ date, recipe }) => (recipe ? { date, recipe: { id: recipe.id } } : { date }));
@@ -15,6 +16,13 @@ export default function CreateMealPlan() {
       title="Create Meal Plan"
       mutation={CREATE_MEALPLAN_MUTATION}
       onSubmit={handleSubmit}
+      onSaveCompleted={() => history.push('/mealplan')}
     />
   );
 }
+
+CreateMealPlan.propTypes = {
+  history: PropTypes.object.isRequired,
+};
+
+export default CreateMealPlan;

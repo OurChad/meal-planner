@@ -17,6 +17,14 @@ enum FoodType {
   VEGETABLE
 }
 
+enum QuantityType {
+  CUP
+  GRAMS
+  TABLESPOON
+  TEASPOON
+  WHOLE
+}
+
 type User {
   id: ID! @id
   name: String!
@@ -39,6 +47,7 @@ type Ingredient {
   id: ID! @id
   food: Food!
   quantity: Float!
+  quantityType: QuantityType!
 }
 
 type Recipe {

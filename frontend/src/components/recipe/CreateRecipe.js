@@ -4,7 +4,7 @@ import gql from 'graphql-tag';
 // import { ALL_FOODS_QUERY } from './queries';
 import Form from '../common/Form';
 import IngredientForm from './IngredientForm';
-
+import Button from '../common/Button';
 
 export default function CreateRecipe(props) {
   const CREATE_RECIPE_MUTATION = gql`
@@ -20,6 +20,7 @@ export default function CreateRecipe(props) {
                     subName
                 }
                 quantity
+                quantityType
             }
             instructions
       }
@@ -62,7 +63,8 @@ export default function CreateRecipe(props) {
     e.preventDefault();
     const ingredients = recipe.ingredients.map((ingredient) => ({
       foodId: ingredient.food.id,
-      quantity: Number.parseFloat(ingredient.quantity)
+      quantity: Number.parseFloat(ingredient.quantity),
+      quantityType: ingredient.quantityType,
     }));
     const newRecipe = { ...recipe, ingredients };
 
@@ -121,7 +123,7 @@ export default function CreateRecipe(props) {
                 </ul>
                 { toggleIngredientForm.open && <IngredientForm onSubmit={handleIngredientFormSubmit} /> }
               </label>
-              <button type="submit">Create Recipe</button>
+              <Button type="submit">Create Recipe</Button>
             </fieldset>
           </Form>
         )

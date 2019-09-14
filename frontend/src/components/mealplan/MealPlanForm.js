@@ -1,12 +1,12 @@
 import React, { useReducer } from 'react';
 import PropTypes from 'prop-types';
-import { Mutation } from 'react-apollo';
+import { useMutation } from '@apollo/react-hooks';
 import { addDays, eachDayOfInterval, format as formatDate } from 'date-fns';
 import { actions, reducer as mealPlanReducer } from '../../state/mealplan';
 import MealDay from './MealDay';
 import Form from '../common/Form';
 
-const MealPlanForm = ({ title, mutation, onSubmit, mealPlan: exisitingMealPlan }) => {
+const MealPlanForm = ({ title, mutation, onSubmit, onSaveCompleted: onCompleted, mealPlan: exisitingMealPlan }) => {
   const start = formatDate(new Date(), 'yyyy-MM-dd');
   const end = formatDate(addDays(new Date(), 6), 'yyyy-MM-dd');
   const initialState = exisitingMealPlan || {
@@ -34,51 +34,47 @@ const MealPlanForm = ({ title, mutation, onSubmit, mealPlan: exisitingMealPlan }
     onSubmit(saveMealPlan, mealPlan);
   };
 
+  const [saveMealPlan, { loading }] = useMutation(mutation, { onCompleted });
+
   return (
-    <Mutation mutation={mutation}>
-      {
-        (saveMealPlan, { error, loading }) => (
-          <Form onSubmit={handleSubmit(saveMealPlan)}>
-            <fieldset disabled={loading} aria-busy={loading}>
-              <h2>{title}</h2>
-              <label htmlFor="startDate">
+    <Form onSubmit={handleSubmit(saveMealPlan)}>
+      <fieldset disabled={loading} aria-busy={loading}>
+        <h2>{title}</h2>
+        <label htmlFor="startDate">
                 Start Date
-                <input
-                  type="date"
-                  name="startDate"
-                  placeholder="Start Date"
-                  value={mealPlan.startDate}
-                  onChange={saveToState(actions.SET_START_DATE)}
-                  required
-                />
-              </label>
-              <label htmlFor="endDate">
+          <input
+            type="date"
+            name="startDate"
+            placeholder="Start Date"
+            value={mealPlan.startDate}
+            onChange={saveToState(actions.SET_START_DATE)}
+            required
+          />
+        </label>
+        <label htmlFor="endDate">
                 End Date
-                <input
-                  type="date"
-                  name="endDate"
-                  placeholder="End Date"
-                  value={mealPlan.endDate}
-                  onChange={saveToState(actions.SET_END_DATE)}
-                  required
-                />
-              </label>
-              {
-                mealPlan.mealDays.map(({ id, date, recipe }) => (
-                  <MealDay
-                    key={date}
-                    date={date}
-                    recipe={recipe}
-                    onSetRecipe={handleSetRecipe({ id, date })}
-                  />
-                ))
-              }
-              <button type="submit">Save Meal Plan</button>
-            </fieldset>
-          </Form>
-        )
-      }
-    </Mutation>
+          <input
+            type="date"
+            name="endDate"
+            placeholder="End Date"
+            value={mealPlan.endDate}
+            onChange={saveToState(actions.SET_END_DATE)}
+            required
+          />
+        </label>
+        {
+          mealPlan.mealDays.map(({ id, date, recipe }) => (
+            <MealDay
+              key={date}
+              date={date}
+              recipe={recipe}
+              onSetRecipe={handleSetRecipe({ id, date })}
+            />
+          ))
+        }
+        <button type="submit">Save Meal Plan</button>
+      </fieldset>
+    </Form>
   );
 };
 
@@ -86,6 +82,7 @@ MealPlanForm.propTypes = {
   title: PropTypes.string,
   mutation: PropTypes.object.isRequired,
   onSubmit: PropTypes.func.isRequired,
+  onSaveCompleted: PropTypes.func.isRequired,
   mealPlan: PropTypes.shape({
     startDate: PropTypes.string.isRequired,
     endDate: PropTypes.string.isRequired,

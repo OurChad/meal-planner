@@ -41,6 +41,16 @@ function hasPermission(user, permissionsNeeded) {
     hasPermission(user, ['ADMIN']);
   }
   
+  function capitaliseWords(words) {
+    const allWords = words.split(' ');
+
+    return allWords.reduce((acc, word) => {
+      const capitalised = word.charAt(0).toUpperCase() + word.slice(1)
+      return acc.concat(' ' + capitalised);
+    }, '').trimStart();
+  }
+
   exports.hasPermission = hasPermission;
   exports.isUserLoggedIn = isUserLoggedIn;
   exports.isUserAdmin = isUserAdmin;
+  exports.capitaliseWords = capitaliseWords;

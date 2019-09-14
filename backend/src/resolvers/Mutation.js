@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const { randomBytes } = require('crypto');
 const { promisify } = require('util');
 const { transport, makeANiceEmail } = require('../mail');
-const { hasPermission, isUserLoggedIn, isUserAdmin } = require('../utils');
+const { hasPermission, isUserLoggedIn, isUserAdmin, capitaliseWords } = require('../utils');
 
 const Mutations = {
   async signup(parent, args, ctx, info) {
@@ -156,6 +156,30 @@ const Mutations = {
     return newFood;
   },
 
+  async initialiseFoods(parent, args, ctx, info) {
+    isUserLoggedAndAdmin(ctx);
+    const vegData = require('../foods/vegetables.json');
+    const newVegPromises = vegData.vegetables.map((vegetable) => {
+      const food = {
+        name: capitaliseWords(vegetable),
+        types:["VEGETABLE"],
+      }
+
+      return ctx.db.mutation.createFood({
+        data: {
+            ...food,
+            types: {
+                set: food.types
+            }
+        }
+      }, info);
+    });
+
+    const newVeg = await Promise.all(newVegPromises);
+
+    return newVeg;
+  },
+
   async updateFood(parent, args, ctx, info) {
     isUserLoggedAndAdmin(ctx);
     
@@ -189,10 +213,11 @@ const Mutations = {
   },
     async createIngredient(parent, args, ctx, info) {
         isUserLoggedAndAdmin(ctx);
-        const { quantity, foodId } = args;
+        const { quantity, quantityType, foodId } = args;
         const createdIngredient = await ctx.db.mutation.createIngredient({
             data: {
                 quantity,
+                quantityType,
                 food: {
                     connect: {
                         id: foodId,
@@ -205,13 +230,14 @@ const Mutations = {
     },
     async updateIngredient(parent, args, ctx, info){
         isUserLoggedAndAdmin(ctx);
-        const { id, quantity, foodId } = args;
+        const { id, quantity, quantityType, foodId } = args;
         const updatedIngredient = await ctx.db.mutation.updateIngredient({
             where: {
                 id: id,
             },
             data: {
                 quantity,
+                quantityType,
                 food: {
                     connect: {
                         id: foodId,
@@ -236,9 +262,10 @@ const Mutations = {
         isUserLoggedAndAdmin(ctx);
         const { name, ingredients, instructions } = args;
 
-        const createIngredients = ingredients.map(({ quantity, foodId }) => {
+        const createIngredients = ingredients.map(({ quantity, quantityType, foodId }) => {
             return {
                 quantity,
+                quantityType,
                 food: {
                     connect: {
                         id: foodId
@@ -268,9 +295,10 @@ const Mutations = {
     async updateRecipe(parent, args, ctx, info){
         isUserLoggedAndAdmin(ctx);
         const { id, name, ingredients, instructions } = args;
-        const createIngredients = ingredients.create && ingredients.create.map(({ quantity, foodId }) => {
+        const createIngredients = ingredients.create && ingredients.create.map(({ quantity, quantityType, foodId }) => {
                 return {
                     quantity,
+                    quantityType,
                     food: {
                         connect: {                            
                             id: foodId
@@ -278,13 +306,14 @@ const Mutations = {
                     }
                 }
             });
-        const updateIngredients = ingredients.update && ingredients.update.map(({ id, quantity, foodId }) => {
+        const updateIngredients = ingredients.update && ingredients.update.map(({ id, quantity, quantityType, foodId }) => {
                 return {
                     where: {
                         id 
                     },
                     data: {
                         quantity,
+                        quantityType,
                         food: {
                             connect: {                            
                                 id: foodId

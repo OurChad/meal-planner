@@ -31,6 +31,23 @@ const Recipe = styled.div`
     margin-top: 1rem;
 `;
 
+// Remove null recipe from mealDay as Apollo Cache won't return client query with null field 🤷‍♂️
+function writeMealPlanToCache(client, mealPlan) {
+  const activeMealPlan = {
+    ...mealPlan,
+    startDate: formatDate(mealPlan.startDate),
+    endDate: formatDate(mealPlan.endDate),
+  };
+
+  activeMealPlan.mealDays.forEach((day) => {
+    if (!day.recipe) {
+      delete day.recipe; // eslint-disable-line
+    }
+  });
+
+  client.writeData({ data: { activeMealPlan } });
+}
+
 function MealPlan({ history }) {
   const { data, loading, client } = useQuery(GET_LATEST_MEALPLAN);
 
@@ -55,14 +72,10 @@ function MealPlan({ history }) {
       </>
     );
   }
-  const { mealDays } = mealPlan;
-  const activeMealPlan = {
-    ...mealPlan,
-    startDate: formatDate(mealPlan.startDate),
-    endDate: formatDate(mealPlan.endDate),
-  };
 
-  client.writeData({ data: { activeMealPlan } });
+  writeMealPlanToCache(client, mealPlan);
+
+  const { mealDays } = mealPlan;
 
   return (
     <>

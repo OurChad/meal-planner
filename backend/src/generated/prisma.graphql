@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/ismisechad-d18815/meal-planner/dev
-# timestamp: Fri Sep 06 2019 21:54:56 GMT+0100 (Irish Standard Time)
+# timestamp: Sat Sep 14 2019 09:42:22 GMT+0100 (Irish Standard Time)
 
 type AggregateFood {
   count: Int!
@@ -363,6 +363,7 @@ type Ingredient implements Node {
   id: ID!
   food: Food!
   quantity: Float!
+  quantityType: QuantityType!
 }
 
 """A connection to a list of items."""
@@ -378,6 +379,7 @@ type IngredientConnection {
 input IngredientCreateInput {
   id: ID
   quantity: Float!
+  quantityType: QuantityType!
   food: FoodCreateOneInput!
 }
 
@@ -400,11 +402,14 @@ enum IngredientOrderByInput {
   id_DESC
   quantity_ASC
   quantity_DESC
+  quantityType_ASC
+  quantityType_DESC
 }
 
 type IngredientPreviousValues {
   id: ID!
   quantity: Float!
+  quantityType: QuantityType!
 }
 
 input IngredientScalarWhereInput {
@@ -478,6 +483,16 @@ input IngredientScalarWhereInput {
 
   """All values greater than or equal the given value."""
   quantity_gte: Float
+  quantityType: QuantityType
+
+  """All values that are not equal to given value."""
+  quantityType_not: QuantityType
+
+  """All values that are contained in given list."""
+  quantityType_in: [QuantityType!]
+
+  """All values that are not contained in given list."""
+  quantityType_not_in: [QuantityType!]
 }
 
 type IngredientSubscriptionPayload {
@@ -521,16 +536,19 @@ input IngredientSubscriptionWhereInput {
 
 input IngredientUpdateDataInput {
   quantity: Float
+  quantityType: QuantityType
   food: FoodUpdateOneRequiredInput
 }
 
 input IngredientUpdateInput {
   quantity: Float
+  quantityType: QuantityType
   food: FoodUpdateOneRequiredInput
 }
 
 input IngredientUpdateManyDataInput {
   quantity: Float
+  quantityType: QuantityType
 }
 
 input IngredientUpdateManyInput {
@@ -547,6 +565,7 @@ input IngredientUpdateManyInput {
 
 input IngredientUpdateManyMutationInput {
   quantity: Float
+  quantityType: QuantityType
 }
 
 input IngredientUpdateManyWithWhereNestedInput {
@@ -636,6 +655,16 @@ input IngredientWhereInput {
 
   """All values greater than or equal the given value."""
   quantity_gte: Float
+  quantityType: QuantityType
+
+  """All values that are not equal to given value."""
+  quantityType_not: QuantityType
+
+  """All values that are contained in given list."""
+  quantityType_in: [QuantityType!]
+
+  """All values that are not contained in given list."""
+  quantityType_not_in: [QuantityType!]
   food: FoodWhereInput
 }
 
@@ -1203,6 +1232,14 @@ enum Permission {
   ADMIN
   USER
   PERMISSIONUPDATE
+}
+
+enum QuantityType {
+  CUP
+  GRAMS
+  TABLESPOON
+  TEASPOON
+  WHOLE
 }
 
 type Query {

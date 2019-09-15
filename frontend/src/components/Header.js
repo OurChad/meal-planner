@@ -1,7 +1,8 @@
-import React from 'react';
-// import PropTypes from 'prop-types';
+import React, { useCallback } from 'react';
+import { useQuery } from '@apollo/react-hooks';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { CURRENT_USER_QUERY } from './auth/authQueries';
 
 const StyledHeader = styled.header`
   background: ${(props) => props.theme.primaryGreen};
@@ -26,30 +27,39 @@ const StyledLink = styled(Link)`
   }
 `;
 
-const Header = () => (
-  <StyledHeader>
-    <HeaderContentContainer>
-      <AppName>
-        <StyledLink to="/" dark>Nom Noms</StyledLink>
-      </AppName>
-      <StyledLink to="/users/">Users</StyledLink>
-      <StyledLink to="/signup/">Signup</StyledLink>
-      <StyledLink to="/signin/">Signin</StyledLink>
+const Header = () => {
+  const { data: { me } } = useQuery(CURRENT_USER_QUERY);
+  const renderDevLinks = useCallback(() => (process.env.NODE_ENV === 'development' ? (
+    <>
+      <StyledLink to="/createMealPlan/">Create Meal Plan</StyledLink>
       <StyledLink to="/createFood/">Create Food</StyledLink>
       <StyledLink to="/foods/">Foods</StyledLink>
-      <StyledLink to="/createRecipe/">Create Recipe</StyledLink>
-      <StyledLink to="/createMealPlan/">Create Meal Plan</StyledLink>
+    </>
+  ) : null));
+
+  const renderLinks = useCallback(() => (!me ? (
+    <>
+      <StyledLink to="/signup/">Signup</StyledLink>
+      <StyledLink to="/signin/">Signin</StyledLink>
+    </>
+  ) : (
+    <>
       <StyledLink to="/mealPlan/">Meal Plan</StyledLink>
-    </HeaderContentContainer>
-  </StyledHeader>
-);
+      <StyledLink to="/createRecipe/">Create Recipe</StyledLink>
+    </>
+  )));
 
-Header.propTypes = {
-  // siteTitle: PropTypes.string,
-};
-
-Header.defaultProps = {
-  siteTitle: '',
+  return (
+    <StyledHeader>
+      <HeaderContentContainer>
+        <AppName>
+          <StyledLink to="/" dark>Nom Noms</StyledLink>
+        </AppName>
+        {renderLinks()}
+        {renderDevLinks()}
+      </HeaderContentContainer>
+    </StyledHeader>
+  );
 };
 
 export default Header;

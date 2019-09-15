@@ -1,44 +1,40 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Route, Redirect } from 'react-router-dom';
-import { Query } from 'react-apollo';
-import gql from 'graphql-tag';
+import { useQuery } from '@apollo/react-hooks';
+import { CURRENT_USER_QUERY } from './authQueries';
 
-const CURRENT_USER_QUERY = gql`
-  query {
-    me {
-      id
-      email
-      name
-      permissions
-    }
-  }
-`;
+function AuthenticatedRoute({ component: Component, ...rest }) {
+  const { data, loading, error } = useQuery(CURRENT_USER_QUERY);
 
-const AuthenticatedRoute = ({ component: Component, ...rest }) => (
-  <Query query={CURRENT_USER_QUERY}>
-    {
-      ({ data: { me }, error, loading }) => {
-        if (error) return <p>{error}</p>;
-        if (loading) return <p>Loading...</p>;
-        return (
-          <Route
-            {...rest}
-            render={(props) => (
-              me ? (
-                <Component {...props} />
-              ) : (
-                <Redirect to={{
-                  pathname: '/signin',
-                  state: { from: props.location }
-                }}
-                />
-              )
-            )}
+  if (error) return <p>{error}</p>;
+  if (loading) return <p>Loading...</p>;
+
+  const me = data;
+
+  return (
+    <Route
+      {...rest}
+      render={(props) => (
+        me ? (
+          <Component {...props} />
+        ) : (
+          <Redirect to={{
+            pathname: '/signin',
+            state: { from: props.location }
+          }}
           />
-        );
-      }
-    }
-  </Query>
-);
+        )
+      )}
+    />
+  );
+}
+
+AuthenticatedRoute.propTypes = {
+  component: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.func,
+  ]).isRequired,
+};
 
 export default AuthenticatedRoute;

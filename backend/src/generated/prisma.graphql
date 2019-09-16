@@ -1,5 +1,5 @@
-# source: https://eu1.prisma.sh/ismisechad-d18815/meal-planner/dev
-# timestamp: Sat Sep 14 2019 09:42:22 GMT+0100 (Irish Standard Time)
+# source: https://meal-planner-prod-597009793e.herokuapp.com/meal-planner-prod/prod
+# timestamp: Mon Sep 16 2019 20:24:50 GMT+0100 (Irish Standard Time)
 
 type AggregateFood {
   count: Int!
@@ -136,13 +136,19 @@ input FoodSubscriptionWhereInput {
 
 enum FoodType {
   BAKED
+  BREAD
   CHEESE
   CONDIMENT
   DAIRY
   DRINK
   FRUIT
+  GRAIN
   MEAT
+  NUT
   OTHER
+  PASTA
+  SNACK
+  SWEET
   TEA
   VEGETABLE
 }

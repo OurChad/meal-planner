@@ -1,0 +1,16 @@
+{
+    "description": "A list of meat products.",
+      "meats": [
+          "Bacon",
+          "Beef",
+          "Black Pudding",
+          "Burger",
+          "Chicken",
+          "Lamb",
+          "Pork",
+          "Sausage",
+          "Steak",
+          "White Pudding"
+      ]
+  }
+  

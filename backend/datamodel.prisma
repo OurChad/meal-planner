@@ -6,13 +6,19 @@ enum Permission {
 
 enum FoodType {
   BAKED
+  BREAD
   CHEESE
   CONDIMENT
   DAIRY
   DRINK
   FRUIT
+  GRAIN
   MEAT
+  NUT
   OTHER
+  PASTA
+  SNACK
+  SWEET
   TEA
   VEGETABLE
 }

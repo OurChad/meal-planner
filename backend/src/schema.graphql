@@ -20,8 +20,16 @@ type Mutation {
     updateMealPlan(id: ID!, startDate: DateTime, endDate: DateTime, mealDays: [MealDayCreateUpdateInput], deletedMealDays: [ID]): MealPlan
 
     # utility mutations
-    initialiseFoods: [Food]
-}
+    initialiseBreadsAndPastriesData: [Food]
+    initialiseDairyAndCheeseData: [Food]
+    initialiseCondimentsData: [Food]
+    initialiseFruitsData: [Food]
+    initialiseGrainsData: [Food]
+    initialiseMeatsData: [Food]
+    initialiseNutsData: [Food]
+    initialisePastasData: [Food]
+    initialiseVegetableData: [Food]
+  }
 
 type Query {
     me: User

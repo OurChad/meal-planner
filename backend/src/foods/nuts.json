@@ -1,0 +1,10 @@
+{
+    "description": "A list of nuts",
+    "nuts": [
+        "Almond",
+        "Cashew",
+        "Peanuts",
+        "Pine Nuts",
+        "Walnut"
+    ]
+}

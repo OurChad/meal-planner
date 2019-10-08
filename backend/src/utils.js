@@ -1,9 +1,13 @@
+function getRequestUser(ctx) {
+  const { request: { user } } = ctx;
+
+  return user;
+}
+
 function hasPermission(user, permissionsNeeded) {
-    const matchedPermissions = user.permissions.filter(permissionTheyHave =>
-      permissionsNeeded.includes(permissionTheyHave)
-    );
-    if (!matchedPermissions.length) {
-      throw new Error(`You do not have sufficient permissions
+  const matchedPermissions = user.permissions.filter(permissionTheyHave => permissionsNeeded.includes(permissionTheyHave));
+  if (!matchedPermissions.length) {
+    throw new Error(`You do not have sufficient permissions
   
         : ${permissionsNeeded}
   
@@ -11,46 +15,53 @@ function hasPermission(user, permissionsNeeded) {
   
         ${user.permissions}
         `);
-    }
   }
+}
 
-  function createFoods(foods, types) {
-    const newFoods = foods.map(food => {
-        const newFood = {
-            name: food,
-            types
-        }
-
-        if (food === 'tomato' && types.contains('FRUIT')) {
-            newFood.types.push('VEGETABLE');
-        }
-
-        return newFood;
-    })
-
-    return newFoods;
+function isUserLoggedIn(user) {
+  if (!user) {
+    throw new Error('You must be logged in');
   }
+}
 
-  function isUserLoggedIn(user) {
-    if (!user) {
-        throw new Error("You must be logged in");
-    }
-  }
+function isUserAdmin(user) {
+  hasPermission(user, ['ADMIN']);
+}
 
-  function isUserAdmin(user) {
-    hasPermission(user, ['ADMIN']);
-  }
+function isUserLoggedAndAdmin(ctx) {
+  const user = getRequestUser(ctx);
+
+  isUserLoggedIn(user);
+
+  return isUserAdmin(user);
+}
   
-  function capitaliseWords(words) {
-    const allWords = words.split(' ');
+function capitaliseWords(words) {
+  const allWords = words.split(' ');
 
-    return allWords.reduce((acc, word) => {
-      const capitalised = word.charAt(0).toUpperCase() + word.slice(1)
-      return acc.concat(' ' + capitalised);
-    }, '').trimStart();
-  }
+  return allWords.reduce((acc, word) => {
+    const capitalised = word.charAt(0).toUpperCase() + word.slice(1);
+    return acc.concat(` ${capitalised}`);
+  }, '').trimStart();
+}
 
-  exports.hasPermission = hasPermission;
-  exports.isUserLoggedIn = isUserLoggedIn;
-  exports.isUserAdmin = isUserAdmin;
-  exports.capitaliseWords = capitaliseWords;
+function propsToLowerCase(obj, props) {
+  return Object.keys(obj).reduce((acc, key) => {
+    if (props.includes(key)) {
+      return {
+        ...acc,
+        [key]: obj[key].toLowerCase(),
+      };
+    }
+
+    return acc;
+  }, {});
+}
+
+exports.getRequestUser = getRequestUser;
+exports.hasPermission = hasPermission;
+exports.isUserLoggedIn = isUserLoggedIn;
+exports.isUserAdmin = isUserAdmin;
+exports.isUserLoggedAndAdmin = isUserLoggedAndAdmin;
+exports.capitaliseWords = capitaliseWords;
+exports.propsToLowerCase = propsToLowerCase;

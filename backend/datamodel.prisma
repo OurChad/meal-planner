@@ -24,8 +24,11 @@ enum FoodType {
 }
 
 enum QuantityType {
+  CLOVES
   CUP
   GRAMS
+  LEAVES
+  SPRIGS
   TABLESPOON
   TEASPOON
   WHOLE

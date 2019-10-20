@@ -56,30 +56,34 @@ const Query = {
   ingredients: forwardTo('db'),
   ingredientsConnection: forwardTo('db'),
   recipe: forwardTo('db'),
-  async recipes(parent, args, ctx, info) {
+  recipes(parent, { searchTerm }, ctx, info) {
     // check if there is a current user ID
     if (!ctx.request.user) {
       throw new Error('You must be logged in.');
     }
-    const recipesQuery = forwardTo('db');
-    return await recipesQuery(parent, args, ctx, info);
+
+    return ctx.db.query.recipes({
+      where: {
+        searchName_contains: searchTerm.toLowerCase() 
+      }
+    }, info);
   },
   mealDay: forwardTo('db'),
-  async mealPlan(parent, args, ctx, info) {
+  mealPlan(parent, args, ctx, info) {
     // check if there is a current user ID
     if (!ctx.request.user) {
       throw new Error('You must be logged in.');
     }
     const mealPlanQuery = forwardTo('db');
-    return await mealPlanQuery(parent, args, ctx, info);
+    return mealPlanQuery(parent, args, ctx, info);
   },
-  async mealPlans(parent, args, ctx, info) {
+  mealPlans(parent, args, ctx, info) {
     // check if there is a current user ID
     if (!ctx.request.user) {
       throw new Error('You must be logged in.');
     }
     const mealPlansQuery = forwardTo('db');
-    return await mealPlansQuery(parent, args, ctx, info);
+    return mealPlansQuery(parent, args, ctx, info);
   },
 };
 

@@ -1,6 +1,8 @@
+const { capitaliseWords } = require('../utils');
+
 function createFood(food, foodTyoe, ctx, info) {
   const newFood = {
-    name: food,
+    name: capitaliseWords(food),
     searchName: food.toLowerCase(),
     types: foodTyoe,
   };

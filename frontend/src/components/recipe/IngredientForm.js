@@ -21,7 +21,7 @@ const IngredientForm = ({ ingredient: ingredientProp, onSubmit }) => {
 
   const SEARCH_FOODS_QUERY = gql`
       query SEARCH_FOODS_QUERY($searchTerm: String!) {
-          foods(where: { OR: [{ name_contains: $searchTerm }, { subName_contains: $searchTerm }] }) {
+          foods(searchTerm: $searchTerm) {
               id
               name
               subName

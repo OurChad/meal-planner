@@ -1,6 +1,7 @@
 function createFood(food, foodTyoe, ctx, info) {
   const newFood = {
-    name: food.toLowerCase(),
+    name: food,
+    searchName: food.toLowerCase(),
     types: foodTyoe,
   };
 

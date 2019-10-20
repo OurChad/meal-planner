@@ -48,6 +48,7 @@ type Food {
   id: ID! @id
   name: String!
   subName: String
+  searchName: String
   types: [FoodType!]! @scalarList(strategy: RELATION)
   image: String
 }
@@ -62,6 +63,7 @@ type Ingredient {
 type Recipe {
   id: ID! @id
   name: String!
+  searchName: String
   ingredients: [Ingredient!]!
   instructions: String
 }

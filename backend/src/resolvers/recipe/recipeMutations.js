@@ -19,7 +19,8 @@ const recipeMutations = {
 
     const createdRecipe = await ctx.db.mutation.createRecipe({
       data: {
-        name: name.toLowerCase(),
+        name,
+        searchName: name.toLowerCase(),
         instructions,
         ingredients: {
           create: createIngredients,
@@ -74,7 +75,8 @@ const recipeMutations = {
         id: args.id
       },
       data: {
-        name: name.toLowerCase(),
+        name,
+        searchName: name.toLowerCase(),
         instructions,
         ingredients: {
           create: createIngredients,

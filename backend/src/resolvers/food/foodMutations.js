@@ -8,6 +8,7 @@ const foodMutations = {
     const newFood = await ctx.db.mutation.createFood({
       data: {
         ...food,
+        searchName: food.name.toLowerCase(),
         types: {
           set: foodWithDBFormat.types
         }
@@ -20,18 +21,18 @@ const foodMutations = {
   async updateFood(parent, args, ctx, info) {
     isUserLoggedAndAdmin(ctx);
     
-    const updates = { ...args };
-    delete updates.id;
+    const food = { ...args };
+    delete food.id;
     
-    const foodWithDBFormat = propsToLowerCase(updates, ['name', 'subname']);
     const updatedFood = await ctx.db.mutation.updateFood({
       where: {
         id: args.id
       },
       data: {
-        ...foodWithDBFormat,
+        ...food,
+        searchName: food.name.toLowerCase(),
         types: {
-          set: updates.types
+          set: food.types
         }
       }
     }, info);

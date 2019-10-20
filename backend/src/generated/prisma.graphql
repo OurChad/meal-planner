@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/ismisechad-d18815/meal-planner/dev
-# timestamp: Tue Oct 08 2019 23:01:45 GMT+0100 (Irish Standard Time)
+# timestamp: Sun Oct 20 2019 20:31:33 GMT+0100 (Irish Standard Time)
 
 type AggregateFood {
   count: Int!
@@ -36,6 +36,7 @@ type Food implements Node {
   id: ID!
   name: String!
   subName: String
+  searchName: String
   types: [FoodType!]!
   image: String
 }
@@ -54,6 +55,7 @@ input FoodCreateInput {
   id: ID
   name: String!
   subName: String
+  searchName: String
   image: String
   types: FoodCreatetypesInput
 }
@@ -83,6 +85,8 @@ enum FoodOrderByInput {
   name_DESC
   subName_ASC
   subName_DESC
+  searchName_ASC
+  searchName_DESC
   image_ASC
   image_DESC
 }
@@ -91,6 +95,7 @@ type FoodPreviousValues {
   id: ID!
   name: String!
   subName: String
+  searchName: String
   types: [FoodType!]!
   image: String
 }
@@ -156,6 +161,7 @@ enum FoodType {
 input FoodUpdateDataInput {
   name: String
   subName: String
+  searchName: String
   image: String
   types: FoodUpdatetypesInput
 }
@@ -163,6 +169,7 @@ input FoodUpdateDataInput {
 input FoodUpdateInput {
   name: String
   subName: String
+  searchName: String
   image: String
   types: FoodUpdatetypesInput
 }
@@ -170,6 +177,7 @@ input FoodUpdateInput {
 input FoodUpdateManyMutationInput {
   name: String
   subName: String
+  searchName: String
   image: String
   types: FoodUpdatetypesInput
 }
@@ -319,6 +327,46 @@ input FoodWhereInput {
 
   """All values not ending with the given string."""
   subName_not_ends_with: String
+  searchName: String
+
+  """All values that are not equal to given value."""
+  searchName_not: String
+
+  """All values that are contained in given list."""
+  searchName_in: [String!]
+
+  """All values that are not contained in given list."""
+  searchName_not_in: [String!]
+
+  """All values less than the given value."""
+  searchName_lt: String
+
+  """All values less than or equal the given value."""
+  searchName_lte: String
+
+  """All values greater than the given value."""
+  searchName_gt: String
+
+  """All values greater than or equal the given value."""
+  searchName_gte: String
+
+  """All values containing the given string."""
+  searchName_contains: String
+
+  """All values not containing the given string."""
+  searchName_not_contains: String
+
+  """All values starting with the given string."""
+  searchName_starts_with: String
+
+  """All values not starting with the given string."""
+  searchName_not_starts_with: String
+
+  """All values ending with the given string."""
+  searchName_ends_with: String
+
+  """All values not ending with the given string."""
+  searchName_not_ends_with: String
   image: String
 
   """All values that are not equal to given value."""
@@ -1281,6 +1329,7 @@ type Query {
 type Recipe implements Node {
   id: ID!
   name: String!
+  searchName: String
   ingredients(where: IngredientWhereInput, orderBy: IngredientOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Ingredient!]
   instructions: String
 }
@@ -1298,6 +1347,7 @@ type RecipeConnection {
 input RecipeCreateInput {
   id: ID
   name: String!
+  searchName: String
   instructions: String
   ingredients: IngredientCreateManyInput
 }
@@ -1321,6 +1371,8 @@ enum RecipeOrderByInput {
   id_DESC
   name_ASC
   name_DESC
+  searchName_ASC
+  searchName_DESC
   instructions_ASC
   instructions_DESC
 }
@@ -1328,6 +1380,7 @@ enum RecipeOrderByInput {
 type RecipePreviousValues {
   id: ID!
   name: String!
+  searchName: String
   instructions: String
 }
 
@@ -1372,18 +1425,21 @@ input RecipeSubscriptionWhereInput {
 
 input RecipeUpdateDataInput {
   name: String
+  searchName: String
   instructions: String
   ingredients: IngredientUpdateManyInput
 }
 
 input RecipeUpdateInput {
   name: String
+  searchName: String
   instructions: String
   ingredients: IngredientUpdateManyInput
 }
 
 input RecipeUpdateManyMutationInput {
   name: String
+  searchName: String
   instructions: String
 }
 
@@ -1490,6 +1546,46 @@ input RecipeWhereInput {
 
   """All values not ending with the given string."""
   name_not_ends_with: String
+  searchName: String
+
+  """All values that are not equal to given value."""
+  searchName_not: String
+
+  """All values that are contained in given list."""
+  searchName_in: [String!]
+
+  """All values that are not contained in given list."""
+  searchName_not_in: [String!]
+
+  """All values less than the given value."""
+  searchName_lt: String
+
+  """All values less than or equal the given value."""
+  searchName_lte: String
+
+  """All values greater than the given value."""
+  searchName_gt: String
+
+  """All values greater than or equal the given value."""
+  searchName_gte: String
+
+  """All values containing the given string."""
+  searchName_contains: String
+
+  """All values not containing the given string."""
+  searchName_not_contains: String
+
+  """All values starting with the given string."""
+  searchName_starts_with: String
+
+  """All values not starting with the given string."""
+  searchName_not_starts_with: String
+
+  """All values ending with the given string."""
+  searchName_ends_with: String
+
+  """All values not ending with the given string."""
+  searchName_not_ends_with: String
   instructions: String
 
   """All values that are not equal to given value."""

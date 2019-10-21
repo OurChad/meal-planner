@@ -10,8 +10,11 @@ import Button from '../common/Button';
 
 const IngredientForm = ({ ingredient: ingredientProp, onSubmit }) => {
   const quantityTypes = [
+    'CLOVES',
     'CUP',
     'GRAMS',
+    'LEAVES',
+    'SPRIGS',
     'TABLESPOON',
     'TEASPOON',
     'WHOLE',

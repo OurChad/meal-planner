@@ -6,13 +6,19 @@ import Form from '../common/Form';
 const FoodForm = ({ loading, food: foodProp, setFoodData, onSubmit, resetFormOnSubmit, title, submitLabel }) => {
   const foodTypes = [
     'BAKED',
+    'BREAD',
     'CHEESE',
     'CONDIMENT',
     'DAIRY',
     'DRINK',
     'FRUIT',
+    'GRAIN',
     'MEAT',
+    'NUT',
     'OTHER',
+    'PASTA',
+    'SNACK',
+    'SWEET',
     'TEA',
     'VEGETABLE',
   ];

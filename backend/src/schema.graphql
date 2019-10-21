@@ -40,7 +40,7 @@ type Query {
     ingredients(where: IngredientWhereInput, orderBy: IngredientOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Ingredient]!
     ingredientsConnection(where: IngredientWhereInput, orderBy: IngredientOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): IngredientConnection!
     recipe(where: RecipeWhereUniqueInput!): Recipe
-    recipes(where: RecipeWhereInput, orderBy: RecipeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Recipe]!
+    recipes(searchTerm: String, orderBy: RecipeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Recipe]!
     mealDay(where: MealDayWhereUniqueInput!): MealDay
     mealPlan(where: MealPlanWhereUniqueInput!): MealPlan
     mealPlans(where: MealPlanWhereInput, orderBy: MealPlanOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [MealPlan]!
@@ -76,6 +76,7 @@ type Ingredient {
   id: ID!
   food: Food!
   quantity: Float!
+  quantityType: QuantityType!
 }
 
 input IngredientUpdateManyInput {

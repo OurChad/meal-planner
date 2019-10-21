@@ -9,7 +9,7 @@ import AsyncSelect from 'react-select/async';
 function MealDay({ date, recipe, onSetRecipe }) {
   const SEARCH_RECIPES_QUERY = gql`
           query SEARCH_RECIPES_QUERY($searchTerm: String!) {
-              recipes(where: { name_contains: $searchTerm }) {
+              recipes(searchTerm: $searchTerm) {
                   id
                   name
               }

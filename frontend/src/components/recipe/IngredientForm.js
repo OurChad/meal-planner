@@ -2,11 +2,17 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { ApolloConsumer } from 'react-apollo';
 import gql from 'graphql-tag';
+import styled from 'styled-components';
 // import debounce from 'lodash.debounce';
 import debounce from 'debounce-promise';
 import AsyncSelect from 'react-select/async';
 import Select from 'react-select';
 import Button from '../common/Button';
+
+const StyledFieldSet = styled.fieldset`
+  background-color: ${(props) => props.theme.secondaryLight};
+  padding: 2rem !important;
+`;
 
 const IngredientForm = ({ ingredient: ingredientProp, onSubmit }) => {
   const quantityTypes = [
@@ -67,18 +73,20 @@ const IngredientForm = ({ ingredient: ingredientProp, onSubmit }) => {
       {
         (client) => (
           <>
-            <fieldset>
+            <StyledFieldSet>
               <label htmlFor="food">
-                              Food
+                Food
                 <AsyncSelect
                   id="multiSelect"
                   required
                   loadOptions={loadOptions(client)}
                   onChange={(food) => setIngredient({ ...ingredient, food: food.value })}
+                  defaultValue={{ label: ingredient.food.name, value: ingredient.food.name }}
+                  placeholder="Search for foods..."
                 />
               </label>
               <label htmlFor="quantity">
-                              Quantity
+                Quantity
                 <input
                   name="quantity"
                   type="number"
@@ -89,7 +97,7 @@ const IngredientForm = ({ ingredient: ingredientProp, onSubmit }) => {
                 />
               </label>
               <label htmlFor="quantityType">
-                              Quantity Type
+                Quantity Type
                 <Select
                   id="multiSelect"
                   name="quantityType"
@@ -98,8 +106,8 @@ const IngredientForm = ({ ingredient: ingredientProp, onSubmit }) => {
                   onChange={(newQuantityType) => setIngredient({ ...ingredient, quantityType: newQuantityType.value })}
                 />
               </label>
-              <Button type="submit" onClick={handleSubmit}>Add Ingredient</Button>
-            </fieldset>
+              <Button type="submit" onClick={handleSubmit}>Save Ingredient</Button>
+            </StyledFieldSet>
           </>
         )
       }
@@ -108,11 +116,12 @@ const IngredientForm = ({ ingredient: ingredientProp, onSubmit }) => {
 };
 
 IngredientForm.propTypes = {
-  ingredient: PropTypes.object.isRequired,
+  ingredient: PropTypes.object,
   onSubmit: PropTypes.func,
 };
 
 IngredientForm.defaultProps = {
+  ingredient: null,
   onSubmit: null,
 };
 

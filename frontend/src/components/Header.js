@@ -3,6 +3,7 @@ import { useQuery } from '@apollo/react-hooks';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { CURRENT_USER_QUERY } from './auth/authQueries';
+import { isUserAdmin } from '../util/UserUtil';
 
 const StyledHeader = styled.header`
   background: ${(props) => props.theme.primaryGreen};
@@ -29,7 +30,7 @@ const StyledLink = styled(Link)`
 
 const Header = () => {
   const { data: { me } } = useQuery(CURRENT_USER_QUERY);
-  const renderDevLinks = useCallback(() => (process.env.NODE_ENV === 'development' ? (
+  const renderDevLinks = useCallback(() => (isUserAdmin(me) ? (
     <>
       <StyledLink to="/createMealPlan/">Create Meal Plan</StyledLink>
       <StyledLink to="/createFood/">Create Food</StyledLink>

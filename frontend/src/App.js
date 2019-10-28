@@ -2,6 +2,8 @@ import React, { useCallback } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import styled from 'styled-components';
 import { ApolloProvider } from 'react-apollo';
+import { useQuery } from '@apollo/react-hooks';
+import { CURRENT_USER_QUERY } from './components/auth/authQueries';
 import client from './apollo-client';
 import AuthenticatedRoute from './components/auth/AuthenticatedRoute';
 import Signup from './components/auth/Signup';
@@ -15,6 +17,7 @@ import CreateMealPlan from './components/mealplan/CreateMealPlan';
 import MealPlan from './components/mealplan/MealPlan';
 import UpdateMealPlan from './components/mealplan/UpdateMealPlan';
 import Header from './components/Header';
+import { isUserAdmin } from './util/UserUtil';
 
 const MainContentContainer = styled.div`
   margin: 0 auto;
@@ -24,7 +27,8 @@ const MainContentContainer = styled.div`
 `;
 
 function App() {
-  const renderDevRoutes = useCallback(() => (process.env.NODE_ENV === 'development' ? (
+  const { data: { me }, loading, error } = useQuery(CURRENT_USER_QUERY);
+  const renderDevRoutes = useCallback(() => (isUserAdmin(me) ? (
     <>
       <AuthenticatedRoute path="/createFood/" component={CreateFood} />
       <AuthenticatedRoute path="/foods/" component={Foods} exact />
@@ -39,14 +43,22 @@ function App() {
           <Header />
           <MainContentContainer>
             <main>
-              <Route path="/" exact component={MealPlan} />
-              <Route path="/signup/" component={Signup} />
-              <Route path="/signin/" component={Signin} />
-              <AuthenticatedRoute path="/createRecipe/" component={CreateRecipe} />
-              <AuthenticatedRoute path="/createMealPlan/" component={CreateMealPlan} />
-              <AuthenticatedRoute path="/mealPlan/" component={MealPlan} exact />
-              <AuthenticatedRoute path="/mealPlan/:id" component={UpdateMealPlan} />
-              {renderDevRoutes()}
+              {
+                loading ? 'Loading...'
+                  : (
+                    <>
+                      <Route path="/" exact component={MealPlan} />
+                      <Route path="/signup/" component={Signup} />
+                      <Route path="/signin/" component={Signin} />
+                      <AuthenticatedRoute path="/createRecipe/" component={CreateRecipe} />
+                      <AuthenticatedRoute path="/createMealPlan/" component={CreateMealPlan} />
+                      <AuthenticatedRoute path="/mealPlan/" component={MealPlan} exact />
+                      <AuthenticatedRoute path="/mealPlan/:id" component={UpdateMealPlan} />
+                      {renderDevRoutes()}
+                    </>
+                  )
+
+              }
             </main>
           </MainContentContainer>
         </Router>

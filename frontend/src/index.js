@@ -1,10 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { ApolloProvider } from '@apollo/react-hooks';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faPlus, faEdit } from '@fortawesome/free-solid-svg-icons';
 import client from './apollo-client';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+
+library.add(faPlus, faEdit);
 
 ReactDOM.render(
   <ApolloProvider client={client}>

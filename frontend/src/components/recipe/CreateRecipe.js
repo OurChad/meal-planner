@@ -1,10 +1,20 @@
 import React, { useState } from 'react';
 import { Mutation } from 'react-apollo';
+import { useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
-// import { ALL_FOODS_QUERY } from './queries';
+import styled from 'styled-components';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Form from '../common/Form';
 import IngredientForm from './IngredientForm';
 import Button from '../common/Button';
+
+const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
+  margin-left: 1rem;
+`;
+
+const CreateRecipeButtonContainer = styled.div`
+  margin-top: 1rem;
+`;
 
 export default function CreateRecipe(props) {
   const CREATE_RECIPE_MUTATION = gql`
@@ -39,12 +49,6 @@ export default function CreateRecipe(props) {
     setRecipe({ ...recipe, [e.target.name]: e.target.value });
   };
 
-  //   const update = (cache, { data: createFood }) => {
-  //     const data = cache.readQuery({ query: ALL_FOODS_QUERY });
-  //     data.foods.push(createFood);
-  //     cache.writeQuery({ query: ALL_FOODS_QUERY, data });
-  //   };
-
   const handleIngredientFormSubmit = (ingredient) => {
     const ingredientIndex = recipe.ingredients.indexOf(toggleIngredientForm.ingredient);
 
@@ -71,63 +75,63 @@ export default function CreateRecipe(props) {
     createRecipe({ variables: { ...newRecipe } });
   };
 
+  const [createRecipe, { loading }] = useMutation(CREATE_RECIPE_MUTATION);
+
   return (
-    <Mutation mutation={CREATE_RECIPE_MUTATION}>
-      {
-        (createRecipe, { error, loading }) => (
-          <Form onSubmit={handleSubmit(createRecipe)}>
-            <fieldset disabled={loading} aria-busy={loading}>
-              <h2>{props.title}</h2>
-              <label htmlFor="name">
+    <Form onSubmit={handleSubmit(createRecipe)}>
+      <fieldset disabled={loading} aria-busy={loading}>
+        <h2>Create Recipe</h2>
+        <label htmlFor="name">
                 Name
-                <input
-                  type="text"
-                  name="name"
-                  placeholder="Name"
-                  value={recipe.name}
-                  onChange={saveToState}
-                  required
-                />
-              </label>
-              <label htmlFor="instructions">
+          <input
+            type="text"
+            name="name"
+            placeholder="Name"
+            value={recipe.name}
+            onChange={saveToState}
+            required
+          />
+        </label>
+        <label htmlFor="instructions">
                 Instructions
-                <textarea
-                  name="instructions"
-                  placeholder=""
-                  value={recipe.instructions}
-                  onChange={saveToState}
-                  required
-                />
-              </label>
-              <label htmlFor="ingredients">
+          <textarea
+            name="instructions"
+            placeholder=""
+            value={recipe.instructions}
+            onChange={saveToState}
+            required
+          />
+        </label>
+        <label htmlFor="ingredients">
                 Ingredients
-                {' '}
-                <span role="img" aria-label="add_ingredient" onClick={() => setToggleIngredientForm({ open: !toggleIngredientForm.open })}>➕</span>
-                <ul>
-                  {recipe.ingredients.map((ingredient) => (
-                    <li key={ingredient.id}>
-                      {ingredient.food.name}
-                      {' '}
--
-                      {ingredient.quantity}
-                      <span
-                        role="img"
-                        aria-label="edit_ingredient"
-                        onClick={() => setToggleIngredientForm({ open: !toggleIngredientForm.open, ingredient })}
-                      >
-                        🖊
-                      </span>
-                    </li>
-                  )
-                  )}
-                </ul>
-                { toggleIngredientForm.open && <IngredientForm onSubmit={handleIngredientFormSubmit} /> }
-              </label>
-              <Button type="submit">Create Recipe</Button>
-            </fieldset>
-          </Form>
-        )
-      }
-    </Mutation>
+          <ul>
+            {recipe.ingredients.map((ingredient) => (
+              <li key={ingredient.food.name}>
+                {`${ingredient.food.name} - ${ingredient.quantity} `}
+                <StyledFontAwesomeIcon
+                  icon="edit"
+                  aria-label="edit_ingredient"
+                  onClick={() => setToggleIngredientForm({ open: !toggleIngredientForm.open, ingredient })}
+                />
+              </li>
+            )
+            )}
+          </ul>
+        </label>
+        { toggleIngredientForm.open
+          ? <IngredientForm onSubmit={handleIngredientFormSubmit} ingredient={toggleIngredientForm.ingredient} />
+          : (
+            <Button onClick={() => setToggleIngredientForm({ open: !toggleIngredientForm.open })}>
+              <FontAwesomeIcon
+                icon="plus"
+                aria-label="add_ingredient"
+              />
+            </Button>
+          ) }
+        <CreateRecipeButtonContainer>
+          <Button type="submit">Create Recipe</Button>
+        </CreateRecipeButtonContainer>
+      </fieldset>
+    </Form>
   );
 }

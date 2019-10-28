@@ -6,18 +6,20 @@ import Error from '../ErrorMessage';
 import { CURRENT_USER_QUERY } from './authQueries';
 
 const SIGNUP_MUTATION = gql`
-  mutation SIGNUP_MUTATION($email: String!, $name: String!, $password: String!) {
-    signup(email: $email, name: $name, password: $password) {
+  mutation SIGNUP_MUTATION($email: String!, $firstName: String!, $lastName: String!, $password: String!) {
+    signup(email: $email, firstName: $firstName, lastName: $lastName, password: $password) {
       id
       email
-      name
+      firstName
+      lastName
     }
   }
 `;
 
 class Signup extends Component {
   state = {
-    name: '',
+    firstName: '',
+    lastName: '',
     password: '',
     email: '',
   };
@@ -39,7 +41,7 @@ class Signup extends Component {
             onSubmit={async (e) => {
               e.preventDefault();
               await signup();
-              this.setState({ name: '', email: '', password: '' });
+              this.setState({ firstName: '', lastName: '', email: '', password: '' });
             }}
           >
             <fieldset disabled={loading} aria-busy={loading}>
@@ -55,13 +57,23 @@ class Signup extends Component {
                   onChange={this.saveToState}
                 />
               </label>
-              <label htmlFor="name">
-                Name
+              <label htmlFor="firstName">
+                First Name
                 <input
                   type="text"
-                  name="name"
-                  placeholder="name"
-                  value={this.state.name}
+                  name="firstName"
+                  placeholder="first name"
+                  value={this.state.firstName}
+                  onChange={this.saveToState}
+                />
+              </label>
+              <label htmlFor="lastName">
+                Last Name
+                <input
+                  type="text"
+                  name="lastName"
+                  placeholder="last name"
+                  value={this.state.lastName}
                   onChange={this.saveToState}
                 />
               </label>

@@ -49,14 +49,14 @@ function writeMealPlanToCache(client, mealPlan) {
 }
 
 function MealPlan({ history }) {
-  const { data, loading, client } = useQuery(GET_LATEST_MEALPLAN);
+  const { data: { mealPlans }, loading, client } = useQuery(GET_LATEST_MEALPLAN);
 
   if (loading) {
     return (
       <div>Loading...</div>
     );
   }
-  const [mealPlan] = data.mealPlans;
+  const [mealPlan] = mealPlans;
 
   if (!mealPlan) {
     return (

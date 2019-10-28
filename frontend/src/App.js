@@ -28,8 +28,9 @@ const MainContentContainer = styled.div`
 `;
 
 function App() {
-  const { data: { me }, loading, error } = useQuery(CURRENT_USER_QUERY);
-  const renderDevRoutes = useCallback(() => (isUserAdmin(me) ? (
+  const { data = {}, loading, error } = useQuery(CURRENT_USER_QUERY);
+  const { me } = data;
+  const renderAdminRoutes = useCallback(() => (isUserAdmin(me) ? (
     <>
       <AuthenticatedRoute path="/createFood/" component={CreateFood} />
       <AuthenticatedRoute path="/foods/" component={Foods} exact />
@@ -48,7 +49,7 @@ function App() {
                 loading ? 'Loading...'
                   : (
                     <>
-                      <Route path="/" exact component={MealPlan} />
+                      <AuthenticatedRoute path="/" exact component={MealPlan} />
                       <Route path="/signup/" component={Signup} />
                       <Route path="/signin/" component={Signin} />
                       <AuthenticatedRoute path="/createRecipe/" component={CreateRecipe} />
@@ -56,7 +57,7 @@ function App() {
                       <AuthenticatedRoute path="/mealPlans/" component={MealPlans} exact />
                       <AuthenticatedRoute path="/mealPlan/" component={MealPlan} exact />
                       <AuthenticatedRoute path="/mealPlan/:id" component={UpdateMealPlan} />
-                      {renderDevRoutes()}
+                      {renderAdminRoutes()}
                     </>
                   )
 

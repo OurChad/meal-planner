@@ -5,13 +5,12 @@ import { useQuery } from '@apollo/react-hooks';
 import { CURRENT_USER_QUERY } from './authQueries';
 
 function AuthenticatedRoute({ component: Component, ...rest }) {
-  const { data, loading, error } = useQuery(CURRENT_USER_QUERY);
+  const { data = {}, loading, error } = useQuery(CURRENT_USER_QUERY);
 
   if (error) return <p>{error}</p>;
   if (loading) return <p>Loading...</p>;
 
-  const me = data;
-
+  const { me } = data;
   return (
     <Route
       {...rest}

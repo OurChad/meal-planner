@@ -29,7 +29,8 @@ const StyledLink = styled(Link)`
 `;
 
 const Header = () => {
-  const { data: { me } } = useQuery(CURRENT_USER_QUERY);
+  const { data = {} } = useQuery(CURRENT_USER_QUERY);
+  const { me } = data;
   const renderDevLinks = useCallback(() => (isUserAdmin(me) ? (
     <>
       <StyledLink to="/createMealPlan/">Create Meal Plan</StyledLink>

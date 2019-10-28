@@ -15,6 +15,7 @@ import UpdateFood from './components/food/UpdateFood';
 import CreateRecipe from './components/recipe/CreateRecipe';
 import CreateMealPlan from './components/mealplan/CreateMealPlan';
 import MealPlan from './components/mealplan/MealPlan';
+import MealPlans from './components/mealplan/MealPlans';
 import UpdateMealPlan from './components/mealplan/UpdateMealPlan';
 import Header from './components/Header';
 import { isUserAdmin } from './util/UserUtil';
@@ -52,6 +53,7 @@ function App() {
                       <Route path="/signin/" component={Signin} />
                       <AuthenticatedRoute path="/createRecipe/" component={CreateRecipe} />
                       <AuthenticatedRoute path="/createMealPlan/" component={CreateMealPlan} />
+                      <AuthenticatedRoute path="/mealPlans/" component={MealPlans} exact />
                       <AuthenticatedRoute path="/mealPlan/" component={MealPlan} exact />
                       <AuthenticatedRoute path="/mealPlan/:id" component={UpdateMealPlan} />
                       {renderDevRoutes()}

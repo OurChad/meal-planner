@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Select from 'react-select';
 import Form from '../common/Form';
+import Button from '../common/Button';
 
 const FoodForm = ({ loading, food: foodProp, setFoodData, onSubmit, resetFormOnSubmit, title, submitLabel }) => {
   const foodTypes = [
@@ -81,7 +82,7 @@ const FoodForm = ({ loading, food: foodProp, setFoodData, onSubmit, resetFormOnS
       <fieldset disabled={loading} aria-busy={loading}>
         <h2>{title}</h2>
         <label htmlFor="name">
-                Name
+          <div>Name</div>
           <input
             type="text"
             name="name"
@@ -91,7 +92,7 @@ const FoodForm = ({ loading, food: foodProp, setFoodData, onSubmit, resetFormOnS
           />
         </label>
         <label htmlFor="subName">
-                SubName
+          <div>SubName</div>
           <input
             type="text"
             name="subName"
@@ -101,7 +102,7 @@ const FoodForm = ({ loading, food: foodProp, setFoodData, onSubmit, resetFormOnS
           />
         </label>
         <label htmlFor="types">
-                Types
+          <div>Types</div>
           <Select
             id="multiSelect"
             name="types"
@@ -112,7 +113,7 @@ const FoodForm = ({ loading, food: foodProp, setFoodData, onSubmit, resetFormOnS
           />
         </label>
         <label htmlFor="image">
-                Image
+          <div>Image</div>
           <input
             type="file"
             name="image"
@@ -123,7 +124,7 @@ const FoodForm = ({ loading, food: foodProp, setFoodData, onSubmit, resetFormOnS
             <img width="200" src={food.image} alt="Upload Preview" />
           )}
         </label>
-        <button type="submit">{submitLabel}</button>
+        <Button primary type="submit">{submitLabel}</Button>
       </fieldset>
     </Form>
   );

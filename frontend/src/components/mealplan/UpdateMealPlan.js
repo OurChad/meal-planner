@@ -1,14 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/react-hooks';
 import { UPDATE_MEALPLAN_MUTATION } from './mealPlanMutations';
-import { GET_ACTIVE_MEALPLAN_QUERY } from './mealPlanQueries';
+import { GET_MEALPLAN_BY_ID } from './mealPlanQueries';
 import MealPlanForm from './MealPlanForm';
 
 function UpdateMealPlan({ history }) {
-  const { data } = useQuery(GET_ACTIVE_MEALPLAN_QUERY);
+  const { mealPlanID } = useParams();
+  const { data: { mealPlan }, loading } = useQuery(GET_MEALPLAN_BY_ID, {
+    variables: {
+      id: mealPlanID,
+    }
+  });
 
-  const { activeMealPlan } = data;
+  if (loading) {
+    return (
+      <div>Loading...</div>
+    );
+  }
 
   const handleSubmit = (updateMealPlan, updatedMealPlan) => {
     const { mealDays } = updatedMealPlan;
@@ -20,10 +30,10 @@ function UpdateMealPlan({ history }) {
   return (
     <MealPlanForm
       title="Update Meal Plan"
-      mealPlan={activeMealPlan}
+      mealPlan={mealPlan}
       mutation={UPDATE_MEALPLAN_MUTATION}
       onSubmit={handleSubmit}
-      onSaveCompleted={() => history.push('/mealplan')}
+      onSaveCompleted={() => history.push(`/mealplan/${mealPlanID}`)}
     />
   );
 }

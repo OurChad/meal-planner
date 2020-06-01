@@ -1,5 +1,23 @@
 import gql from 'graphql-tag';
 
+export const GET_MEALPLAN_BY_ID = gql`
+    query GET_MEALPLAN_BY_ID($id: ID!) {
+        mealPlan(where: { id: $id }) {
+            id,
+            startDate
+            endDate
+            mealDays {
+                id
+                date
+                recipe {
+                    id
+                    name
+                }
+            }
+        }
+    }
+`;
+
 export const GET_LATEST_MEALPLANS = gql`
     query GET_LATEST_MEALPLANS($first: Int = 10) {
         mealPlans(orderBy: startDate_DESC, first: $first) {

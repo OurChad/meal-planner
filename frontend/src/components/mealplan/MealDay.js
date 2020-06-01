@@ -36,9 +36,8 @@ function MealDay({ date, recipe, onSetRecipe }) {
   const client = useApolloClient();
   return (
     <>
-      <div>{date && formatDate(new Date(date), 'EEE dd MMM yyyy')}</div>
       <label htmlFor="recipe">
-                            Recipe
+        <div>{date && formatDate(new Date(date), 'EEE dd MMM yyyy')}</div>
         <AsyncSelect
           id="multiSelect"
           isClearable

@@ -11,11 +11,12 @@ function CreateMealPlan({ history }) {
     cache.writeQuery({ query: GET_LATEST_MEALPLANS, data });
   };
 
-  const handleSubmit = (createMealPlan, mealPlan) => {
+  const handleSubmit = async (createMealPlan, mealPlan) => {
     const { startDate, endDate, mealDays } = mealPlan;
     const mealDayCreateInputs = mealDays.map(({ date, recipe }) => (recipe ? { date, recipe: { id: recipe.id } } : { date }));
 
-    createMealPlan({ variables: { startDate, endDate, mealDays: mealDayCreateInputs }, update });
+    const { data: { createMealPlan: { id } } } = await createMealPlan({ variables: { startDate, endDate, mealDays: mealDayCreateInputs }, update });
+    history.push(`/mealplan/${id}`);
   };
 
   return (
@@ -23,7 +24,6 @@ function CreateMealPlan({ history }) {
       title="Create Meal Plan"
       mutation={CREATE_MEALPLAN_MUTATION}
       onSubmit={handleSubmit}
-      onSaveCompleted={() => history.push('/mealplan')}
     />
   );
 }

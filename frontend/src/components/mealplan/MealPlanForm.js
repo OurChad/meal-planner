@@ -1,21 +1,27 @@
 import React, { useReducer } from 'react';
 import PropTypes from 'prop-types';
 import { useMutation } from '@apollo/react-hooks';
-import { addDays, eachDayOfInterval, format as formatDate } from 'date-fns';
+import { addDays, eachDayOfInterval } from 'date-fns';
+import { formatDate } from '../../util/DateUtil';
 import { actions, reducer as mealPlanReducer } from '../../state/mealplan';
 import MealDay from './MealDay';
 import Form from '../common/Form';
+import Button from '../common/Button';
 
-const MealPlanForm = ({ title, mutation, onSubmit, onSaveCompleted: onCompleted, mealPlan: exisitingMealPlan }) => {
-  const start = formatDate(new Date(), 'yyyy-MM-dd');
-  const end = formatDate(addDays(new Date(), 6), 'yyyy-MM-dd');
-  const initialState = exisitingMealPlan || {
+const MealPlanForm = ({ title, mutation, onSubmit, onSaveCompleted: onCompleted, mealPlan: existingMealPlan }) => {
+  const start = formatDate(new Date());
+  const end = formatDate(addDays(new Date(), 6));
+  const initialState = existingMealPlan ? {
+    ...existingMealPlan,
+    startDate: formatDate(existingMealPlan.startDate),
+    endDate: formatDate(existingMealPlan.endDate),
+  } : {
     startDate: start,
     endDate: end,
     mealDays: eachDayOfInterval({
       start: new Date(start),
       end: new Date(end)
-    }).map((date) => ({ date: formatDate(date, 'yyyy-MM-dd') })),
+    }).map((date) => ({ date: formatDate(date) })),
   };
 
   const [mealPlan, dispatch] = useReducer(mealPlanReducer, initialState);
@@ -41,7 +47,7 @@ const MealPlanForm = ({ title, mutation, onSubmit, onSaveCompleted: onCompleted,
       <fieldset disabled={loading} aria-busy={loading}>
         <h2>{title}</h2>
         <label htmlFor="startDate">
-                Start Date
+          <div>Start Date</div>
           <input
             type="date"
             name="startDate"
@@ -52,7 +58,7 @@ const MealPlanForm = ({ title, mutation, onSubmit, onSaveCompleted: onCompleted,
           />
         </label>
         <label htmlFor="endDate">
-                End Date
+          <div>End Date</div>
           <input
             type="date"
             name="endDate"
@@ -72,7 +78,7 @@ const MealPlanForm = ({ title, mutation, onSubmit, onSaveCompleted: onCompleted,
             />
           ))
         }
-        <button type="submit">Save Meal Plan</button>
+        <Button primary type="submit">Save Meal Plan</Button>
       </fieldset>
     </Form>
   );
@@ -82,7 +88,7 @@ MealPlanForm.propTypes = {
   title: PropTypes.string,
   mutation: PropTypes.object.isRequired,
   onSubmit: PropTypes.func.isRequired,
-  onSaveCompleted: PropTypes.func.isRequired,
+  onSaveCompleted: PropTypes.func,
   mealPlan: PropTypes.shape({
     startDate: PropTypes.string.isRequired,
     endDate: PropTypes.string.isRequired,
@@ -93,6 +99,7 @@ MealPlanForm.propTypes = {
 MealPlanForm.defaultProps = {
   title: 'Meal Plan',
   mealPlan: null,
+  onSaveCompleted: () => {},
 };
 
 export default MealPlanForm;

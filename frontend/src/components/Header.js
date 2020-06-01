@@ -46,7 +46,6 @@ const Header = () => {
     </>
   ) : (
     <>
-      <StyledLink to="/mealPlan/">Meal Plan</StyledLink>
       <StyledLink to="/mealPlans/">Meal Plans</StyledLink>
       <StyledLink to="/createRecipe/">Create Recipe</StyledLink>
     </>

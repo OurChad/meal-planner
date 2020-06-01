@@ -1,7 +1,9 @@
-import React, { Component } from 'react';
+import React, { useCallback, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import Form from '../common/Form';
+import Button from '../common/Button';
 import Error from '../ErrorMessage';
 import { CURRENT_USER_QUERY } from './authQueries';
 
@@ -16,85 +18,84 @@ const SIGNUP_MUTATION = gql`
   }
 `;
 
-class Signup extends Component {
-  state = {
+function Signup() {
+  const history = useHistory();
+  const [state, setState] = useState({
     firstName: '',
     lastName: '',
     password: '',
     email: '',
-  };
+  });
 
-  saveToState = (e) => {
-    this.setState({ [e.target.name]: e.target.value });
-  };
+  const saveToState = useCallback((e) => {
+    setState({ ...state, [e.target.name]: e.target.value });
+  }, [state, setState]);
 
-  render() {
-    return (
-      <Mutation
-        mutation={SIGNUP_MUTATION}
-        variables={this.state}
-        refetchQueries={[{ query: CURRENT_USER_QUERY }]}
-      >
-        {(signup, { error, loading }) => (
-          <Form
-            method="post"
-            onSubmit={async (e) => {
-              e.preventDefault();
-              await signup();
-              this.setState({ firstName: '', lastName: '', email: '', password: '' });
-            }}
-          >
-            <fieldset disabled={loading} aria-busy={loading}>
-              <h2>Sign Up for An Account</h2>
-              <Error error={error} />
-              <label htmlFor="email">
+  return (
+    <Mutation
+      mutation={SIGNUP_MUTATION}
+      variables={state}
+      refetchQueries={[{ query: CURRENT_USER_QUERY }]}
+    >
+      {(signup, { error, loading }) => (
+        <Form
+          method="post"
+          onSubmit={async (e) => {
+            e.preventDefault();
+            await signup();
+            history.push('/');
+          }}
+        >
+          <fieldset disabled={loading} aria-busy={loading}>
+            <h2>Sign Up for An Account</h2>
+            <Error error={error} />
+            <label htmlFor="email">
                 Email
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="email"
-                  value={this.state.email}
-                  onChange={this.saveToState}
-                />
-              </label>
-              <label htmlFor="firstName">
+              <input
+                type="email"
+                name="email"
+                placeholder="email"
+                value={state.email}
+                onChange={saveToState}
+              />
+            </label>
+            <label htmlFor="firstName">
                 First Name
-                <input
-                  type="text"
-                  name="firstName"
-                  placeholder="first name"
-                  value={this.state.firstName}
-                  onChange={this.saveToState}
-                />
-              </label>
-              <label htmlFor="lastName">
+              <input
+                type="text"
+                name="firstName"
+                placeholder="first name"
+                value={state.firstName}
+                onChange={saveToState}
+              />
+            </label>
+            <label htmlFor="lastName">
                 Last Name
-                <input
-                  type="text"
-                  name="lastName"
-                  placeholder="last name"
-                  value={this.state.lastName}
-                  onChange={this.saveToState}
-                />
-              </label>
-              <label htmlFor="password">
+              <input
+                type="text"
+                name="lastName"
+                placeholder="last name"
+                value={state.lastName}
+                onChange={saveToState}
+              />
+            </label>
+            <label htmlFor="password">
                 Password
-                <input
-                  type="password"
-                  name="password"
-                  placeholder="password"
-                  value={this.state.password}
-                  onChange={this.saveToState}
-                />
-              </label>
+              <input
+                type="password"
+                name="password"
+                placeholder="password"
+                value={state.password}
+                onChange={saveToState}
+              />
+            </label>
 
-              <button type="submit">Sign Up!</button>
-            </fieldset>
-          </Form>
-        )}
-      </Mutation>
-    );
-  }
+            <Button primary type="submit">Sign Up!</Button>
+          </fieldset>
+        </Form>
+      )}
+    </Mutation>
+  );
 }
 
 export default Signup;

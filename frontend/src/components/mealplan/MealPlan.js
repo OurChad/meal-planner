@@ -2,8 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/react-hooks';
 import styled from 'styled-components';
-import { formatDate, formatDisplayDate } from '../../util/DateUtil';
-import { GET_LATEST_MEALPLAN } from './mealPlanQueries';
+import { useParams } from 'react-router-dom';
+import { formatDisplayDate } from '../../util/DateUtil';
+import { GET_MEALPLAN_BY_ID } from './mealPlanQueries';
 import Button from '../common/Button';
 
 const StyledButton = styled(Button)`
@@ -31,32 +32,19 @@ const Recipe = styled.div`
     margin-top: 1rem;
 `;
 
-// Remove null recipe from mealDay as Apollo Cache won't return client query with null field 🤷‍♂️
-function writeMealPlanToCache(client, mealPlan) {
-  const activeMealPlan = {
-    ...mealPlan,
-    startDate: formatDate(mealPlan.startDate),
-    endDate: formatDate(mealPlan.endDate),
-  };
-
-  activeMealPlan.mealDays.forEach((day) => {
-    if (!day.recipe) {
-      delete day.recipe; // eslint-disable-line
+function MealPlan({ history }) {
+  const { mealPlanID } = useParams();
+  const { data: { mealPlan }, loading } = useQuery(GET_MEALPLAN_BY_ID, {
+    variables: {
+      id: mealPlanID,
     }
   });
-
-  client.writeData({ data: { activeMealPlan } });
-}
-
-function MealPlan({ history }) {
-  const { data: { mealPlans }, loading, client } = useQuery(GET_LATEST_MEALPLAN);
 
   if (loading) {
     return (
       <div>Loading...</div>
     );
   }
-  const [mealPlan] = mealPlans;
 
   if (!mealPlan) {
     return (
@@ -73,8 +61,6 @@ function MealPlan({ history }) {
     );
   }
 
-  writeMealPlanToCache(client, mealPlan);
-
   const { mealDays } = mealPlan;
 
   return (
@@ -82,7 +68,7 @@ function MealPlan({ history }) {
       <StyledButton
         primary
         onClick={() => {
-          history.push(`/mealPlan/${mealPlan.id}`);
+          history.push(`/mealPlan/${mealPlan.id}/edit`);
         }}
       >
           Edit

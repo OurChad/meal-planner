@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/react-hooks';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
@@ -27,7 +26,7 @@ const MealPlanListItem = styled.div`
     padding: 1rem;
 `;
 
-function MealPlans({ }) {
+function MealPlans() {
   const history = useHistory();
   const { data: { mealPlans }, loading } = useQuery(GET_LATEST_MEALPLANS);
 
@@ -51,7 +50,7 @@ function MealPlans({ }) {
       <MealPlansContainer>
         {
           mealPlans.map(({ id, startDate, endDate, }) => (
-            <MealPlanListItem key={id} active={isOnOrBetweenDates(startDate, endDate)}>
+            <MealPlanListItem key={id} active={isOnOrBetweenDates(startDate, endDate)} onClick={() => history.push(`/mealPlan/${id}`)}>
               <div>{`From: ${formatDisplayDate(startDate)}`}</div>
               <div>{`To: ${formatDisplayDate(endDate)}`}</div>
             </MealPlanListItem>

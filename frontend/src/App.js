@@ -18,6 +18,7 @@ import MealPlan from './components/mealplan/MealPlan';
 import MealPlans from './components/mealplan/MealPlans';
 import UpdateMealPlan from './components/mealplan/UpdateMealPlan';
 import Header from './components/Header';
+import AppBar from './components/AppBar';
 import { isUserAdmin } from './util/UserUtil';
 
 const MainContentContainer = styled.div`
@@ -42,7 +43,7 @@ function App() {
     <ApolloProvider client={client}>
       <Theme>
         <Router>
-          <Header />
+          <AppBar />
           <MainContentContainer>
             <main>
               {

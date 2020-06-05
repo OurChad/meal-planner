@@ -1,7 +1,7 @@
 import React from 'react';
 import { ThemeProvider, createGlobalStyle } from 'styled-components';
 
-const theme = {
+export const theme = {
   green: '#10881a',
   red: '#FF0000',
   black: '#393939',

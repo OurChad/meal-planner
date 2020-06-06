@@ -1,7 +1,11 @@
 # source: https://eu1.prisma.sh/ismisechad-d18815/meal-planner/dev
-# timestamp: Mon Oct 28 2019 21:26:29 GMT+0000 (Greenwich Mean Time)
+# timestamp: Sat Jun 06 2020 13:15:53 GMT+0100 (Irish Standard Time)
 
 type AggregateFood {
+  count: Int!
+}
+
+type AggregateGroup {
   count: Int!
 }
 
@@ -411,6 +415,584 @@ input FoodWhereInput {
 
 input FoodWhereUniqueInput {
   id: ID
+}
+
+type Group implements Node {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  name: String!
+  creator: User!
+  owner: User!
+  users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
+  isPrivate: Boolean
+  mealPlans(where: MealPlanWhereInput, orderBy: MealPlanOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [MealPlan!]
+}
+
+"""A connection to a list of items."""
+type GroupConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [GroupEdge]!
+  aggregate: AggregateGroup!
+}
+
+input GroupCreateInput {
+  id: ID
+  name: String!
+  isPrivate: Boolean
+  creator: UserCreateOneWithoutCreatedGroupsInput!
+  owner: UserCreateOneWithoutOwnedGroupsInput!
+  users: UserCreateManyWithoutGroupInput
+  mealPlans: MealPlanCreateManyWithoutGroupInput
+}
+
+input GroupCreateManyWithoutCreatorInput {
+  create: [GroupCreateWithoutCreatorInput!]
+  connect: [GroupWhereUniqueInput!]
+}
+
+input GroupCreateManyWithoutOwnerInput {
+  create: [GroupCreateWithoutOwnerInput!]
+  connect: [GroupWhereUniqueInput!]
+}
+
+input GroupCreateOneWithoutMealPlansInput {
+  create: GroupCreateWithoutMealPlansInput
+  connect: GroupWhereUniqueInput
+}
+
+input GroupCreateOneWithoutUsersInput {
+  create: GroupCreateWithoutUsersInput
+  connect: GroupWhereUniqueInput
+}
+
+input GroupCreateWithoutCreatorInput {
+  id: ID
+  name: String!
+  isPrivate: Boolean
+  owner: UserCreateOneWithoutOwnedGroupsInput!
+  users: UserCreateManyWithoutGroupInput
+  mealPlans: MealPlanCreateManyWithoutGroupInput
+}
+
+input GroupCreateWithoutMealPlansInput {
+  id: ID
+  name: String!
+  isPrivate: Boolean
+  creator: UserCreateOneWithoutCreatedGroupsInput!
+  owner: UserCreateOneWithoutOwnedGroupsInput!
+  users: UserCreateManyWithoutGroupInput
+}
+
+input GroupCreateWithoutOwnerInput {
+  id: ID
+  name: String!
+  isPrivate: Boolean
+  creator: UserCreateOneWithoutCreatedGroupsInput!
+  users: UserCreateManyWithoutGroupInput
+  mealPlans: MealPlanCreateManyWithoutGroupInput
+}
+
+input GroupCreateWithoutUsersInput {
+  id: ID
+  name: String!
+  isPrivate: Boolean
+  creator: UserCreateOneWithoutCreatedGroupsInput!
+  owner: UserCreateOneWithoutOwnedGroupsInput!
+  mealPlans: MealPlanCreateManyWithoutGroupInput
+}
+
+"""An edge in a connection."""
+type GroupEdge {
+  """The item at the end of the edge."""
+  node: Group!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum GroupOrderByInput {
+  id_ASC
+  id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  name_ASC
+  name_DESC
+  isPrivate_ASC
+  isPrivate_DESC
+}
+
+type GroupPreviousValues {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  name: String!
+  isPrivate: Boolean
+}
+
+input GroupScalarWhereInput {
+  """Logical AND on all given filters."""
+  AND: [GroupScalarWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [GroupScalarWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [GroupScalarWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+  name: String
+
+  """All values that are not equal to given value."""
+  name_not: String
+
+  """All values that are contained in given list."""
+  name_in: [String!]
+
+  """All values that are not contained in given list."""
+  name_not_in: [String!]
+
+  """All values less than the given value."""
+  name_lt: String
+
+  """All values less than or equal the given value."""
+  name_lte: String
+
+  """All values greater than the given value."""
+  name_gt: String
+
+  """All values greater than or equal the given value."""
+  name_gte: String
+
+  """All values containing the given string."""
+  name_contains: String
+
+  """All values not containing the given string."""
+  name_not_contains: String
+
+  """All values starting with the given string."""
+  name_starts_with: String
+
+  """All values not starting with the given string."""
+  name_not_starts_with: String
+
+  """All values ending with the given string."""
+  name_ends_with: String
+
+  """All values not ending with the given string."""
+  name_not_ends_with: String
+  isPrivate: Boolean
+
+  """All values that are not equal to given value."""
+  isPrivate_not: Boolean
+}
+
+type GroupSubscriptionPayload {
+  mutation: MutationType!
+  node: Group
+  updatedFields: [String!]
+  previousValues: GroupPreviousValues
+}
+
+input GroupSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [GroupSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [GroupSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [GroupSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: GroupWhereInput
+}
+
+input GroupUpdateInput {
+  name: String
+  isPrivate: Boolean
+  creator: UserUpdateOneRequiredWithoutCreatedGroupsInput
+  owner: UserUpdateOneRequiredWithoutOwnedGroupsInput
+  users: UserUpdateManyWithoutGroupInput
+  mealPlans: MealPlanUpdateManyWithoutGroupInput
+}
+
+input GroupUpdateManyDataInput {
+  name: String
+  isPrivate: Boolean
+}
+
+input GroupUpdateManyMutationInput {
+  name: String
+  isPrivate: Boolean
+}
+
+input GroupUpdateManyWithoutCreatorInput {
+  create: [GroupCreateWithoutCreatorInput!]
+  connect: [GroupWhereUniqueInput!]
+  set: [GroupWhereUniqueInput!]
+  disconnect: [GroupWhereUniqueInput!]
+  delete: [GroupWhereUniqueInput!]
+  update: [GroupUpdateWithWhereUniqueWithoutCreatorInput!]
+  updateMany: [GroupUpdateManyWithWhereNestedInput!]
+  deleteMany: [GroupScalarWhereInput!]
+  upsert: [GroupUpsertWithWhereUniqueWithoutCreatorInput!]
+}
+
+input GroupUpdateManyWithoutOwnerInput {
+  create: [GroupCreateWithoutOwnerInput!]
+  connect: [GroupWhereUniqueInput!]
+  set: [GroupWhereUniqueInput!]
+  disconnect: [GroupWhereUniqueInput!]
+  delete: [GroupWhereUniqueInput!]
+  update: [GroupUpdateWithWhereUniqueWithoutOwnerInput!]
+  updateMany: [GroupUpdateManyWithWhereNestedInput!]
+  deleteMany: [GroupScalarWhereInput!]
+  upsert: [GroupUpsertWithWhereUniqueWithoutOwnerInput!]
+}
+
+input GroupUpdateManyWithWhereNestedInput {
+  where: GroupScalarWhereInput!
+  data: GroupUpdateManyDataInput!
+}
+
+input GroupUpdateOneWithoutMealPlansInput {
+  create: GroupCreateWithoutMealPlansInput
+  connect: GroupWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
+  update: GroupUpdateWithoutMealPlansDataInput
+  upsert: GroupUpsertWithoutMealPlansInput
+}
+
+input GroupUpdateOneWithoutUsersInput {
+  create: GroupCreateWithoutUsersInput
+  connect: GroupWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
+  update: GroupUpdateWithoutUsersDataInput
+  upsert: GroupUpsertWithoutUsersInput
+}
+
+input GroupUpdateWithoutCreatorDataInput {
+  name: String
+  isPrivate: Boolean
+  owner: UserUpdateOneRequiredWithoutOwnedGroupsInput
+  users: UserUpdateManyWithoutGroupInput
+  mealPlans: MealPlanUpdateManyWithoutGroupInput
+}
+
+input GroupUpdateWithoutMealPlansDataInput {
+  name: String
+  isPrivate: Boolean
+  creator: UserUpdateOneRequiredWithoutCreatedGroupsInput
+  owner: UserUpdateOneRequiredWithoutOwnedGroupsInput
+  users: UserUpdateManyWithoutGroupInput
+}
+
+input GroupUpdateWithoutOwnerDataInput {
+  name: String
+  isPrivate: Boolean
+  creator: UserUpdateOneRequiredWithoutCreatedGroupsInput
+  users: UserUpdateManyWithoutGroupInput
+  mealPlans: MealPlanUpdateManyWithoutGroupInput
+}
+
+input GroupUpdateWithoutUsersDataInput {
+  name: String
+  isPrivate: Boolean
+  creator: UserUpdateOneRequiredWithoutCreatedGroupsInput
+  owner: UserUpdateOneRequiredWithoutOwnedGroupsInput
+  mealPlans: MealPlanUpdateManyWithoutGroupInput
+}
+
+input GroupUpdateWithWhereUniqueWithoutCreatorInput {
+  where: GroupWhereUniqueInput!
+  data: GroupUpdateWithoutCreatorDataInput!
+}
+
+input GroupUpdateWithWhereUniqueWithoutOwnerInput {
+  where: GroupWhereUniqueInput!
+  data: GroupUpdateWithoutOwnerDataInput!
+}
+
+input GroupUpsertWithoutMealPlansInput {
+  update: GroupUpdateWithoutMealPlansDataInput!
+  create: GroupCreateWithoutMealPlansInput!
+}
+
+input GroupUpsertWithoutUsersInput {
+  update: GroupUpdateWithoutUsersDataInput!
+  create: GroupCreateWithoutUsersInput!
+}
+
+input GroupUpsertWithWhereUniqueWithoutCreatorInput {
+  where: GroupWhereUniqueInput!
+  update: GroupUpdateWithoutCreatorDataInput!
+  create: GroupCreateWithoutCreatorInput!
+}
+
+input GroupUpsertWithWhereUniqueWithoutOwnerInput {
+  where: GroupWhereUniqueInput!
+  update: GroupUpdateWithoutOwnerDataInput!
+  create: GroupCreateWithoutOwnerInput!
+}
+
+input GroupWhereInput {
+  """Logical AND on all given filters."""
+  AND: [GroupWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [GroupWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [GroupWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+  name: String
+
+  """All values that are not equal to given value."""
+  name_not: String
+
+  """All values that are contained in given list."""
+  name_in: [String!]
+
+  """All values that are not contained in given list."""
+  name_not_in: [String!]
+
+  """All values less than the given value."""
+  name_lt: String
+
+  """All values less than or equal the given value."""
+  name_lte: String
+
+  """All values greater than the given value."""
+  name_gt: String
+
+  """All values greater than or equal the given value."""
+  name_gte: String
+
+  """All values containing the given string."""
+  name_contains: String
+
+  """All values not containing the given string."""
+  name_not_contains: String
+
+  """All values starting with the given string."""
+  name_starts_with: String
+
+  """All values not starting with the given string."""
+  name_not_starts_with: String
+
+  """All values ending with the given string."""
+  name_ends_with: String
+
+  """All values not ending with the given string."""
+  name_not_ends_with: String
+  isPrivate: Boolean
+
+  """All values that are not equal to given value."""
+  isPrivate_not: Boolean
+  creator: UserWhereInput
+  owner: UserWhereInput
+  users_every: UserWhereInput
+  users_some: UserWhereInput
+  users_none: UserWhereInput
+  mealPlans_every: MealPlanWhereInput
+  mealPlans_some: MealPlanWhereInput
+  mealPlans_none: MealPlanWhereInput
+}
+
+input GroupWhereUniqueInput {
+  id: ID
+  name: String
 }
 
 type Ingredient implements Node {
@@ -1021,6 +1603,8 @@ type MealPlan implements Node {
   startDate: DateTime!
   endDate: DateTime!
   mealDays(where: MealDayWhereInput, orderBy: MealDayOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [MealDay!]
+  group: Group
+  user: User
 }
 
 """A connection to a list of items."""
@@ -1038,6 +1622,34 @@ input MealPlanCreateInput {
   startDate: DateTime!
   endDate: DateTime!
   mealDays: MealDayCreateManyInput
+  group: GroupCreateOneWithoutMealPlansInput
+  user: UserCreateOneWithoutMealPlansInput
+}
+
+input MealPlanCreateManyWithoutGroupInput {
+  create: [MealPlanCreateWithoutGroupInput!]
+  connect: [MealPlanWhereUniqueInput!]
+}
+
+input MealPlanCreateManyWithoutUserInput {
+  create: [MealPlanCreateWithoutUserInput!]
+  connect: [MealPlanWhereUniqueInput!]
+}
+
+input MealPlanCreateWithoutGroupInput {
+  id: ID
+  startDate: DateTime!
+  endDate: DateTime!
+  mealDays: MealDayCreateManyInput
+  user: UserCreateOneWithoutMealPlansInput
+}
+
+input MealPlanCreateWithoutUserInput {
+  id: ID
+  startDate: DateTime!
+  endDate: DateTime!
+  mealDays: MealDayCreateManyInput
+  group: GroupCreateOneWithoutMealPlansInput
 }
 
 """An edge in a connection."""
@@ -1062,6 +1674,101 @@ type MealPlanPreviousValues {
   id: ID!
   startDate: DateTime!
   endDate: DateTime!
+}
+
+input MealPlanScalarWhereInput {
+  """Logical AND on all given filters."""
+  AND: [MealPlanScalarWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [MealPlanScalarWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [MealPlanScalarWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  startDate: DateTime
+
+  """All values that are not equal to given value."""
+  startDate_not: DateTime
+
+  """All values that are contained in given list."""
+  startDate_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  startDate_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  startDate_lt: DateTime
+
+  """All values less than or equal the given value."""
+  startDate_lte: DateTime
+
+  """All values greater than the given value."""
+  startDate_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  startDate_gte: DateTime
+  endDate: DateTime
+
+  """All values that are not equal to given value."""
+  endDate_not: DateTime
+
+  """All values that are contained in given list."""
+  endDate_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  endDate_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  endDate_lt: DateTime
+
+  """All values less than or equal the given value."""
+  endDate_lte: DateTime
+
+  """All values greater than the given value."""
+  endDate_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  endDate_gte: DateTime
 }
 
 type MealPlanSubscriptionPayload {
@@ -1107,11 +1814,83 @@ input MealPlanUpdateInput {
   startDate: DateTime
   endDate: DateTime
   mealDays: MealDayUpdateManyInput
+  group: GroupUpdateOneWithoutMealPlansInput
+  user: UserUpdateOneWithoutMealPlansInput
+}
+
+input MealPlanUpdateManyDataInput {
+  startDate: DateTime
+  endDate: DateTime
 }
 
 input MealPlanUpdateManyMutationInput {
   startDate: DateTime
   endDate: DateTime
+}
+
+input MealPlanUpdateManyWithoutGroupInput {
+  create: [MealPlanCreateWithoutGroupInput!]
+  connect: [MealPlanWhereUniqueInput!]
+  set: [MealPlanWhereUniqueInput!]
+  disconnect: [MealPlanWhereUniqueInput!]
+  delete: [MealPlanWhereUniqueInput!]
+  update: [MealPlanUpdateWithWhereUniqueWithoutGroupInput!]
+  updateMany: [MealPlanUpdateManyWithWhereNestedInput!]
+  deleteMany: [MealPlanScalarWhereInput!]
+  upsert: [MealPlanUpsertWithWhereUniqueWithoutGroupInput!]
+}
+
+input MealPlanUpdateManyWithoutUserInput {
+  create: [MealPlanCreateWithoutUserInput!]
+  connect: [MealPlanWhereUniqueInput!]
+  set: [MealPlanWhereUniqueInput!]
+  disconnect: [MealPlanWhereUniqueInput!]
+  delete: [MealPlanWhereUniqueInput!]
+  update: [MealPlanUpdateWithWhereUniqueWithoutUserInput!]
+  updateMany: [MealPlanUpdateManyWithWhereNestedInput!]
+  deleteMany: [MealPlanScalarWhereInput!]
+  upsert: [MealPlanUpsertWithWhereUniqueWithoutUserInput!]
+}
+
+input MealPlanUpdateManyWithWhereNestedInput {
+  where: MealPlanScalarWhereInput!
+  data: MealPlanUpdateManyDataInput!
+}
+
+input MealPlanUpdateWithoutGroupDataInput {
+  startDate: DateTime
+  endDate: DateTime
+  mealDays: MealDayUpdateManyInput
+  user: UserUpdateOneWithoutMealPlansInput
+}
+
+input MealPlanUpdateWithoutUserDataInput {
+  startDate: DateTime
+  endDate: DateTime
+  mealDays: MealDayUpdateManyInput
+  group: GroupUpdateOneWithoutMealPlansInput
+}
+
+input MealPlanUpdateWithWhereUniqueWithoutGroupInput {
+  where: MealPlanWhereUniqueInput!
+  data: MealPlanUpdateWithoutGroupDataInput!
+}
+
+input MealPlanUpdateWithWhereUniqueWithoutUserInput {
+  where: MealPlanWhereUniqueInput!
+  data: MealPlanUpdateWithoutUserDataInput!
+}
+
+input MealPlanUpsertWithWhereUniqueWithoutGroupInput {
+  where: MealPlanWhereUniqueInput!
+  update: MealPlanUpdateWithoutGroupDataInput!
+  create: MealPlanCreateWithoutGroupInput!
+}
+
+input MealPlanUpsertWithWhereUniqueWithoutUserInput {
+  where: MealPlanWhereUniqueInput!
+  update: MealPlanUpdateWithoutUserDataInput!
+  create: MealPlanCreateWithoutUserInput!
 }
 
 input MealPlanWhereInput {
@@ -1210,6 +1989,8 @@ input MealPlanWhereInput {
   mealDays_every: MealDayWhereInput
   mealDays_some: MealDayWhereInput
   mealDays_none: MealDayWhereInput
+  group: GroupWhereInput
+  user: UserWhereInput
 }
 
 input MealPlanWhereUniqueInput {
@@ -1218,40 +1999,46 @@ input MealPlanWhereUniqueInput {
 
 type Mutation {
   createUser(data: UserCreateInput!): User!
+  createGroup(data: GroupCreateInput!): Group!
   createMealPlan(data: MealPlanCreateInput!): MealPlan!
-  createMealDay(data: MealDayCreateInput!): MealDay!
-  createRecipe(data: RecipeCreateInput!): Recipe!
   createIngredient(data: IngredientCreateInput!): Ingredient!
+  createRecipe(data: RecipeCreateInput!): Recipe!
+  createMealDay(data: MealDayCreateInput!): MealDay!
   createFood(data: FoodCreateInput!): Food!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
+  updateGroup(data: GroupUpdateInput!, where: GroupWhereUniqueInput!): Group
   updateMealPlan(data: MealPlanUpdateInput!, where: MealPlanWhereUniqueInput!): MealPlan
-  updateMealDay(data: MealDayUpdateInput!, where: MealDayWhereUniqueInput!): MealDay
-  updateRecipe(data: RecipeUpdateInput!, where: RecipeWhereUniqueInput!): Recipe
   updateIngredient(data: IngredientUpdateInput!, where: IngredientWhereUniqueInput!): Ingredient
+  updateRecipe(data: RecipeUpdateInput!, where: RecipeWhereUniqueInput!): Recipe
+  updateMealDay(data: MealDayUpdateInput!, where: MealDayWhereUniqueInput!): MealDay
   updateFood(data: FoodUpdateInput!, where: FoodWhereUniqueInput!): Food
   deleteUser(where: UserWhereUniqueInput!): User
+  deleteGroup(where: GroupWhereUniqueInput!): Group
   deleteMealPlan(where: MealPlanWhereUniqueInput!): MealPlan
-  deleteMealDay(where: MealDayWhereUniqueInput!): MealDay
-  deleteRecipe(where: RecipeWhereUniqueInput!): Recipe
   deleteIngredient(where: IngredientWhereUniqueInput!): Ingredient
+  deleteRecipe(where: RecipeWhereUniqueInput!): Recipe
+  deleteMealDay(where: MealDayWhereUniqueInput!): MealDay
   deleteFood(where: FoodWhereUniqueInput!): Food
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
+  upsertGroup(where: GroupWhereUniqueInput!, create: GroupCreateInput!, update: GroupUpdateInput!): Group!
   upsertMealPlan(where: MealPlanWhereUniqueInput!, create: MealPlanCreateInput!, update: MealPlanUpdateInput!): MealPlan!
-  upsertMealDay(where: MealDayWhereUniqueInput!, create: MealDayCreateInput!, update: MealDayUpdateInput!): MealDay!
-  upsertRecipe(where: RecipeWhereUniqueInput!, create: RecipeCreateInput!, update: RecipeUpdateInput!): Recipe!
   upsertIngredient(where: IngredientWhereUniqueInput!, create: IngredientCreateInput!, update: IngredientUpdateInput!): Ingredient!
+  upsertRecipe(where: RecipeWhereUniqueInput!, create: RecipeCreateInput!, update: RecipeUpdateInput!): Recipe!
+  upsertMealDay(where: MealDayWhereUniqueInput!, create: MealDayCreateInput!, update: MealDayUpdateInput!): MealDay!
   upsertFood(where: FoodWhereUniqueInput!, create: FoodCreateInput!, update: FoodUpdateInput!): Food!
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
+  updateManyGroups(data: GroupUpdateManyMutationInput!, where: GroupWhereInput): BatchPayload!
   updateManyMealPlans(data: MealPlanUpdateManyMutationInput!, where: MealPlanWhereInput): BatchPayload!
-  updateManyMealDays(data: MealDayUpdateManyMutationInput!, where: MealDayWhereInput): BatchPayload!
-  updateManyRecipes(data: RecipeUpdateManyMutationInput!, where: RecipeWhereInput): BatchPayload!
   updateManyIngredients(data: IngredientUpdateManyMutationInput!, where: IngredientWhereInput): BatchPayload!
+  updateManyRecipes(data: RecipeUpdateManyMutationInput!, where: RecipeWhereInput): BatchPayload!
+  updateManyMealDays(data: MealDayUpdateManyMutationInput!, where: MealDayWhereInput): BatchPayload!
   updateManyFoods(data: FoodUpdateManyMutationInput!, where: FoodWhereInput): BatchPayload!
   deleteManyUsers(where: UserWhereInput): BatchPayload!
+  deleteManyGroups(where: GroupWhereInput): BatchPayload!
   deleteManyMealPlans(where: MealPlanWhereInput): BatchPayload!
-  deleteManyMealDays(where: MealDayWhereInput): BatchPayload!
-  deleteManyRecipes(where: RecipeWhereInput): BatchPayload!
   deleteManyIngredients(where: IngredientWhereInput): BatchPayload!
+  deleteManyRecipes(where: RecipeWhereInput): BatchPayload!
+  deleteManyMealDays(where: MealDayWhereInput): BatchPayload!
   deleteManyFoods(where: FoodWhereInput): BatchPayload!
 }
 
@@ -1301,22 +2088,25 @@ enum QuantityType {
 
 type Query {
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
+  groups(where: GroupWhereInput, orderBy: GroupOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Group]!
   mealPlans(where: MealPlanWhereInput, orderBy: MealPlanOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [MealPlan]!
-  mealDays(where: MealDayWhereInput, orderBy: MealDayOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [MealDay]!
-  recipes(where: RecipeWhereInput, orderBy: RecipeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Recipe]!
   ingredients(where: IngredientWhereInput, orderBy: IngredientOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Ingredient]!
+  recipes(where: RecipeWhereInput, orderBy: RecipeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Recipe]!
+  mealDays(where: MealDayWhereInput, orderBy: MealDayOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [MealDay]!
   foods(where: FoodWhereInput, orderBy: FoodOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Food]!
   user(where: UserWhereUniqueInput!): User
+  group(where: GroupWhereUniqueInput!): Group
   mealPlan(where: MealPlanWhereUniqueInput!): MealPlan
-  mealDay(where: MealDayWhereUniqueInput!): MealDay
-  recipe(where: RecipeWhereUniqueInput!): Recipe
   ingredient(where: IngredientWhereUniqueInput!): Ingredient
+  recipe(where: RecipeWhereUniqueInput!): Recipe
+  mealDay(where: MealDayWhereUniqueInput!): MealDay
   food(where: FoodWhereUniqueInput!): Food
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
+  groupsConnection(where: GroupWhereInput, orderBy: GroupOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): GroupConnection!
   mealPlansConnection(where: MealPlanWhereInput, orderBy: MealPlanOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): MealPlanConnection!
-  mealDaysConnection(where: MealDayWhereInput, orderBy: MealDayOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): MealDayConnection!
-  recipesConnection(where: RecipeWhereInput, orderBy: RecipeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): RecipeConnection!
   ingredientsConnection(where: IngredientWhereInput, orderBy: IngredientOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): IngredientConnection!
+  recipesConnection(where: RecipeWhereInput, orderBy: RecipeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): RecipeConnection!
+  mealDaysConnection(where: MealDayWhereInput, orderBy: MealDayOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): MealDayConnection!
   foodsConnection(where: FoodWhereInput, orderBy: FoodOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): FoodConnection!
 
   """Fetches an object given its ID"""
@@ -1329,9 +2119,12 @@ type Query {
 type Recipe implements Node {
   id: ID!
   name: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   searchName: String
   ingredients(where: IngredientWhereInput, orderBy: IngredientOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Ingredient!]
   instructions: String
+  author: User
 }
 
 """A connection to a list of items."""
@@ -1350,11 +2143,25 @@ input RecipeCreateInput {
   searchName: String
   instructions: String
   ingredients: IngredientCreateManyInput
+  author: UserCreateOneWithoutRecipesInput
+}
+
+input RecipeCreateManyWithoutAuthorInput {
+  create: [RecipeCreateWithoutAuthorInput!]
+  connect: [RecipeWhereUniqueInput!]
 }
 
 input RecipeCreateOneInput {
   create: RecipeCreateInput
   connect: RecipeWhereUniqueInput
+}
+
+input RecipeCreateWithoutAuthorInput {
+  id: ID
+  name: String!
+  searchName: String
+  instructions: String
+  ingredients: IngredientCreateManyInput
 }
 
 """An edge in a connection."""
@@ -1371,6 +2178,10 @@ enum RecipeOrderByInput {
   id_DESC
   name_ASC
   name_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
   searchName_ASC
   searchName_DESC
   instructions_ASC
@@ -1380,8 +2191,225 @@ enum RecipeOrderByInput {
 type RecipePreviousValues {
   id: ID!
   name: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   searchName: String
   instructions: String
+}
+
+input RecipeScalarWhereInput {
+  """Logical AND on all given filters."""
+  AND: [RecipeScalarWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [RecipeScalarWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [RecipeScalarWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  name: String
+
+  """All values that are not equal to given value."""
+  name_not: String
+
+  """All values that are contained in given list."""
+  name_in: [String!]
+
+  """All values that are not contained in given list."""
+  name_not_in: [String!]
+
+  """All values less than the given value."""
+  name_lt: String
+
+  """All values less than or equal the given value."""
+  name_lte: String
+
+  """All values greater than the given value."""
+  name_gt: String
+
+  """All values greater than or equal the given value."""
+  name_gte: String
+
+  """All values containing the given string."""
+  name_contains: String
+
+  """All values not containing the given string."""
+  name_not_contains: String
+
+  """All values starting with the given string."""
+  name_starts_with: String
+
+  """All values not starting with the given string."""
+  name_not_starts_with: String
+
+  """All values ending with the given string."""
+  name_ends_with: String
+
+  """All values not ending with the given string."""
+  name_not_ends_with: String
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+  searchName: String
+
+  """All values that are not equal to given value."""
+  searchName_not: String
+
+  """All values that are contained in given list."""
+  searchName_in: [String!]
+
+  """All values that are not contained in given list."""
+  searchName_not_in: [String!]
+
+  """All values less than the given value."""
+  searchName_lt: String
+
+  """All values less than or equal the given value."""
+  searchName_lte: String
+
+  """All values greater than the given value."""
+  searchName_gt: String
+
+  """All values greater than or equal the given value."""
+  searchName_gte: String
+
+  """All values containing the given string."""
+  searchName_contains: String
+
+  """All values not containing the given string."""
+  searchName_not_contains: String
+
+  """All values starting with the given string."""
+  searchName_starts_with: String
+
+  """All values not starting with the given string."""
+  searchName_not_starts_with: String
+
+  """All values ending with the given string."""
+  searchName_ends_with: String
+
+  """All values not ending with the given string."""
+  searchName_not_ends_with: String
+  instructions: String
+
+  """All values that are not equal to given value."""
+  instructions_not: String
+
+  """All values that are contained in given list."""
+  instructions_in: [String!]
+
+  """All values that are not contained in given list."""
+  instructions_not_in: [String!]
+
+  """All values less than the given value."""
+  instructions_lt: String
+
+  """All values less than or equal the given value."""
+  instructions_lte: String
+
+  """All values greater than the given value."""
+  instructions_gt: String
+
+  """All values greater than or equal the given value."""
+  instructions_gte: String
+
+  """All values containing the given string."""
+  instructions_contains: String
+
+  """All values not containing the given string."""
+  instructions_not_contains: String
+
+  """All values starting with the given string."""
+  instructions_starts_with: String
+
+  """All values not starting with the given string."""
+  instructions_not_starts_with: String
+
+  """All values ending with the given string."""
+  instructions_ends_with: String
+
+  """All values not ending with the given string."""
+  instructions_not_ends_with: String
 }
 
 type RecipeSubscriptionPayload {
@@ -1428,6 +2456,7 @@ input RecipeUpdateDataInput {
   searchName: String
   instructions: String
   ingredients: IngredientUpdateManyInput
+  author: UserUpdateOneWithoutRecipesInput
 }
 
 input RecipeUpdateInput {
@@ -1435,12 +2464,36 @@ input RecipeUpdateInput {
   searchName: String
   instructions: String
   ingredients: IngredientUpdateManyInput
+  author: UserUpdateOneWithoutRecipesInput
+}
+
+input RecipeUpdateManyDataInput {
+  name: String
+  searchName: String
+  instructions: String
 }
 
 input RecipeUpdateManyMutationInput {
   name: String
   searchName: String
   instructions: String
+}
+
+input RecipeUpdateManyWithoutAuthorInput {
+  create: [RecipeCreateWithoutAuthorInput!]
+  connect: [RecipeWhereUniqueInput!]
+  set: [RecipeWhereUniqueInput!]
+  disconnect: [RecipeWhereUniqueInput!]
+  delete: [RecipeWhereUniqueInput!]
+  update: [RecipeUpdateWithWhereUniqueWithoutAuthorInput!]
+  updateMany: [RecipeUpdateManyWithWhereNestedInput!]
+  deleteMany: [RecipeScalarWhereInput!]
+  upsert: [RecipeUpsertWithWhereUniqueWithoutAuthorInput!]
+}
+
+input RecipeUpdateManyWithWhereNestedInput {
+  where: RecipeScalarWhereInput!
+  data: RecipeUpdateManyDataInput!
 }
 
 input RecipeUpdateOneInput {
@@ -1452,9 +2505,27 @@ input RecipeUpdateOneInput {
   upsert: RecipeUpsertNestedInput
 }
 
+input RecipeUpdateWithoutAuthorDataInput {
+  name: String
+  searchName: String
+  instructions: String
+  ingredients: IngredientUpdateManyInput
+}
+
+input RecipeUpdateWithWhereUniqueWithoutAuthorInput {
+  where: RecipeWhereUniqueInput!
+  data: RecipeUpdateWithoutAuthorDataInput!
+}
+
 input RecipeUpsertNestedInput {
   update: RecipeUpdateDataInput!
   create: RecipeCreateInput!
+}
+
+input RecipeUpsertWithWhereUniqueWithoutAuthorInput {
+  where: RecipeWhereUniqueInput!
+  update: RecipeUpdateWithoutAuthorDataInput!
+  create: RecipeCreateWithoutAuthorInput!
 }
 
 input RecipeWhereInput {
@@ -1546,6 +2617,50 @@ input RecipeWhereInput {
 
   """All values not ending with the given string."""
   name_not_ends_with: String
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
   searchName: String
 
   """All values that are not equal to given value."""
@@ -1629,6 +2744,7 @@ input RecipeWhereInput {
   ingredients_every: IngredientWhereInput
   ingredients_some: IngredientWhereInput
   ingredients_none: IngredientWhereInput
+  author: UserWhereInput
 }
 
 input RecipeWhereUniqueInput {
@@ -1637,15 +2753,18 @@ input RecipeWhereUniqueInput {
 
 type Subscription {
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
+  group(where: GroupSubscriptionWhereInput): GroupSubscriptionPayload
   mealPlan(where: MealPlanSubscriptionWhereInput): MealPlanSubscriptionPayload
-  mealDay(where: MealDaySubscriptionWhereInput): MealDaySubscriptionPayload
-  recipe(where: RecipeSubscriptionWhereInput): RecipeSubscriptionPayload
   ingredient(where: IngredientSubscriptionWhereInput): IngredientSubscriptionPayload
+  recipe(where: RecipeSubscriptionWhereInput): RecipeSubscriptionPayload
+  mealDay(where: MealDaySubscriptionWhereInput): MealDaySubscriptionPayload
   food(where: FoodSubscriptionWhereInput): FoodSubscriptionPayload
 }
 
 type User implements Node {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   firstName: String!
   lastName: String!
   email: String!
@@ -1653,6 +2772,11 @@ type User implements Node {
   resetToken: String
   resetTokenExpiry: Float
   permissions: [Permission!]!
+  recipes(where: RecipeWhereInput, orderBy: RecipeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Recipe!]
+  group: Group
+  createdGroups(where: GroupWhereInput, orderBy: GroupOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Group!]
+  ownedGroups(where: GroupWhereInput, orderBy: GroupOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Group!]
+  mealPlans(where: MealPlanWhereInput, orderBy: MealPlanOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [MealPlan!]
 }
 
 """A connection to a list of items."""
@@ -1674,10 +2798,115 @@ input UserCreateInput {
   resetToken: String
   resetTokenExpiry: Float
   permissions: UserCreatepermissionsInput
+  recipes: RecipeCreateManyWithoutAuthorInput
+  group: GroupCreateOneWithoutUsersInput
+  createdGroups: GroupCreateManyWithoutCreatorInput
+  ownedGroups: GroupCreateManyWithoutOwnerInput
+  mealPlans: MealPlanCreateManyWithoutUserInput
+}
+
+input UserCreateManyWithoutGroupInput {
+  create: [UserCreateWithoutGroupInput!]
+  connect: [UserWhereUniqueInput!]
+}
+
+input UserCreateOneWithoutCreatedGroupsInput {
+  create: UserCreateWithoutCreatedGroupsInput
+  connect: UserWhereUniqueInput
+}
+
+input UserCreateOneWithoutMealPlansInput {
+  create: UserCreateWithoutMealPlansInput
+  connect: UserWhereUniqueInput
+}
+
+input UserCreateOneWithoutOwnedGroupsInput {
+  create: UserCreateWithoutOwnedGroupsInput
+  connect: UserWhereUniqueInput
+}
+
+input UserCreateOneWithoutRecipesInput {
+  create: UserCreateWithoutRecipesInput
+  connect: UserWhereUniqueInput
 }
 
 input UserCreatepermissionsInput {
   set: [Permission!]
+}
+
+input UserCreateWithoutCreatedGroupsInput {
+  id: ID
+  firstName: String!
+  lastName: String!
+  email: String!
+  password: String!
+  resetToken: String
+  resetTokenExpiry: Float
+  permissions: UserCreatepermissionsInput
+  recipes: RecipeCreateManyWithoutAuthorInput
+  group: GroupCreateOneWithoutUsersInput
+  ownedGroups: GroupCreateManyWithoutOwnerInput
+  mealPlans: MealPlanCreateManyWithoutUserInput
+}
+
+input UserCreateWithoutGroupInput {
+  id: ID
+  firstName: String!
+  lastName: String!
+  email: String!
+  password: String!
+  resetToken: String
+  resetTokenExpiry: Float
+  permissions: UserCreatepermissionsInput
+  recipes: RecipeCreateManyWithoutAuthorInput
+  createdGroups: GroupCreateManyWithoutCreatorInput
+  ownedGroups: GroupCreateManyWithoutOwnerInput
+  mealPlans: MealPlanCreateManyWithoutUserInput
+}
+
+input UserCreateWithoutMealPlansInput {
+  id: ID
+  firstName: String!
+  lastName: String!
+  email: String!
+  password: String!
+  resetToken: String
+  resetTokenExpiry: Float
+  permissions: UserCreatepermissionsInput
+  recipes: RecipeCreateManyWithoutAuthorInput
+  group: GroupCreateOneWithoutUsersInput
+  createdGroups: GroupCreateManyWithoutCreatorInput
+  ownedGroups: GroupCreateManyWithoutOwnerInput
+}
+
+input UserCreateWithoutOwnedGroupsInput {
+  id: ID
+  firstName: String!
+  lastName: String!
+  email: String!
+  password: String!
+  resetToken: String
+  resetTokenExpiry: Float
+  permissions: UserCreatepermissionsInput
+  recipes: RecipeCreateManyWithoutAuthorInput
+  group: GroupCreateOneWithoutUsersInput
+  createdGroups: GroupCreateManyWithoutCreatorInput
+  mealPlans: MealPlanCreateManyWithoutUserInput
+}
+
+input UserCreateWithoutRecipesInput {
+  id: ID
+  firstName: String!
+  lastName: String!
+  email: String!
+  password: String!
+  resetToken: String
+  resetTokenExpiry: Float
+  permissions: UserCreatepermissionsInput
+  group: GroupCreateOneWithoutUsersInput
+  createdGroups: GroupCreateManyWithoutCreatorInput
+  ownedGroups: GroupCreateManyWithoutOwnerInput
+  mealPlans: MealPlanCreateManyWithoutUserInput
 }
 
 """An edge in a connection."""
@@ -1692,6 +2921,10 @@ type UserEdge {
 enum UserOrderByInput {
   id_ASC
   id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
   firstName_ASC
   firstName_DESC
   lastName_ASC
@@ -1708,6 +2941,8 @@ enum UserOrderByInput {
 
 type UserPreviousValues {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   firstName: String!
   lastName: String!
   email: String!
@@ -1717,78 +2952,15 @@ type UserPreviousValues {
   permissions: [Permission!]!
 }
 
-type UserSubscriptionPayload {
-  mutation: MutationType!
-  node: User
-  updatedFields: [String!]
-  previousValues: UserPreviousValues
-}
-
-input UserSubscriptionWhereInput {
+input UserScalarWhereInput {
   """Logical AND on all given filters."""
-  AND: [UserSubscriptionWhereInput!]
+  AND: [UserScalarWhereInput!]
 
   """Logical OR on all given filters."""
-  OR: [UserSubscriptionWhereInput!]
+  OR: [UserScalarWhereInput!]
 
   """Logical NOT on all given filters combined by AND."""
-  NOT: [UserSubscriptionWhereInput!]
-
-  """
-  The subscription event gets dispatched when it's listed in mutation_in
-  """
-  mutation_in: [MutationType!]
-
-  """
-  The subscription event gets only dispatched when one of the updated fields names is included in this list
-  """
-  updatedFields_contains: String
-
-  """
-  The subscription event gets only dispatched when all of the field names included in this list have been updated
-  """
-  updatedFields_contains_every: [String!]
-
-  """
-  The subscription event gets only dispatched when some of the field names included in this list have been updated
-  """
-  updatedFields_contains_some: [String!]
-  node: UserWhereInput
-}
-
-input UserUpdateInput {
-  firstName: String
-  lastName: String
-  email: String
-  password: String
-  resetToken: String
-  resetTokenExpiry: Float
-  permissions: UserUpdatepermissionsInput
-}
-
-input UserUpdateManyMutationInput {
-  firstName: String
-  lastName: String
-  email: String
-  password: String
-  resetToken: String
-  resetTokenExpiry: Float
-  permissions: UserUpdatepermissionsInput
-}
-
-input UserUpdatepermissionsInput {
-  set: [Permission!]
-}
-
-input UserWhereInput {
-  """Logical AND on all given filters."""
-  AND: [UserWhereInput!]
-
-  """Logical OR on all given filters."""
-  OR: [UserWhereInput!]
-
-  """Logical NOT on all given filters combined by AND."""
-  NOT: [UserWhereInput!]
+  NOT: [UserScalarWhereInput!]
   id: ID
 
   """All values that are not equal to given value."""
@@ -1829,6 +3001,50 @@ input UserWhereInput {
 
   """All values not ending with the given string."""
   id_not_ends_with: ID
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
   firstName: String
 
   """All values that are not equal to given value."""
@@ -2051,6 +3267,564 @@ input UserWhereInput {
 
   """All values greater than or equal the given value."""
   resetTokenExpiry_gte: Float
+}
+
+type UserSubscriptionPayload {
+  mutation: MutationType!
+  node: User
+  updatedFields: [String!]
+  previousValues: UserPreviousValues
+}
+
+input UserSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [UserSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [UserSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [UserSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: UserWhereInput
+}
+
+input UserUpdateInput {
+  firstName: String
+  lastName: String
+  email: String
+  password: String
+  resetToken: String
+  resetTokenExpiry: Float
+  permissions: UserUpdatepermissionsInput
+  recipes: RecipeUpdateManyWithoutAuthorInput
+  group: GroupUpdateOneWithoutUsersInput
+  createdGroups: GroupUpdateManyWithoutCreatorInput
+  ownedGroups: GroupUpdateManyWithoutOwnerInput
+  mealPlans: MealPlanUpdateManyWithoutUserInput
+}
+
+input UserUpdateManyDataInput {
+  firstName: String
+  lastName: String
+  email: String
+  password: String
+  resetToken: String
+  resetTokenExpiry: Float
+  permissions: UserUpdatepermissionsInput
+}
+
+input UserUpdateManyMutationInput {
+  firstName: String
+  lastName: String
+  email: String
+  password: String
+  resetToken: String
+  resetTokenExpiry: Float
+  permissions: UserUpdatepermissionsInput
+}
+
+input UserUpdateManyWithoutGroupInput {
+  create: [UserCreateWithoutGroupInput!]
+  connect: [UserWhereUniqueInput!]
+  set: [UserWhereUniqueInput!]
+  disconnect: [UserWhereUniqueInput!]
+  delete: [UserWhereUniqueInput!]
+  update: [UserUpdateWithWhereUniqueWithoutGroupInput!]
+  updateMany: [UserUpdateManyWithWhereNestedInput!]
+  deleteMany: [UserScalarWhereInput!]
+  upsert: [UserUpsertWithWhereUniqueWithoutGroupInput!]
+}
+
+input UserUpdateManyWithWhereNestedInput {
+  where: UserScalarWhereInput!
+  data: UserUpdateManyDataInput!
+}
+
+input UserUpdateOneRequiredWithoutCreatedGroupsInput {
+  create: UserCreateWithoutCreatedGroupsInput
+  connect: UserWhereUniqueInput
+  update: UserUpdateWithoutCreatedGroupsDataInput
+  upsert: UserUpsertWithoutCreatedGroupsInput
+}
+
+input UserUpdateOneRequiredWithoutOwnedGroupsInput {
+  create: UserCreateWithoutOwnedGroupsInput
+  connect: UserWhereUniqueInput
+  update: UserUpdateWithoutOwnedGroupsDataInput
+  upsert: UserUpsertWithoutOwnedGroupsInput
+}
+
+input UserUpdateOneWithoutMealPlansInput {
+  create: UserCreateWithoutMealPlansInput
+  connect: UserWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
+  update: UserUpdateWithoutMealPlansDataInput
+  upsert: UserUpsertWithoutMealPlansInput
+}
+
+input UserUpdateOneWithoutRecipesInput {
+  create: UserCreateWithoutRecipesInput
+  connect: UserWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
+  update: UserUpdateWithoutRecipesDataInput
+  upsert: UserUpsertWithoutRecipesInput
+}
+
+input UserUpdatepermissionsInput {
+  set: [Permission!]
+}
+
+input UserUpdateWithoutCreatedGroupsDataInput {
+  firstName: String
+  lastName: String
+  email: String
+  password: String
+  resetToken: String
+  resetTokenExpiry: Float
+  permissions: UserUpdatepermissionsInput
+  recipes: RecipeUpdateManyWithoutAuthorInput
+  group: GroupUpdateOneWithoutUsersInput
+  ownedGroups: GroupUpdateManyWithoutOwnerInput
+  mealPlans: MealPlanUpdateManyWithoutUserInput
+}
+
+input UserUpdateWithoutGroupDataInput {
+  firstName: String
+  lastName: String
+  email: String
+  password: String
+  resetToken: String
+  resetTokenExpiry: Float
+  permissions: UserUpdatepermissionsInput
+  recipes: RecipeUpdateManyWithoutAuthorInput
+  createdGroups: GroupUpdateManyWithoutCreatorInput
+  ownedGroups: GroupUpdateManyWithoutOwnerInput
+  mealPlans: MealPlanUpdateManyWithoutUserInput
+}
+
+input UserUpdateWithoutMealPlansDataInput {
+  firstName: String
+  lastName: String
+  email: String
+  password: String
+  resetToken: String
+  resetTokenExpiry: Float
+  permissions: UserUpdatepermissionsInput
+  recipes: RecipeUpdateManyWithoutAuthorInput
+  group: GroupUpdateOneWithoutUsersInput
+  createdGroups: GroupUpdateManyWithoutCreatorInput
+  ownedGroups: GroupUpdateManyWithoutOwnerInput
+}
+
+input UserUpdateWithoutOwnedGroupsDataInput {
+  firstName: String
+  lastName: String
+  email: String
+  password: String
+  resetToken: String
+  resetTokenExpiry: Float
+  permissions: UserUpdatepermissionsInput
+  recipes: RecipeUpdateManyWithoutAuthorInput
+  group: GroupUpdateOneWithoutUsersInput
+  createdGroups: GroupUpdateManyWithoutCreatorInput
+  mealPlans: MealPlanUpdateManyWithoutUserInput
+}
+
+input UserUpdateWithoutRecipesDataInput {
+  firstName: String
+  lastName: String
+  email: String
+  password: String
+  resetToken: String
+  resetTokenExpiry: Float
+  permissions: UserUpdatepermissionsInput
+  group: GroupUpdateOneWithoutUsersInput
+  createdGroups: GroupUpdateManyWithoutCreatorInput
+  ownedGroups: GroupUpdateManyWithoutOwnerInput
+  mealPlans: MealPlanUpdateManyWithoutUserInput
+}
+
+input UserUpdateWithWhereUniqueWithoutGroupInput {
+  where: UserWhereUniqueInput!
+  data: UserUpdateWithoutGroupDataInput!
+}
+
+input UserUpsertWithoutCreatedGroupsInput {
+  update: UserUpdateWithoutCreatedGroupsDataInput!
+  create: UserCreateWithoutCreatedGroupsInput!
+}
+
+input UserUpsertWithoutMealPlansInput {
+  update: UserUpdateWithoutMealPlansDataInput!
+  create: UserCreateWithoutMealPlansInput!
+}
+
+input UserUpsertWithoutOwnedGroupsInput {
+  update: UserUpdateWithoutOwnedGroupsDataInput!
+  create: UserCreateWithoutOwnedGroupsInput!
+}
+
+input UserUpsertWithoutRecipesInput {
+  update: UserUpdateWithoutRecipesDataInput!
+  create: UserCreateWithoutRecipesInput!
+}
+
+input UserUpsertWithWhereUniqueWithoutGroupInput {
+  where: UserWhereUniqueInput!
+  update: UserUpdateWithoutGroupDataInput!
+  create: UserCreateWithoutGroupInput!
+}
+
+input UserWhereInput {
+  """Logical AND on all given filters."""
+  AND: [UserWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [UserWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [UserWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+  firstName: String
+
+  """All values that are not equal to given value."""
+  firstName_not: String
+
+  """All values that are contained in given list."""
+  firstName_in: [String!]
+
+  """All values that are not contained in given list."""
+  firstName_not_in: [String!]
+
+  """All values less than the given value."""
+  firstName_lt: String
+
+  """All values less than or equal the given value."""
+  firstName_lte: String
+
+  """All values greater than the given value."""
+  firstName_gt: String
+
+  """All values greater than or equal the given value."""
+  firstName_gte: String
+
+  """All values containing the given string."""
+  firstName_contains: String
+
+  """All values not containing the given string."""
+  firstName_not_contains: String
+
+  """All values starting with the given string."""
+  firstName_starts_with: String
+
+  """All values not starting with the given string."""
+  firstName_not_starts_with: String
+
+  """All values ending with the given string."""
+  firstName_ends_with: String
+
+  """All values not ending with the given string."""
+  firstName_not_ends_with: String
+  lastName: String
+
+  """All values that are not equal to given value."""
+  lastName_not: String
+
+  """All values that are contained in given list."""
+  lastName_in: [String!]
+
+  """All values that are not contained in given list."""
+  lastName_not_in: [String!]
+
+  """All values less than the given value."""
+  lastName_lt: String
+
+  """All values less than or equal the given value."""
+  lastName_lte: String
+
+  """All values greater than the given value."""
+  lastName_gt: String
+
+  """All values greater than or equal the given value."""
+  lastName_gte: String
+
+  """All values containing the given string."""
+  lastName_contains: String
+
+  """All values not containing the given string."""
+  lastName_not_contains: String
+
+  """All values starting with the given string."""
+  lastName_starts_with: String
+
+  """All values not starting with the given string."""
+  lastName_not_starts_with: String
+
+  """All values ending with the given string."""
+  lastName_ends_with: String
+
+  """All values not ending with the given string."""
+  lastName_not_ends_with: String
+  email: String
+
+  """All values that are not equal to given value."""
+  email_not: String
+
+  """All values that are contained in given list."""
+  email_in: [String!]
+
+  """All values that are not contained in given list."""
+  email_not_in: [String!]
+
+  """All values less than the given value."""
+  email_lt: String
+
+  """All values less than or equal the given value."""
+  email_lte: String
+
+  """All values greater than the given value."""
+  email_gt: String
+
+  """All values greater than or equal the given value."""
+  email_gte: String
+
+  """All values containing the given string."""
+  email_contains: String
+
+  """All values not containing the given string."""
+  email_not_contains: String
+
+  """All values starting with the given string."""
+  email_starts_with: String
+
+  """All values not starting with the given string."""
+  email_not_starts_with: String
+
+  """All values ending with the given string."""
+  email_ends_with: String
+
+  """All values not ending with the given string."""
+  email_not_ends_with: String
+  password: String
+
+  """All values that are not equal to given value."""
+  password_not: String
+
+  """All values that are contained in given list."""
+  password_in: [String!]
+
+  """All values that are not contained in given list."""
+  password_not_in: [String!]
+
+  """All values less than the given value."""
+  password_lt: String
+
+  """All values less than or equal the given value."""
+  password_lte: String
+
+  """All values greater than the given value."""
+  password_gt: String
+
+  """All values greater than or equal the given value."""
+  password_gte: String
+
+  """All values containing the given string."""
+  password_contains: String
+
+  """All values not containing the given string."""
+  password_not_contains: String
+
+  """All values starting with the given string."""
+  password_starts_with: String
+
+  """All values not starting with the given string."""
+  password_not_starts_with: String
+
+  """All values ending with the given string."""
+  password_ends_with: String
+
+  """All values not ending with the given string."""
+  password_not_ends_with: String
+  resetToken: String
+
+  """All values that are not equal to given value."""
+  resetToken_not: String
+
+  """All values that are contained in given list."""
+  resetToken_in: [String!]
+
+  """All values that are not contained in given list."""
+  resetToken_not_in: [String!]
+
+  """All values less than the given value."""
+  resetToken_lt: String
+
+  """All values less than or equal the given value."""
+  resetToken_lte: String
+
+  """All values greater than the given value."""
+  resetToken_gt: String
+
+  """All values greater than or equal the given value."""
+  resetToken_gte: String
+
+  """All values containing the given string."""
+  resetToken_contains: String
+
+  """All values not containing the given string."""
+  resetToken_not_contains: String
+
+  """All values starting with the given string."""
+  resetToken_starts_with: String
+
+  """All values not starting with the given string."""
+  resetToken_not_starts_with: String
+
+  """All values ending with the given string."""
+  resetToken_ends_with: String
+
+  """All values not ending with the given string."""
+  resetToken_not_ends_with: String
+  resetTokenExpiry: Float
+
+  """All values that are not equal to given value."""
+  resetTokenExpiry_not: Float
+
+  """All values that are contained in given list."""
+  resetTokenExpiry_in: [Float!]
+
+  """All values that are not contained in given list."""
+  resetTokenExpiry_not_in: [Float!]
+
+  """All values less than the given value."""
+  resetTokenExpiry_lt: Float
+
+  """All values less than or equal the given value."""
+  resetTokenExpiry_lte: Float
+
+  """All values greater than the given value."""
+  resetTokenExpiry_gt: Float
+
+  """All values greater than or equal the given value."""
+  resetTokenExpiry_gte: Float
+  recipes_every: RecipeWhereInput
+  recipes_some: RecipeWhereInput
+  recipes_none: RecipeWhereInput
+  group: GroupWhereInput
+  createdGroups_every: GroupWhereInput
+  createdGroups_some: GroupWhereInput
+  createdGroups_none: GroupWhereInput
+  ownedGroups_every: GroupWhereInput
+  ownedGroups_some: GroupWhereInput
+  ownedGroups_none: GroupWhereInput
+  mealPlans_every: MealPlanWhereInput
+  mealPlans_some: MealPlanWhereInput
+  mealPlans_none: MealPlanWhereInput
 }
 
 input UserWhereUniqueInput {

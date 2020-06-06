@@ -6,8 +6,8 @@
     "start": "nodemon -e js,graphql -x node src/index.js",
     "dev": "nodemon -e js,graphql -x node --inspect src/index.js",
     "test": "test",
-    "deploy": "prisma deploy --env-file variables.env",
-    "graphql": "graphql get-schema -p prisma --env-file variables.env"
+    "deploy": "prisma deploy",
+    "graphql": "graphql get-schema -p prisma"
   },
   "author": "Chad Kinsella",
   "license": "ISC",

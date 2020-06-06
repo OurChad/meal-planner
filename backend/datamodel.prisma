@@ -36,6 +36,8 @@ enum QuantityType {
 
 type User {
   id: ID! @id
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
   firstName: String!
   lastName: String!
   email: String! @unique
@@ -43,6 +45,23 @@ type User {
   resetToken: String
   resetTokenExpiry: Float
   permissions: [Permission] @scalarList(strategy: RELATION)
+  recipes: [Recipe!]
+  group: Group @relation(name: "UserGroup")
+  createdGroups: [Group!] @relation(name: "CreatedGroups")
+  ownedGroups: [Group!] @relation(name: "OwnedGroups")
+  mealPlans: [MealPlan!]
+}
+
+type Group {
+  id: ID! @id
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+  name: String! @unique
+  creator: User! @relation(name: "CreatedGroups")
+  owner: User! @relation(name: "OwnedGroups")
+  users: [User!]! @relation(name: "UserGroup")
+  isPrivate: Boolean @default(value: false)
+  mealPlans: [MealPlan!]
 }
 
 type Food {
@@ -64,9 +83,12 @@ type Ingredient {
 type Recipe {
   id: ID! @id
   name: String!
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
   searchName: String
   ingredients: [Ingredient!]!
   instructions: String
+  author: User
 }
 
 type MealDay {
@@ -79,5 +101,7 @@ type MealPlan {
   id: ID! @id
   startDate: DateTime!
   endDate: DateTime!
-  mealDays: [MealDay!]!
+  mealDays: [MealDay!]! @relation(name: "MealDays", onDelete: CASCADE)
+  group: Group
+  user: User
 }

@@ -86,7 +86,7 @@ type Recipe {
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
   searchName: String
-  ingredients: [Ingredient!]!
+  ingredients: [Ingredient]
   instructions: String
   author: User
 }

@@ -1,10 +1,9 @@
-const { isUserLoggedAndAdmin } = require('../../utils');
+const { isUserLoggedAndAuthorised } = require('../../utils');
 
 const recipeMutations = {
-  async createRecipe(parent, args, ctx, info) {
-    isUserLoggedAndAdmin(ctx);
-    const { name, ingredients, instructions } = args;
-    
+  async createRecipe(parent, { name, ingredients, instructions }, ctx, info) {
+    const { id: userId } = isUserLoggedAndAuthorised(ctx);
+
     const createIngredients = ingredients.map(({ quantity, quantityType, foodId }) => {
       return {
         quantity,
@@ -13,7 +12,7 @@ const recipeMutations = {
           connect: {
             id: foodId
           }
-        }
+        },
       };
     });
 
@@ -25,7 +24,11 @@ const recipeMutations = {
         ingredients: {
           create: createIngredients,
         },
-    
+        author: {
+          connect: {
+            id: userId
+          }
+        },
         // format for playground mutations
         // ...args,
         // ingredients: {
@@ -33,37 +36,36 @@ const recipeMutations = {
         // }
       }
     }, info);
-    
+
     return createdRecipe;
   },
-  async updateRecipe(parent, args, ctx, info) {
-    isUserLoggedAndAdmin(ctx);
-    const {
-      name, ingredients, instructions 
-    } = args;
+  async updateRecipe(parent, {
+    id, name, ingredients = {}, instructions
+  }, ctx, info) {
+    isUserLoggedAndAuthorised(ctx);
     const createIngredients = ingredients.create && ingredients.create.map(({ quantity, quantityType, foodId }) => {
       return {
         quantity,
         quantityType,
         food: {
-          connect: {                            
+          connect: {
             id: foodId
           }
         }
       };
     });
     const updateIngredients = ingredients.update && ingredients.update.map(({
-      id, quantity, quantityType, foodId 
+      id, quantity, quantityType, foodId
     }) => {
       return {
         where: {
-          id 
+          id
         },
         data: {
           quantity,
           quantityType,
           food: {
-            connect: {                            
+            connect: {
               id: foodId
             }
           }
@@ -72,7 +74,7 @@ const recipeMutations = {
     });
     const updatedRecipe = await ctx.db.mutation.updateRecipe({
       where: {
-        id: args.id
+        id
       },
       data: {
         name,
@@ -86,21 +88,21 @@ const recipeMutations = {
         },
       }
     }, info);
-    
+
     return updatedRecipe;
   },
   async deleteRecipe(parent, args, ctx, info) {
-    isUserLoggedAndAdmin(ctx);
+    isUserLoggedAndAuthorised(ctx);
     const { id } = args;
     const where = { id };
     const recipe = await ctx.db.query.recipe({ where }, '{ ingredients { id }}');
-    
+
     const deletedRecipe = await ctx.db.mutation.deleteRecipe({ where }, info);
     // delete any associated Ingredients
     await recipe.ingredients.forEach(ingredientId => ctx.db.mutation.deleteIngredient({
       where: ingredientId
     }));
-            
+
     return deletedRecipe;
   },
 };

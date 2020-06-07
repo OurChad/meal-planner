@@ -35,7 +35,15 @@ function isUserLoggedAndAdmin(ctx) {
 
   return isUserAdmin(user);
 }
-  
+
+function isUserLoggedAndAuthorised(ctx) {
+  const user = getRequestUser(ctx);
+
+  isUserLoggedIn(user);
+
+  return user;
+}
+
 function capitaliseWords(words) {
   const allWords = words.split(' ');
 
@@ -63,5 +71,6 @@ exports.hasPermission = hasPermission;
 exports.isUserLoggedIn = isUserLoggedIn;
 exports.isUserAdmin = isUserAdmin;
 exports.isUserLoggedAndAdmin = isUserLoggedAndAdmin;
+exports.isUserLoggedAndAuthorised = isUserLoggedAndAuthorised;
 exports.capitaliseWords = capitaliseWords;
 exports.propsToLowerCase = propsToLowerCase;

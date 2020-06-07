@@ -13,11 +13,14 @@ type Mutation {
     createIngredient(foodId: ID!, quantity: Float!, quantityType: QuantityType!): Ingredient!
     updateIngredient(id: ID!, foodId: ID!, quantity: Float!): Ingredient    
     deleteIngredient(id: ID!): Ingredient
-    createRecipe(name: String!, ingredients: [IngredientCreateInput!]!, instructions: String): Recipe!
-    updateRecipe(id: ID!, name: String!, ingredients: IngredientUpdateManyInput!, instructions: String): Recipe!
+    createRecipe(name: String!, ingredients: [IngredientCreateInput], instructions: String): Recipe!
+    updateRecipe(id: ID!, name: String!, ingredients: IngredientUpdateManyInput, instructions: String): Recipe!
     deleteRecipe(id: ID!): Recipe
-    createMealPlan(startDate: DateTime!, endDate: DateTime!, mealDays: [MealDayCreateUpdateInput]): MealPlan!
-    updateMealPlan(id: ID!, startDate: DateTime, endDate: DateTime, mealDays: [MealDayCreateUpdateInput], deletedMealDays: [ID]): MealPlan
+    createMealPlan(mealPlan: MealPlanCreateInput): MealPlan!
+    updateMealPlan(mealPlan: MealPlanUpdateInput): MealPlan
+    createGroup(group: GroupCreateInput): Group
+    updateGroup(group: GroupUpdateInput): Group
+    deleteGroup(id: ID): Group
 
     # utility mutations
     initialiseBreadsAndPastriesData: [Food]
@@ -44,6 +47,8 @@ type Query {
     mealDay(where: MealDayWhereUniqueInput!): MealDay
     mealPlan(where: MealPlanWhereUniqueInput!): MealPlan
     mealPlans(where: MealPlanWhereInput, orderBy: MealPlanOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [MealPlan]!
+    groups(where: GroupWhereInput, orderBy: GroupOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Group]!
+    group(id: ID!): Group
 }
 
 type User {
@@ -69,6 +74,22 @@ type Group {
   users: [User!]!
   isPrivate: Boolean
   mealPlans: [MealPlan!]
+}
+
+input GroupCreateInput {
+  name: String!
+  isPrivate: Boolean
+  owner: ID
+  users: [ID!]
+}
+
+input GroupUpdateInput {
+  id: ID!
+  name: String!
+  isPrivate: Boolean
+  owner: ID
+  users: [ID!]
+  mealPlans: [ID]
 }
 
 type SuccessMessage {
@@ -127,6 +148,25 @@ type Recipe {
 
 input RecipeConnectInput {
   id: ID!
+}
+
+
+input MealPlanCreateInput {
+  startDate: DateTime!
+  endDate: DateTime!
+  user: ID
+  group: ID
+  mealDays: [MealDayCreateUpdateInput]
+}
+
+input MealPlanUpdateInput {
+  id: ID!
+  startDate: DateTime
+  endDate: DateTime
+  user: ID
+  group: ID
+  mealDays: [MealDayCreateUpdateInput]
+  deletedMealDays: [ID!]
 }
 
 input MealDayCreateUpdateInput {

@@ -1,5 +1,5 @@
 const { forwardTo } = require('prisma-binding');
-const { hasPermission } = require('../utils');
+const { hasPermission, isUserLoggedAndAuthorised } = require('../utils');
 
 const Query = {
   me(parent, args, ctx, info) {
@@ -31,7 +31,7 @@ const Query = {
       throw new Error('You must be logged in.');
     }
 
-    return ctx.db.query.food({where: { id: args.id }}, info);
+    return ctx.db.query.food({ where: { id: args.id } }, info);
   },
   foods(parent, { searchTerm = '' }, ctx, info) {
     // check if there is a current user ID
@@ -40,15 +40,15 @@ const Query = {
     }
 
     return ctx.db.query.foods({
-      where: { 
+      where: {
         OR: [
-          { 
-            searchName_contains: searchTerm.toLowerCase() 
-          }, 
-          { 
-            subName_contains: searchTerm 
+          {
+            searchName_contains: searchTerm.toLowerCase()
+          },
+          {
+            subName_contains: searchTerm
           }
-        ] 
+        ]
       }
     }, info);
   },
@@ -64,7 +64,7 @@ const Query = {
 
     return ctx.db.query.recipes({
       where: {
-        searchName_contains: searchTerm.toLowerCase() 
+        searchName_contains: searchTerm.toLowerCase()
       }
     }, info);
   },
@@ -84,6 +84,27 @@ const Query = {
     }
     const mealPlansQuery = forwardTo('db');
     return mealPlansQuery(parent, args, ctx, info);
+  },
+  groups(parent, args, ctx, info) {
+
+    if (!isUserLoggedAndAuthorised(ctx)) {
+      throw new Error('You must be logged in.');
+    }
+
+    const groupsQuery = forwardTo('db');
+    return groupsQuery(parent, args, ctx, info);
+  },
+  group(parent, { id }, ctx, info) {
+
+    if (!isUserLoggedAndAuthorised(ctx)) {
+      throw new Error('You must be logged in.');
+    }
+
+    return ctx.db.query.group({
+      where: {
+        id
+      }
+    }, info);
   },
 };
 

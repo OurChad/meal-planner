@@ -1,11 +1,9 @@
 import gql from 'graphql-tag';
 
 export const CREATE_MEALPLAN_MUTATION = gql`
-    mutation createMealPlan($startDate: DateTime!, $endDate: DateTime!, $mealDays: [MealDayCreateUpdateInput]) {
+    mutation createMealPlan($mealPlan: MealPlanCreateInput) {
         createMealPlan(
-            startDate: $startDate
-            endDate: $endDate
-            mealDays: $mealDays
+            mealPlan: $mealPlan
             ) {
             id
             startDate
@@ -23,13 +21,9 @@ export const CREATE_MEALPLAN_MUTATION = gql`
 `;
 
 export const UPDATE_MEALPLAN_MUTATION = gql`
-    mutation updateMealPlan($id: ID!, $startDate: DateTime!, $endDate: DateTime!, $mealDays: [MealDayCreateUpdateInput], $deletedMealDays: [ID]) {
+    mutation updateMealPlan($mealPlan: MealPlanUpdateInput) {
         updateMealPlan(
-            id: $id
-            startDate: $startDate
-            endDate: $endDate
-            mealDays: $mealDays
-            deletedMealDays: $deletedMealDays
+            mealPlan: $mealPlan
             ) {
             id
             startDate

@@ -79,7 +79,7 @@ export default function CreateRecipe() {
 
     await createRecipe({ variables: { ...newRecipe } });
     setShowRecipeAlert(!showRecipeAlert);
-    window.setTimeout(setShowRecipeAlert, 5*1000, false);
+    window.setTimeout(setShowRecipeAlert, 5 * 1000, false);
     setRecipe(initialState);
   };
 
@@ -88,11 +88,13 @@ export default function CreateRecipe() {
   return (
     <>
       {
-        showRecipeAlert ? 
-          <Alert variant="filled" severity="success">
+        showRecipeAlert
+          ? (
+            <Alert variant="filled" severity="success">
             Recipe saved!
-          </Alert> : 
-          null
+            </Alert>
+          )
+          : null
       }
       <Form onSubmit={handleSubmit(createRecipe)}>
         <fieldset disabled={loading} aria-busy={loading}>
@@ -115,7 +117,6 @@ export default function CreateRecipe() {
               placeholder=""
               value={recipe.instructions}
               onChange={saveToState}
-              required
             />
           </label>
           <label htmlFor="ingredients">

@@ -27,10 +27,13 @@ enum QuantityType {
   CLOVES
   CUP
   GRAMS
+  JAR
   LEAVES
+  MILLILITRES
   SPRIGS
   TABLESPOON
   TEASPOON
+  TIN
   WHOLE
 }
 

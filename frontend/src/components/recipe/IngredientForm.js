@@ -27,10 +27,13 @@ const IngredientForm = ({ ingredient: ingredientProp, onSubmit, onCancel }) => {
     'CLOVES',
     'CUP',
     'GRAMS',
+    'JAR',
     'LEAVES',
+    'MILLILITRES',
     'SPRIGS',
     'TABLESPOON',
     'TEASPOON',
+    'TIN',
     'WHOLE',
   ];
   const [ingredient, setIngredient] = useState(ingredientProp || { food: {}, quantity: 1, quantityType: quantityTypes[1] });

@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/react-hooks';
+import { cloneWithoutTypeName } from '../../util/MutationUtil';
 import { UPDATE_MEALPLAN_MUTATION } from './mealPlanMutations';
 import { GET_MEALPLAN_BY_ID } from './mealPlanQueries';
 import MealPlanForm from './MealPlanForm';
@@ -20,11 +21,16 @@ function UpdateMealPlan({ history }) {
     );
   }
 
-  const handleSubmit = (updateMealPlan, updatedMealPlan) => {
-    const { mealDays } = updatedMealPlan;
+  const handleSubmit = (updateMealPlanMutation, aMealPlan) => {
+    const { mealDays } = aMealPlan;
     const mealDayCreateUpdateInputs = mealDays.map(({ id, date, recipe }) => (recipe ? { id, date, recipe: { id: recipe.id } } : { id, date }));
+    const clonedMealPlan = cloneWithoutTypeName(aMealPlan);
+    const updatedMealPlan = {
+      ...clonedMealPlan,
+      mealDays: mealDayCreateUpdateInputs,
+    };
 
-    updateMealPlan({ variables: { ...updatedMealPlan, mealDays: mealDayCreateUpdateInputs } });
+    updateMealPlanMutation({ variables: { mealPlan: updatedMealPlan } });
   };
 
   return (

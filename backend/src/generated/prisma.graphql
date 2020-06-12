@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/ismisechad-d18815/meal-planner/dev
-# timestamp: Sat Jun 06 2020 13:15:53 GMT+0100 (Irish Standard Time)
+# timestamp: Fri Jun 12 2020 17:43:18 GMT+0100 (Irish Standard Time)
 
 type AggregateFood {
   count: Int!
@@ -2079,10 +2079,13 @@ enum QuantityType {
   CLOVES
   CUP
   GRAMS
+  JAR
   LEAVES
+  MILLILITRES
   SPRIGS
   TABLESPOON
   TEASPOON
+  TIN
   WHOLE
 }
 

@@ -13,7 +13,8 @@ import {
   AddCircleOutline,
   MenuBook,
   Restaurant,
-  Menu as MenuIcon
+  Menu as MenuIcon,
+  Search as SearchIcon
 } from '@material-ui/icons';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -43,8 +44,8 @@ const styles = (materialTheme) => ({
 
 const ToolBarContainer = styled.div`
     margin: 0 auto;
-    width: 960px;
-    max-width: 960px;
+    width: 1080px;
+    max-width: 1080px;
     padding: 1.5rem 0;
     display: flex;
 `;
@@ -117,6 +118,7 @@ function AppBar({ classes }) {
     <>
       <StyledLink to="/mealPlans/">Meal Plans</StyledLink>
       <StyledLink to="/createMealPlan/">Create Meal Plan</StyledLink>
+      <StyledLink to="/recipes/">Recipes</StyledLink>
       <StyledLink to="/createRecipe/">Create Recipe</StyledLink>
     </>
   )));
@@ -141,6 +143,10 @@ function AppBar({ classes }) {
       <ListItem button key="Create Meal Plan" onClick={navigateToPage('/createMealPlan')}>
         <ListItemIcon><DateRange /></ListItemIcon>
         <ListItemText primary="Create Meal Plan" />
+      </ListItem>
+      <ListItem button key="Recipes" onClick={navigateToPage('/recipes')}>
+        <ListItemIcon><SearchIcon /></ListItemIcon>
+        <ListItemText primary="Recipes" />
       </ListItem>
       <ListItem button key="Create Recipe" onClick={navigateToPage('/createRecipe')}>
         <ListItemIcon><MenuBook /></ListItemIcon>

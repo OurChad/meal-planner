@@ -12,7 +12,9 @@ import CreateFood from './components/food/CreateFood';
 import Foods from './components/food/Foods';
 import Theme from './style/Theme';
 import UpdateFood from './components/food/UpdateFood';
+import SearchRecipes from './components/recipe/SearchRecipes';
 import CreateRecipe from './components/recipe/CreateRecipe';
+import UpdateRecipe from './components/recipe/UpdateRecipe';
 import CreateMealPlan from './components/mealplan/CreateMealPlan';
 import MealPlan from './components/mealplan/MealPlan';
 import MealPlans from './components/mealplan/MealPlans';
@@ -21,7 +23,7 @@ import AppBar from './components/AppBar';
 import { isUserAdmin } from './util/UserUtil';
 
 const MainContentContainer = styled.div`
-  margin: 0 auto;
+  margin: 1rem auto;
   max-width: 960;
   padding: 0px 1rem 1.5rem;
   min-height: 75vh;
@@ -52,7 +54,9 @@ function App() {
                       <AuthenticatedRoute path="/" exact component={MealPlans} />
                       <Route path="/signup/" component={Signup} />
                       <Route path="/signin/" component={Signin} />
+                      <AuthenticatedRoute path="/recipes/" component={SearchRecipes} />
                       <AuthenticatedRoute path="/createRecipe/" component={CreateRecipe} />
+                      <AuthenticatedRoute path="/recipe/:recipeId" component={UpdateRecipe} />
                       <AuthenticatedRoute path="/createMealPlan/" component={CreateMealPlan} />
                       <AuthenticatedRoute path="/mealPlans/" component={MealPlans} exact />
                       <AuthenticatedRoute path="/mealPlan/:mealPlanID" component={MealPlan} exact />

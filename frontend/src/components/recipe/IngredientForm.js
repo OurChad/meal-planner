@@ -22,7 +22,7 @@ const FormButtonContainer = styled.div`
   }
 `;
 
-const IngredientForm = ({ ingredient: ingredientProp, onSubmit, onCancel }) => {
+const IngredientForm = ({ ingredient: ingredientProp, onSubmit, onCancel, isReadOnly }) => {
   const quantityTypes = [
     'CLOVES',
     'CUP',
@@ -64,13 +64,7 @@ const IngredientForm = ({ ingredient: ingredientProp, onSubmit, onCancel }) => {
     )));
   };
 
-  const loadOptions = (client) => debounce((searchTerm) => {
-    console.log('Searching...', searchTerm);
-    // turn loading on
-    // this.setState({ loading: true });
-    // Manually query apollo client
-    return searchFood(client, searchTerm);
-  }, 350);
+  const loadOptions = (client) => debounce((searchTerm) => searchFood(client, searchTerm), 350);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -88,12 +82,13 @@ const IngredientForm = ({ ingredient: ingredientProp, onSubmit, onCancel }) => {
               <label htmlFor="food">
                 <div>Food</div>
                 <AsyncSelect
-                  id="multiSelect"
+                  id="food"
                   required
                   loadOptions={loadOptions(client)}
                   onChange={(food) => setIngredient({ ...ingredient, food: food.value })}
                   defaultValue={{ label: ingredient.food.name, value: ingredient.food.name }}
                   placeholder="Search for foods..."
+                  readOnly={isReadOnly}
                 />
               </label>
               <label htmlFor="quantity">
@@ -106,6 +101,7 @@ const IngredientForm = ({ ingredient: ingredientProp, onSubmit, onCancel }) => {
                     onChange={(e) => setIngredient({ ...ingredient, quantity: e.target.value })}
                     required
                     min="1"
+                    readOnly={isReadOnly}
                   />
                 </div>
               </label>
@@ -117,6 +113,7 @@ const IngredientForm = ({ ingredient: ingredientProp, onSubmit, onCancel }) => {
                   options={quantityTypes.map((quantityType) => ({ value: quantityType, label: quantityType, key: quantityType }))}
                   value={{ value: ingredient.quantityType, label: ingredient.quantityType, key: ingredient.quantityType }}
                   onChange={(newQuantityType) => setIngredient({ ...ingredient, quantityType: newQuantityType.value })}
+                  readOnly={isReadOnly}
                 />
               </label>
               <FormButtonContainer>
@@ -139,11 +136,13 @@ IngredientForm.propTypes = {
   ingredient: PropTypes.object,
   onSubmit: PropTypes.func,
   onCancel: PropTypes.func.isRequired,
+  isReadOnly: PropTypes.bool,
 };
 
 IngredientForm.defaultProps = {
   ingredient: null,
   onSubmit: null,
+  isReadOnly: false,
 };
 
 export default IngredientForm;

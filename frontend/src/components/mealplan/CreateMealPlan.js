@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { cloneWithoutTypeName } from '../../util/MutationUtil';
 import { CREATE_MEALPLAN_MUTATION } from './mealPlanMutations';
 import { GET_LATEST_MEALPLANS } from './mealPlanQueries';
 import MealPlanForm from './MealPlanForm';
@@ -13,7 +14,18 @@ function CreateMealPlan({ history }) {
 
   const handleSubmit = async (createMealPlan, mealPlan) => {
     const { startDate, endDate, mealDays } = mealPlan;
-    const mealDayCreateInputs = mealDays.map(({ date, recipe }) => (recipe ? { date, recipe: { id: recipe.id } } : { date }));
+    const mealDayCreateInputs = mealDays.map(({ date, recipe }) => {
+      if (recipe) {
+        const recipeInput = cloneWithoutTypeName(recipe);
+
+        return {
+          date,
+          recipe: recipeInput,
+        };
+      }
+
+      return { date };
+    });
     const newMealPlan = {
       startDate,
       endDate,

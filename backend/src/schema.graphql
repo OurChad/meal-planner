@@ -146,8 +146,9 @@ type Recipe {
   author: User
 }
 
-input RecipeConnectInput {
-  id: ID!
+input RecipeCreateConnectInput {
+  id: ID
+  name: String
 }
 
 
@@ -171,6 +172,6 @@ input MealPlanUpdateInput {
 
 input MealDayCreateUpdateInput {
   id: ID
-  recipe: RecipeConnectInput
+  recipe: RecipeCreateConnectInput
   date: DateTime!
 }

@@ -23,7 +23,19 @@ function UpdateMealPlan({ history }) {
 
   const handleSubmit = (updateMealPlanMutation, aMealPlan) => {
     const { mealDays } = aMealPlan;
-    const mealDayCreateUpdateInputs = mealDays.map(({ id, date, recipe }) => (recipe ? { id, date, recipe: { id: recipe.id } } : { id, date }));
+    const mealDayCreateUpdateInputs = mealDays.map(({ id, date, recipe }) => {
+      if (recipe) {
+        const recipeInput = cloneWithoutTypeName(recipe);
+
+        return {
+          id,
+          date,
+          recipe: recipeInput,
+        };
+      }
+
+      return { id, date };
+    });
     const clonedMealPlan = cloneWithoutTypeName(aMealPlan);
     const updatedMealPlan = {
       ...clonedMealPlan,

@@ -12,7 +12,7 @@ const StyledHeader = styled.header`
 
 const HeaderContentContainer = styled.div`
   margin: 0 auto;
-  max-width: 960px;
+  max-width: 1080px;
   padding: 1.5rem 1rem;
 `;
 

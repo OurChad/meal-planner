@@ -35,7 +35,7 @@ body {
 }
 main {
   margin: 0 auto;
-  max-width: 960px;
+  max-width: 1080px;
 }
 body {
   color: hsla(0, 0%, 0%, 0.8);
@@ -188,12 +188,17 @@ input,
     box-sizing: border-box;
     width: 100%;
     overflow: hidden;
-    padding: 0.5rem 1rem 0.5rem 1rem;
+    padding: 0.5rem 1rem;
     font-size: 1rem;
     border: 1px solid ${(props) => props.theme.primaryDark};
     &:focus {
       outline: 0;
       border-color: ${(props) => props.theme.secondaryDark};
+    }
+    &:read-only {
+      border: none;
+      padding: 0.5rem 0;
+      background-color: none;
     }
   }
   label {

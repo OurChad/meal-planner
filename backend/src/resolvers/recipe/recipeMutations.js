@@ -55,11 +55,11 @@ const recipeMutations = {
       };
     });
     const updateIngredients = ingredients.update && ingredients.update.map(({
-      id, quantity, quantityType, foodId
+      id: ingredientId, quantity, quantityType, foodId
     }) => {
       return {
         where: {
-          id
+          id: ingredientId
         },
         data: {
           quantity,

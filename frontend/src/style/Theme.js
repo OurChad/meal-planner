@@ -16,9 +16,12 @@ export const theme = {
   secondaryDark: '#555',
   primaryLight: '#FFF',
   secondaryLight: '#DDD',
-  primaryGreen: '#20bd67',
-  secondaryGreen: '#199450',
+  primaryColor: 'rgb(32, 189, 103)',
+  primaryColorHighlight: 'rgb(32, 189, 103, 0.7)',
+  primaryColorDarken: 'rgb(25, 148, 80)',
   tertiaryGreen: '#11703c',
+  primaryPurple: '#8F3985',
+  primaryOrange: '#EF8354',
 };
 
 const GlobalStyle = createGlobalStyle`

@@ -4,9 +4,15 @@ import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import { GET_LATEST_MEALPLANS } from './mealPlanQueries';
 import { formatDisplayDate, isOnOrBetweenDates } from '../../util/DateUtil';
+import MealPlan from './MealPlan';
 import Button from '../common/Button';
+import Calendar from '../common/Calendar';
 
 const StyledButton = styled(Button)`
+    margin-bottom: 1rem;
+`;
+
+const StyledCalendar = styled(Calendar)`
     margin-bottom: 1rem;
 `;
 
@@ -21,7 +27,7 @@ const MealPlansContainer = styled.div`
 `;
 
 const MealPlanListItem = styled.div`
-    background-color: ${(props) => (props.active ? props.theme.secondaryGreen : props.theme.secondaryLight)};
+    background-color: ${(props) => (props.active ? props.theme.primaryColorDarken : props.theme.secondaryLight)};
     color: ${(props) => (props.active ? props.theme.primaryLight : props.theme.primaryDark)};
     padding: 1rem;
 `;
@@ -45,15 +51,13 @@ function MealPlans() {
           history.push('/createmealplan');
         }}
       >
-          Create Meal Plan
-      </StyledButton>
+        Create Meal Plan
+          </StyledButton>
+      <StyledCalendar />
       <MealPlansContainer>
         {
-          mealPlans.map(({ id, startDate, endDate, }) => (
-            <MealPlanListItem key={id} active={isOnOrBetweenDates(startDate, endDate)} onClick={() => history.push(`/mealPlan/${id}`)}>
-              <div>{`From: ${formatDisplayDate(startDate)}`}</div>
-              <div>{`To: ${formatDisplayDate(endDate)}`}</div>
-            </MealPlanListItem>
+          mealPlans.map((mealPlan) => (
+            <MealPlan key={mealPlan.id} mealPlan={mealPlan} />
           ))
         }
       </MealPlansContainer>

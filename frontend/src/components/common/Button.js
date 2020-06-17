@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 const Button = styled.button`
     width: auto;
-    background: ${(props) => (props.primary ? props.theme.primaryGreen : props.theme.secondaryDark)};
+    background: ${(props) => (props.primary ? props.theme.primaryColor : props.theme.secondaryDark)};
     color: white;
     border: 0;
     font-size: 1.2rem;
@@ -11,7 +11,7 @@ const Button = styled.button`
     outline: none;
 
     &:hover {
-        background: ${(props) => (props.primary ? props.theme.secondaryGreen : props.theme.primaryDark)};
+        background: ${(props) => (props.primary ? props.theme.primaryColorDarken : props.theme.primaryDark)};
     }
 `;
 

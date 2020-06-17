@@ -6,7 +6,7 @@ import { CURRENT_USER_QUERY } from './auth/authQueries';
 import { isUserAdmin } from '../util/UserUtil';
 
 const StyledHeader = styled.header`
-  background: ${(props) => props.theme.primaryGreen};
+  background: ${(props) => props.theme.primaryColor};
   margin-bottom: 1.5rem;
 `;
 
@@ -45,11 +45,11 @@ const Header = () => {
       <StyledLink to="/signin/">Signin</StyledLink>
     </>
   ) : (
-    <>
-      <StyledLink to="/mealPlans/">Meal Plans</StyledLink>
-      <StyledLink to="/createRecipe/">Create Recipe</StyledLink>
-    </>
-  )));
+      <>
+        <StyledLink to="/mealPlans/">Meal Plans</StyledLink>
+        <StyledLink to="/createRecipe/">Create Recipe</StyledLink>
+      </>
+    )));
 
   return (
     <StyledHeader>

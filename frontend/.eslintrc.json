@@ -47,17 +47,21 @@
         "__DEMO__": false,
         "fixture": true
     },
-    "overrides": [{
-        "files": ["**/__tests__/*"],
-        "rules": {
-          "no-unused-expressions": "off",
-          "react/jsx-filename-extension": "off"
+    "overrides": [
+        {
+            "files": [
+                "**/__tests__/*"
+            ],
+            "rules": {
+                "no-unused-expressions": "off",
+                "react/jsx-filename-extension": "off"
+            }
         }
-    }],
+    ],
     "rules": {
         "indent": [
             2,
-            2,
+            4,
             {
                 "SwitchCase": 1
             }
@@ -96,7 +100,7 @@
         ],
         "comma-dangle": "off",
         "object-curly-newline": "off",
-        "no-nested-ternary" : "off",
+        "no-nested-ternary": "off",
         "jsx-a11y/click-events-have-key-events": 1,
         "jsx-a11y/no-static-element-interactions": 1,
         "import/prefer-default-export": "off",
@@ -116,6 +120,15 @@
         "jsx-a11y/label-has-for": 1,
         "react/no-typos": 1,
         "react/no-did-mount-set-state": 1,
-        "no-param-reassign": ["error", { "props": true, "ignorePropertyModificationsFor": ["state", "draft"] }]
+        "no-param-reassign": [
+            "error",
+            {
+                "props": true,
+                "ignorePropertyModificationsFor": [
+                    "state",
+                    "draft"
+                ]
+            }
+        ]
     }
 }

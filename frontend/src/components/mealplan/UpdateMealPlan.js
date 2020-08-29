@@ -51,7 +51,7 @@ function UpdateMealPlan({ history }) {
       mealPlan={mealPlan}
       mutation={UPDATE_MEALPLAN_MUTATION}
       onSubmit={handleSubmit}
-      onSaveCompleted={() => history.push(`/mealplan/${mealPlanID}`)}
+      onSaveCompleted={() => history.push('/mealPlans')}
     />
   );
 }

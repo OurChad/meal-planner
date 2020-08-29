@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
-import { GET_LATEST_MEALPLANS } from './mealPlanQueries';
-import { formatDisplayDate, isOnOrBetweenDates } from '../../util/DateUtil';
-import MealPlan from './MealPlan';
+import { addDays, subDays, isSameDay } from 'date-fns';
+import { GET_MEALPLANS_BY_DATE } from './mealPlanQueries';
+import MealPlanCalendar from './MealPlanCalendar';
 import Button from '../common/Button';
 import Calendar from '../common/Calendar';
+import { getCalendarDays, isOnOrBetweenDates } from '../../util/DateUtil';
 
 const StyledButton = styled(Button)`
     margin-bottom: 1rem;
@@ -16,9 +17,22 @@ const StyledCalendar = styled(Calendar)`
     margin-bottom: 1rem;
 `;
 
+const ContentContainer = styled.div`
+  display: grid;
+  grid-template-columns: 4fr 8fr;
+  grid-template-rows: fit-content(100%);
+  grid-gap: 1rem;
+
+  @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+    }
+`;
+
 const MealPlansContainer = styled.div`
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr;
+    grid-template-rows: fit-content(100%);
+    grid-row: 1 / span -1;
     grid-gap: 1rem;
 
     @media (max-width: 768px) {
@@ -26,21 +40,50 @@ const MealPlansContainer = styled.div`
     }
 `;
 
-const MealPlanListItem = styled.div`
-    background-color: ${(props) => (props.active ? props.theme.primaryColorDarken : props.theme.secondaryLight)};
-    color: ${(props) => (props.active ? props.theme.primaryLight : props.theme.primaryDark)};
-    padding: 1rem;
-`;
-
 function MealPlans() {
   const history = useHistory();
-  const { data: { mealPlans }, loading } = useQuery(GET_LATEST_MEALPLANS);
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [mealPlanQueryDate, setMealPlanQueryDate] = useState(currentDate);
+  const { data: { mealPlans }, loading } = useQuery(GET_MEALPLANS_BY_DATE, {
+    variables: {
+      startDate: subDays(mealPlanQueryDate, 30),
+      endDate: addDays(mealPlanQueryDate, 30),
+    }
+  });
 
-  if (loading) {
-    return (
-      <div>Loading...</div>
-    );
-  }
+  const [mappedMealDays, setMappedMealDays] = useState([]);
+
+  useEffect(() => {
+    const calendarDays = getCalendarDays(mealPlanQueryDate, 1);
+    const allMealDays = calendarDays.map((date) => {
+      const filteredMealPlans = mealPlans?.filter(({ startDate: mealPlanStartDate, endDate }) => isOnOrBetweenDates(mealPlanStartDate, endDate, date));
+
+      const mealDays = filteredMealPlans?.reduce((acc, { id, mealDays: mealPlanDays }) => {
+        const mealDay = mealPlanDays?.find((aMealDay) => isSameDay(date, new Date(aMealDay.date)));
+
+        const calendarMealDay = {
+          id,
+          date,
+          mealDay: mealDay ?? {},
+        };
+
+        return acc.concat(calendarMealDay);
+      }, []);
+
+      return {
+        date,
+        mealDays,
+      };
+    });
+
+    setMappedMealDays(allMealDays);
+  }, [mealPlans]);
+
+  // if (loading) {
+  //   return (
+  //     <div>Loading...</div>
+  //   );
+  // }
 
   return (
     <>
@@ -52,15 +95,21 @@ function MealPlans() {
         }}
       >
         Create Meal Plan
-          </StyledButton>
-      <StyledCalendar />
-      <MealPlansContainer>
+      </StyledButton>
+      <ContentContainer>
+        <div>
+          <StyledCalendar onClickDay={setCurrentDate} initialDate={currentDate} />
+        </div>
+
         {
-          mealPlans.map((mealPlan) => (
-            <MealPlan key={mealPlan.id} mealPlan={mealPlan} />
-          ))
+          loading ? <div>Loading...</div> : (
+            <MealPlansContainer>
+              <MealPlanCalendar startDate={currentDate} calendarMealDays={mappedMealDays} />
+            </MealPlansContainer>
+          )
         }
-      </MealPlansContainer>
+
+      </ContentContainer>
     </>
   );
 }

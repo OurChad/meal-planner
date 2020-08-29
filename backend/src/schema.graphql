@@ -45,6 +45,7 @@ type Query {
     recipe(where: RecipeWhereUniqueInput!): Recipe
     recipes(searchTerm: String, orderBy: RecipeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Recipe]!
     mealDay(where: MealDayWhereUniqueInput!): MealDay
+    calendarMealDays(date: DateTime): [CalendarMealDays]
     mealPlan(where: MealPlanWhereUniqueInput!): MealPlan
     mealPlans(where: MealPlanWhereInput, orderBy: MealPlanOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [MealPlan]!
     groups(where: GroupWhereInput, orderBy: GroupOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Group]!
@@ -174,4 +175,14 @@ input MealDayCreateUpdateInput {
   id: ID
   recipe: RecipeCreateConnectInput
   date: DateTime!
+}
+
+type CalendarMealDay {
+  mealPlanId: ID
+  mealDay: MealDay
+}
+
+type CalendarMealDays {
+  date: DateTime!
+  mealDays: [CalendarMealDay]!
 }

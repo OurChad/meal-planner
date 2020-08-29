@@ -21,6 +21,7 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.3",
+    "date-fns": "^2.15.0",
     "dotenv": "^6.2.0",
     "graphql": "^14.0.2",
     "graphql-cli": "^3.0.4",

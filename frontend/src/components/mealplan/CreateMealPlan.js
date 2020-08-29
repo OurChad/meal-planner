@@ -32,12 +32,8 @@ function CreateMealPlan({ history }) {
       mealDays: mealDayCreateInputs,
     };
 
-    const {
-      data: {
-        createMealPlan: { id }
-      }
-    } = await createMealPlan({ variables: { mealPlan: newMealPlan }, update });
-    history.push(`/mealplan/${id}`);
+    await createMealPlan({ variables: { mealPlan: newMealPlan }, update });
+    history.push('/mealPlans');
   };
 
   return (

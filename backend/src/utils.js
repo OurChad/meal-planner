@@ -1,3 +1,5 @@
+const { subMonths, addMonths, eachDayOfInterval } = require('date-fns');
+
 function getRequestUser(ctx) {
   const { request: { user } } = ctx;
 
@@ -66,6 +68,13 @@ function propsToLowerCase(obj, props) {
   }, {});
 }
 
+function getCalendarDays(middleDate = new Date()) {
+  const start = subMonths(middleDate, 1);
+  const end = addMonths(middleDate, 1);
+
+  return eachDayOfInterval({ start, end });
+}
+
 exports.getRequestUser = getRequestUser;
 exports.hasPermission = hasPermission;
 exports.isUserLoggedIn = isUserLoggedIn;
@@ -74,3 +83,4 @@ exports.isUserLoggedAndAdmin = isUserLoggedAndAdmin;
 exports.isUserLoggedAndAuthorised = isUserLoggedAndAuthorised;
 exports.capitaliseWords = capitaliseWords;
 exports.propsToLowerCase = propsToLowerCase;
+exports.getCalendarDays = getCalendarDays;

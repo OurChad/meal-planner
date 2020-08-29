@@ -75,7 +75,7 @@ const mealPlanMutations = {
         const existingMealDay = await ctx.db.query.mealDay({ where }, '{ recipe { id } }');
         recipeInput = existingMealDay.recipe ? { recipe: { disconnect: true } } : {};
       } else if (recipe) {
-        const { recipeId, name } = recipe;
+        const { id: recipeId, name } = recipe;
         if (recipeId) {
           recipeInput = { connect: { id: recipeId } };
         } else if (name) {

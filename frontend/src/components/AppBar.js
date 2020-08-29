@@ -115,13 +115,13 @@ function AppBar({ classes }) {
       <StyledLink to="/signin/">Signin</StyledLink>
     </>
   ) : (
-      <>
-        <StyledLink to="/mealPlans/">Meal Plans</StyledLink>
-        <StyledLink to="/createMealPlan/">Create Meal Plan</StyledLink>
-        <StyledLink to="/recipes/">Recipes</StyledLink>
-        <StyledLink to="/createRecipe/">Create Recipe</StyledLink>
-      </>
-    )));
+    <>
+      <StyledLink to="/mealPlans/">Meal Plans</StyledLink>
+      <StyledLink to="/createMealPlan/">Create Meal Plan</StyledLink>
+      <StyledLink to="/recipes/">Recipes</StyledLink>
+      <StyledLink to="/createRecipe/">Create Recipe</StyledLink>
+    </>
+  )));
 
   const renderListItemLinks = useCallback(() => (!me ? (
     <>
@@ -135,25 +135,25 @@ function AppBar({ classes }) {
       </ListItem>
     </>
   ) : (
-      <>
-        <ListItem button key="Meal Plans" onClick={navigateToPage('/mealPlans/')}>
-          <ListItemIcon><Restaurant /></ListItemIcon>
-          <ListItemText primary="Meal Plans" />
-        </ListItem>
-        <ListItem button key="Create Meal Plan" onClick={navigateToPage('/createMealPlan')}>
-          <ListItemIcon><DateRange /></ListItemIcon>
-          <ListItemText primary="Create Meal Plan" />
-        </ListItem>
-        <ListItem button key="Recipes" onClick={navigateToPage('/recipes')}>
-          <ListItemIcon><SearchIcon /></ListItemIcon>
-          <ListItemText primary="Recipes" />
-        </ListItem>
-        <ListItem button key="Create Recipe" onClick={navigateToPage('/createRecipe')}>
-          <ListItemIcon><MenuBook /></ListItemIcon>
-          <ListItemText primary="Create Recipe" />
-        </ListItem>
-      </>
-    )));
+    <>
+      <ListItem button key="Meal Plans" onClick={navigateToPage('/mealPlans/')}>
+        <ListItemIcon><Restaurant /></ListItemIcon>
+        <ListItemText primary="Meal Plans" />
+      </ListItem>
+      <ListItem button key="Create Meal Plan" onClick={navigateToPage('/createMealPlan')}>
+        <ListItemIcon><DateRange /></ListItemIcon>
+        <ListItemText primary="Create Meal Plan" />
+      </ListItem>
+      <ListItem button key="Recipes" onClick={navigateToPage('/recipes')}>
+        <ListItemIcon><SearchIcon /></ListItemIcon>
+        <ListItemText primary="Recipes" />
+      </ListItem>
+      <ListItem button key="Create Recipe" onClick={navigateToPage('/createRecipe')}>
+        <ListItemIcon><MenuBook /></ListItemIcon>
+        <ListItemText primary="Create Recipe" />
+      </ListItem>
+    </>
+  )));
 
   return (
     <div className={classes.root}>

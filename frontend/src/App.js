@@ -38,7 +38,7 @@ function App() {
       <AuthenticatedRoute path="/foods/" component={Foods} exact />
       <AuthenticatedRoute path="/foods/:id" component={UpdateFood} />
     </>
-  ) : null));
+  ) : null), [me]);
 
   return (
     <ApolloProvider client={client}>

@@ -43,7 +43,7 @@ const MealPlansContainer = styled.div`
 function MealPlans() {
   const history = useHistory();
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [mealPlanQueryDate, setMealPlanQueryDate] = useState(currentDate);
+  const [mealPlanQueryDate] = useState(currentDate);
   const { data: { mealPlans }, loading } = useQuery(GET_MEALPLANS_BY_DATE, {
     variables: {
       startDate: subDays(mealPlanQueryDate, 30),
@@ -77,7 +77,7 @@ function MealPlans() {
     });
 
     setMappedMealDays(allMealDays);
-  }, [mealPlans]);
+  }, [mealPlans, mealPlanQueryDate]);
 
   // if (loading) {
   //   return (

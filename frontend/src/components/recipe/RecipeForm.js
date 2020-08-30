@@ -53,7 +53,7 @@ function RecipeForm({ title, onSubmit, recipe: existingRecipe, mutation, onCompl
     if (resetOnCompleted) {
       setRecipe(initialState);
     }
-  }, [onCompleted]);
+  }, [onCompleted, resetOnCompleted, initialState]);
 
   const [saveRecipe, { loading }] = useMutation(mutation, { onCompleted: handleCompleted });
 

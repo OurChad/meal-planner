@@ -103,7 +103,7 @@ function MealPlanCalendar({ calendarMealDays, startDate }) {
       </MealDaysContainer>
     </MealDayContainer>
   )
-  ), [calendarMealDays]);
+  ), [calendarMealDays, handleEditMealDay]);
 
   useEffect(() => {
     const topPos = document.getElementById(startDate.toString())?.offsetTop;

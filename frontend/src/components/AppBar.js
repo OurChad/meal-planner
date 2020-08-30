@@ -93,7 +93,7 @@ function AppBar({ classes }) {
     <>
       <StyledLink to="/createFood/">Create Food</StyledLink>
     </>
-  ) : null));
+  ) : null), [me]);
 
   const navigateToPage = useCallback((route) => () => {
     toggleMenu(false)();
@@ -107,7 +107,7 @@ function AppBar({ classes }) {
         <ListItemText primary="Create Food" />
       </ListItem>
     </>
-  ) : null));
+  ) : null), [me, navigateToPage]);
 
   const renderLinks = useCallback(() => (!me ? (
     <>
@@ -121,7 +121,7 @@ function AppBar({ classes }) {
       <StyledLink to="/recipes/">Recipes</StyledLink>
       <StyledLink to="/createRecipe/">Create Recipe</StyledLink>
     </>
-  )));
+  )), [me]);
 
   const renderListItemLinks = useCallback(() => (!me ? (
     <>
@@ -153,7 +153,7 @@ function AppBar({ classes }) {
         <ListItemText primary="Create Recipe" />
       </ListItem>
     </>
-  )));
+  )), [me, navigateToPage]);
 
   return (
     <div className={classes.root}>

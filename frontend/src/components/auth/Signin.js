@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Mutation } from 'react-apollo';
+import { useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import Form from '../common/Form';
 import Button from '../common/Button';
@@ -10,10 +10,13 @@ import { CURRENT_USER_QUERY } from './authQueries';
 const SIGNIN_MUTATION = gql`
   mutation SIGNIN_MUTATION($email: String!, $password: String!) {
     signin(email: $email, password: $password) {
-      id
-      email
-      firstName
-      lastName
+      token
+      user {
+        id
+        email
+        firstName
+        lastName
+      }
     }
   }
 `;
@@ -30,51 +33,60 @@ function Signin() {
     setState({ ...state, [e.target.name]: e.target.value });
   }, [state, setState]);
 
-  return (
-    <Mutation
-      mutation={SIGNIN_MUTATION}
-      variables={state}
-      refetchQueries={[{ query: CURRENT_USER_QUERY }]}
-      awaitRefetchQueries
-    >
-      {(signin, { error, loading }) => (
-        <Form
-          method="post"
-          onSubmit={async (e) => {
-            e.preventDefault();
-            await signin();
-            history.push('/');
-          }}
-        >
-          <fieldset disabled={loading} aria-busy={loading}>
-            <h2>Sign into your account</h2>
-            <Error error={error} />
-            <label htmlFor="email">
-                Email
-              <input
-                type="email"
-                name="email"
-                placeholder="email"
-                value={state.email}
-                onChange={saveToState}
-              />
-            </label>
-            <label htmlFor="password">
-                Password
-              <input
-                type="password"
-                name="password"
-                placeholder="password"
-                value={state.password}
-                onChange={saveToState}
-              />
-            </label>
+  const handleCompleted = useCallback(() => {
+    history.push('/');
+  }, [history]);
 
-            <Button primary type="submit">Sign In!</Button>
-          </fieldset>
-        </Form>
-      )}
-    </Mutation>
+  const refetchQueries = useCallback(({ data }) => {
+    const token = data?.signin?.token;
+    if (token) {
+      localStorage.setItem('token', token);
+    }
+    return [{ query: CURRENT_USER_QUERY }];
+  }, []);
+
+  const [signin, { error, loading }] = useMutation(SIGNIN_MUTATION, {
+    variables: state,
+    onCompleted: handleCompleted,
+    refetchQueries,
+    awaitRefetchQueries: true,
+  });
+
+  return (
+    <Form
+      method="post"
+      onSubmit={async (e) => {
+        e.preventDefault();
+        await signin();
+      }}
+    >
+      <fieldset disabled={loading} aria-busy={loading}>
+        <h2>Sign into your account</h2>
+        <Error error={error} />
+        <label htmlFor="email">
+                Email
+          <input
+            type="email"
+            name="email"
+            placeholder="email"
+            value={state.email}
+            onChange={saveToState}
+          />
+        </label>
+        <label htmlFor="password">
+                Password
+          <input
+            type="password"
+            name="password"
+            placeholder="password"
+            value={state.password}
+            onChange={saveToState}
+          />
+        </label>
+
+        <Button primary type="submit">Sign In!</Button>
+      </fieldset>
+    </Form>
   );
 }
 

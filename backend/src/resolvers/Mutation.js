@@ -27,7 +27,6 @@ const mealPlanMutations = require('./mealPlans/mealPlanMutations');
 
 const Mutations = {
   async signup(parent, args, ctx, info) {
-
     args.email = args.email.toLowerCase();
 
     const password = await bcrypt.hash(args.password, 10);
@@ -40,38 +39,34 @@ const Mutations = {
           permissions: { set: ['USER'] },
         },
       },
-      info
+      info.user
     );
 
     const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET);
 
-    ctx.response.cookie('token', token, {
-      httpOnly: true,
-      maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year cookie
-    });
-
-    return user;
+    return {
+      token,
+      user
+    };
   },
   async signin(parent, { email, password }, ctx, info) {
 
     const user = await ctx.db.query.user({ where: { email } });
     if (!user) {
-      throw new Error(`No such user found for email ${email}`);
+      throw new Error('Invalid username or password');
     }
-
+    
     const valid = await bcrypt.compare(password, user.password);
     if (!valid) {
-      throw new Error('Invalid Password!');
+      throw new Error('Invalid username or password');
     }
 
     const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET);
 
-    ctx.response.cookie('token', token, {
-      httpOnly: true,
-      maxAge: 1000 * 60 * 60 * 24 * 365,
-    });
-
-    return user;
+    return {
+      token,
+      user
+    };
   },
   async signout(parent, args, ctx, info) {
     ctx.response.clearCookie('token');
@@ -100,7 +95,7 @@ const Mutations = {
       html: makeANiceEmail(`Your Password Reset Token is here!
         \n\n
         <a href="${process.env
-          .FRONTEND_URL}/reset?resetToken=${resetToken}">Click Here to Reset</a>`),
+    .FRONTEND_URL}/reset?resetToken=${resetToken}">Click Here to Reset</a>`),
     });
     return { message: 'Thanks!' };
   },

@@ -1,8 +1,8 @@
 # import * from './generated/prisma.graphql' 
 
 type Mutation {
-    signup(email: String!, password: String!, firstName: String!, lastName: String!): User!
-    signin(email: String!, password: String!): User!
+    signup(email: String!, password: String!, firstName: String!, lastName: String!): AuthPayload!
+    signin(email: String!, password: String!): AuthPayload!
     signout: SuccessMessage
     requestReset(email: String!): SuccessMessage
     resetPassword(resetToken: String!, password: String!, confirmPassword: String!): User!
@@ -63,6 +63,11 @@ type User {
   createdGroups: [Group!]
   ownedGroups: [Group!]
   mealPlans: [MealPlan!]
+}
+
+type AuthPayload {
+  token: String
+  user: User
 }
 
 type Group {

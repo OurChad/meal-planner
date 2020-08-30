@@ -45,11 +45,11 @@ const Header = () => {
       <StyledLink to="/signin/">Signin</StyledLink>
     </>
   ) : (
-      <>
-        <StyledLink to="/mealPlans/">Meal Plans</StyledLink>
-        <StyledLink to="/createRecipe/">Create Recipe</StyledLink>
-      </>
-    )));
+    <>
+      <StyledLink to="/mealPlans/">Meal Plans</StyledLink>
+      <StyledLink to="/createRecipe/">Create Recipe</StyledLink>
+    </>
+  )), [me]);
 
   return (
     <StyledHeader>

@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 import { InMemoryCache } from 'apollo-cache-inmemory';
-import { ApolloClient, HttpLink } from 'apollo-boost';
+import { ApolloClient, HttpLink, ApolloLink } from 'apollo-boost';
 import { endpoint } from './config';
 
 const typeDefs = gql`
@@ -17,12 +17,27 @@ const cache = new InMemoryCache({
   },
 });
 
+const authMiddleware = () => new ApolloLink((operation, forward) => {
+  const token = localStorage.getItem('token');
+
+  if (token) {
+    operation.setContext({
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    });
+  }
+
+  return forward(operation);
+});
+
+const httpLink = new HttpLink({
+  uri: process.env.NODE_ENV === 'development' ? endpoint : process.env.REACT_APP_API_PROD_ENDPOINT,
+});
+
 const client = new ApolloClient({
   cache,
-  link: new HttpLink({
-    uri: process.env.NODE_ENV === 'development' ? endpoint : process.env.REACT_APP_API_PROD_ENDPOINT,
-    credentials: 'include',
-  }),
+  link: authMiddleware().concat(httpLink),
   resolvers: {},
   typeDefs,
 });

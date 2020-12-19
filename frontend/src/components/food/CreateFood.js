@@ -4,7 +4,6 @@ import gql from 'graphql-tag';
 import FoodForm from './FoodForm';
 import { ALL_FOODS_QUERY } from './queries';
 
-
 export default function CreateFood() {
   const CREATE_FOOD_MUTATION = gql`
     mutation createFood($food: FoodInput!) {

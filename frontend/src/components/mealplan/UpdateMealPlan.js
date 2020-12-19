@@ -9,7 +9,7 @@ import MealPlanForm from './MealPlanForm';
 
 function UpdateMealPlan({ history }) {
   const { mealPlanID } = useParams();
-  const { data: { mealPlan }, loading } = useQuery(GET_MEALPLAN_BY_ID, {
+  const { data: { mealPlan } = {}, loading } = useQuery(GET_MEALPLAN_BY_ID, {
     variables: {
       id: mealPlanID,
     }

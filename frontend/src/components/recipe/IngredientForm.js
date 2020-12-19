@@ -38,7 +38,6 @@ const IngredientForm = ({ ingredient: ingredientProp, onSubmit, onCancel, isRead
   ];
   const [ingredient, setIngredient] = useState(ingredientProp || { food: {}, quantity: 1, quantityType: quantityTypes[1] });
 
-
   const SEARCH_FOODS_QUERY = gql`
       query SEARCH_FOODS_QUERY($searchTerm: String!) {
           foods(searchTerm: $searchTerm) {

@@ -140,5 +140,4 @@ FoodForm.propTypes = {
   submitLabel: PropTypes.string.isRequired,
 };
 
-
 export default FoodForm;

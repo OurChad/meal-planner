@@ -9,7 +9,7 @@ import { GET_RECIPE_BY_ID } from './recipeQueries';
 
 export default function UpdateRecipe() {
   const { recipeId } = useParams();
-  const { data: { recipe }, loading } = useQuery(GET_RECIPE_BY_ID, {
+  const { data: { recipe } = {}, loading } = useQuery(GET_RECIPE_BY_ID, {
     variables: {
       id: recipeId,
     }
@@ -106,7 +106,7 @@ export default function UpdateRecipe() {
         showRecipeAlert
           ? (
             <Alert variant="filled" severity="success">
-            Recipe saved!
+              Recipe saved!
             </Alert>
           )
           : null

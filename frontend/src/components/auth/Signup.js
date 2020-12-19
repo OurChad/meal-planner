@@ -58,50 +58,56 @@ function Signup() {
       method="post"
       onSubmit={async (e) => {
         e.preventDefault();
-        await signup();
+        try {
+          await signup();
+        } catch(ex) {}
       }}
     >
       <fieldset disabled={loading} aria-busy={loading}>
         <h2>Sign Up for An Account</h2>
         <Error error={error} />
         <label htmlFor="email">
-                Email
+          Email
           <input
             type="email"
             name="email"
             placeholder="email"
             value={state.email}
             onChange={saveToState}
+            required
           />
         </label>
         <label htmlFor="firstName">
-                First Name
+          First Name
           <input
             type="text"
             name="firstName"
             placeholder="first name"
             value={state.firstName}
             onChange={saveToState}
+            required
           />
         </label>
         <label htmlFor="lastName">
-                Last Name
+          Last Name
           <input
             type="text"
             name="lastName"
             placeholder="last name"
             value={state.lastName}
             onChange={saveToState}
+            required
           />
         </label>
         <label htmlFor="password">
-                Password
+          Password
           <input
             type="password"
             name="password"
             placeholder="password"
             value={state.password}
             onChange={saveToState}
+            required
           />
         </label>
 

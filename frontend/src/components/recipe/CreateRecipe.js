@@ -45,7 +45,7 @@ export default function CreateRecipe() {
         showRecipeAlert
           ? (
             <Alert variant="filled" severity="success">
-            Recipe saved!
+              Recipe saved!
             </Alert>
           )
           : null

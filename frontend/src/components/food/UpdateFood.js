@@ -39,7 +39,7 @@ export default function UpdateFood(props) {
         if (!data.food) {
           return (
             <p>
-No Item Found for ID
+              No Item Found for ID
               {props.id}
             </p>
           );

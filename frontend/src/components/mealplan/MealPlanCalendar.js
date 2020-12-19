@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
@@ -65,7 +65,7 @@ const EditButtonContainer = styled(CreateIcon)`
     height: 20px;
 `;
 
-function MealPlanCalendar({ calendarMealDays, startDate }) {
+function MealPlanCalendar({ calendarMealDays }) {
   const history = useHistory();
 
   const handleEditMealDay = useCallback((id) => (() => {
@@ -104,13 +104,6 @@ function MealPlanCalendar({ calendarMealDays, startDate }) {
     </MealDayContainer>
   )
   ), [calendarMealDays, handleEditMealDay]);
-
-  useEffect(() => {
-    const topPos = document.getElementById(startDate.toString())?.offsetTop;
-    const container = document.getElementById('mealDaysContainer');
-    const containerOffset = container.offsetTop;
-    container.scrollTop = (topPos - containerOffset);
-  }, [startDate]);
 
   return (
     <ScrollableDiv id="mealDaysContainer">

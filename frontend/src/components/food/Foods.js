@@ -42,7 +42,7 @@ export default function Foods(props) {
         if (error) {
           return (
             <p>
-Error:
+              Error:
               {error.message}
             </p>
           );

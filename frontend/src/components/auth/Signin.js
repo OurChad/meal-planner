@@ -24,7 +24,6 @@ const SIGNIN_MUTATION = gql`
 function Signin() {
   const history = useHistory();
   const [state, setState] = useState({
-    name: '',
     password: '',
     email: '',
   });
@@ -57,30 +56,34 @@ function Signin() {
       method="post"
       onSubmit={async (e) => {
         e.preventDefault();
-        await signin();
+        try {
+          await signin();
+        } catch(ex) {}
       }}
     >
       <fieldset disabled={loading} aria-busy={loading}>
         <h2>Sign into your account</h2>
         <Error error={error} />
         <label htmlFor="email">
-                Email
+          Email
           <input
             type="email"
             name="email"
             placeholder="email"
             value={state.email}
             onChange={saveToState}
+            required
           />
         </label>
         <label htmlFor="password">
-                Password
+          Password
           <input
             type="password"
             name="password"
             placeholder="password"
             value={state.password}
             onChange={saveToState}
+            required
           />
         </label>
 

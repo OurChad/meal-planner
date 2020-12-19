@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useMutation } from '@apollo/react-hooks';
 import styled from 'styled-components';
@@ -16,11 +16,11 @@ const CreateRecipeButtonContainer = styled.div`
 `;
 
 function RecipeForm({ title, onSubmit, recipe: existingRecipe, mutation, onCompleted, resetOnCompleted, isReadOnly }) {
-  const initialState = {
+  const initialState = useMemo (() => ({
     name: '',
     ingredients: [],
     instructions: ''
-  };
+  }), [])
   const [recipe, setRecipe] = useState(existingRecipe || initialState);
   const [toggleIngredientForm, setToggleIngredientForm] = useState({ open: false, ingredient: undefined });
   const handleIngredientFormSubmit = useCallback((ingredient) => {
@@ -62,7 +62,6 @@ function RecipeForm({ title, onSubmit, recipe: existingRecipe, mutation, onCompl
 
     onSubmit(saveRecipe, recipe);
   }, [onSubmit, saveRecipe, recipe]);
-
 
   return (
     <Form onSubmit={handleSubmit}>

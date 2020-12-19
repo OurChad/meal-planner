@@ -70,7 +70,6 @@ const NavButtonsContainer = styled.div`
     width: 100%;
 `;
 
-
 const StyledLink = styled(Link)`
   color: ${(props) => (props.dark ? props.theme.primaryDark : props.theme.primaryLight)};
   margin-right: 1rem;

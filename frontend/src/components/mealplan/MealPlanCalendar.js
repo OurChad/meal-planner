@@ -2,7 +2,7 @@ import React, { useCallback, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
-import { getDate } from 'date-fns';
+import { getDate, isSameDay } from 'date-fns';
 import { Create as CreateIcon } from '@material-ui/icons';
 import { getMonth } from '../../util/DateUtil';
 
@@ -40,7 +40,8 @@ const MealDaysContainer = styled.div`
 
 const MealDay = styled.div`
     display: flex;
-    background-color: ${(props) => props.theme.secondaryLight};
+    background-color: ${(props) => props.highlight ? props.theme.primaryColorHighlight : props.theme.secondaryLight};
+    color: ${(props) => props.highlight ? props.theme.primaryLight : props.theme.primaryDark};
     padding: 1rem;
     height: fill-available;
 `;
@@ -65,9 +66,9 @@ const EditButtonContainer = styled(CreateIcon)`
     height: 20px;
 `;
 
-function MealPlanCalendar({ calendarMealDays }) {
+function MealPlanCalendar({ calendarMealDays, currentDate }) {
   const history = useHistory();
-
+  
   const handleEditMealDay = useCallback((id) => (() => {
     if (id) {
       history.push(`/mealPlan/${id}/edit`);
@@ -76,8 +77,17 @@ function MealPlanCalendar({ calendarMealDays }) {
     }
   }), [history]);
 
-  const allMealDays = useMemo(() => calendarMealDays.map(({ date, mealDays }) => (
-    <MealDayContainer id={date.toString()} key={date.toString()}>
+  const scrollToElementCallbackRef = useCallback((scrollToElement) => {
+    if(scrollToElement !== null) {
+      scrollToElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, []);
+
+  const allMealDays = useMemo(() => calendarMealDays.map(({ date, mealDays }) => {
+    const ref = isSameDay(date, currentDate) ? scrollToElementCallbackRef : null;
+
+    return (
+    <MealDayContainer id={date.toString()} key={date.toString()} ref={ref}>
       <MealDayDateContainer>
         <div>
           {getDate(date)}
@@ -90,7 +100,7 @@ function MealPlanCalendar({ calendarMealDays }) {
       <MealDaysContainer>
         {
           mealDays?.length ? mealDays?.map(({ id: mealPlanId, mealDay }) => (
-            <MealDay key={mealDay.id}>
+            <MealDay key={mealDay.id} highlight>
               <Recipe>{mealDay?.recipe ? mealDay?.recipe.name : 'No meal'}</Recipe>
               <EditButtonContainer onClick={handleEditMealDay(mealPlanId)} />
             </MealDay>
@@ -102,8 +112,7 @@ function MealPlanCalendar({ calendarMealDays }) {
         }
       </MealDaysContainer>
     </MealDayContainer>
-  )
-  ), [calendarMealDays, handleEditMealDay]);
+  )}), [calendarMealDays, handleEditMealDay, currentDate, scrollToElementCallbackRef]);
 
   return (
     <ScrollableDiv id="mealDaysContainer">

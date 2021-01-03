@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useMemo } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
@@ -31,15 +31,15 @@ const StyledLink = styled(Link)`
 const Header = () => {
   const { data = {} } = useQuery(CURRENT_USER_QUERY);
   const { me } = data;
-  const renderDevLinks = useCallback(() => (isUserAdmin(me) ? (
+  const devLinks = useMemo(() => (isUserAdmin(me) ? (
     <>
       <StyledLink to="/createMealPlan/">Create Meal Plan</StyledLink>
       <StyledLink to="/createFood/">Create Food</StyledLink>
       <StyledLink to="/foods/">Foods</StyledLink>
     </>
-  ) : null));
+  ) : null), [me]);
 
-  const renderLinks = useCallback(() => (!me ? (
+  const links = useMemo(() => (!me ? (
     <>
       <StyledLink to="/signup/">Signup</StyledLink>
       <StyledLink to="/signin/">Signin</StyledLink>
@@ -57,8 +57,8 @@ const Header = () => {
         <AppName>
           <StyledLink to="/" dark>Nom Noms</StyledLink>
         </AppName>
-        {renderLinks()}
-        {renderDevLinks()}
+        {links}
+        {devLinks}
       </HeaderContentContainer>
     </StyledHeader>
   );

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
@@ -79,19 +79,6 @@ function MealPlans() {
     setMappedMealDays(allMealDays);
   }, [mealPlans, mealPlanQueryDate]);
 
-  const handleClickDay = useCallback(
-    (newDate) => {
-      const a = document.getElementById(newDate.toString());
-      a.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-      // const container = document.getElementById('mealDaysContainer');
-      // const containerOffset = container.offsetTop;
-      // container.scrollTop = (topPos - containerOffset);
-
-      setCurrentDate(newDate);
-    },
-    [],
-  );
-
   return (
     <>
       <h2>Meal Plans</h2>
@@ -105,13 +92,13 @@ function MealPlans() {
       </StyledButton>
       <ContentContainer>
         <div>
-          <StyledCalendar onClickDay={handleClickDay} initialDate={currentDate} />
+          <StyledCalendar onClickDay={setCurrentDate} initialDate={currentDate} />
         </div>
 
         {
           loading ? <div>Loading...</div> : (
             <MealPlansContainer>
-              <MealPlanCalendar calendarMealDays={mappedMealDays} />
+              <MealPlanCalendar calendarMealDays={mappedMealDays} currentDate={currentDate} />
             </MealPlansContainer>
           )
         }
